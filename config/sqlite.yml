@@ -1,0 +1,20 @@
+Default: &defaults
+  database: nomnichi.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: nomnichi_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: nomnichi_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: nomnichi_production.sqlite3
+  poolsize: 100
+  <<: *defaults
