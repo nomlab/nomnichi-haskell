@@ -19,12 +19,14 @@ $newline never
         \<!--[if lt IE 9]>
         \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         \<![endif]-->
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
         <script>
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
     <body>
         <div class="container">
-            <header>
+            <header> 乃村研究室
+            <aside>
+              <h2> Menu
             <div id="main" role="main">
               ^{pageBody pc}
             <footer>

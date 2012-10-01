@@ -1,8 +1,8 @@
 Default: &defaults
   host: "*4" # any IPv4 host
   port: 3000
-  approot: "http://localhost:3000"
-  copyright: Insert copyright statement here
+  approot: "http://kawasemi.swlab.cs.okayama-u.ac.jp:3000"
+  copyright: Nomura Laboratory (C)
   #analytics: UA-YOURCODE
 
 Development:

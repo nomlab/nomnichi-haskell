@@ -15,10 +15,13 @@ import Network.Wai.Middleware.RequestLogger (logStdout, logStdoutDev)
 import qualified Database.Persist.Store
 import Database.Persist.GenericSql (runMigration)
 import Network.HTTP.Conduit (newManager, def)
+import Data.Text
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Home
+import Handler.Nomnichi
+
 
 -- This line actually creates our YesodSite instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see

@@ -1,0 +1,17 @@
+var ajaxPut = function(){
+  var formContents = $('.putForm').serialize();
+  var sendData =
+    { type: 'PUT'
+    , url: "@{ArticleR articleId}"
+    , data: {
+      "_token": $("input[type=hidden][name=_token]").val(),
+      "f2": $("input[id=h2][name=f2]").val(),
+      "f3": $(".putForm > * > * > div.nicEdit-main").html()}
+    , success: function(data) {window.location.href = "@{ArticleR articleId}";}
+    };
+  $.ajax(sendData);
+};
+
+$(document).ready(function(){
+  $(".put").click(ajaxPut);
+});

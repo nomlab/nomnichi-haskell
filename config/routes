@@ -5,3 +5,7 @@
 /robots.txt RobotsR GET
 
 / HomeR GET POST
+
+/nomnichi NomnichiR GET POST
+/nomnichi/#ArticleId ArticleR GET PUT DELETE
+/nomnichi/edit/#ArticleId EditArticleR GET

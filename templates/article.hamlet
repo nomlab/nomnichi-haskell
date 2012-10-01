@@ -1,0 +1,9 @@
+<h1 class=title> #{articleTitle article}
+<div class=published_on> YYYY/MM/DD(wday) hh:mm  AUTHOR
+<article> #{articleContent article}
+<hr>
+<div class=article_footer>
+  <a href=@{EditArticleR articleId}> 編集
+  <form class=deleteForm method=delete>
+    <a class=delete> 削除
+    <input type=button class=delete value="Delete This Article">

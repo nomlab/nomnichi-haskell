@@ -1,0 +1,6 @@
+<div class=article_form>
+  <form class=putForm action=@{ArticleR articleId} enctype=#{enctype}>
+    ^{articleWidget}
+    <div>
+      <input type=button class=put value="Update">
+  
