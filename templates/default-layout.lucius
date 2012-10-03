@@ -66,6 +66,7 @@ footer {
     width: 80%;
     margin-left: 170px;
     position: absolute;
+    padding-top: 5px;
     border-top: 1px solid black;
     height: 50px;
     bottom: 0;}

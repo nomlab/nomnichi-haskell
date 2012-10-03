@@ -1,6 +1,9 @@
-<div class=article_form>
+<div class="article_form">
   <form class=putForm action=@{ArticleR articleId} enctype=#{enctype}>
     ^{articleWidget}
     <div>
       <input type=button class=put value="Update">
+      <a class=preview>プレビュー
+
+  <div class="article_preview">
   
