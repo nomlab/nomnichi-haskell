@@ -13,4 +13,5 @@ Email
 Article
     title Text
     content Html
+    published_on UTCTime
     deriving

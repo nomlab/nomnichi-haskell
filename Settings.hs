@@ -10,6 +10,7 @@ module Settings
     , staticDir
     , Extra (..)
     , parseExtra
+    , timeZone
     ) where
 
 import Prelude
@@ -24,6 +25,7 @@ import Control.Applicative
 import Settings.Development
 import Data.Default (def)
 import Text.Hamlet
+import Data.Time.LocalTime
 
 -- | Which Persistent backend this site is using.
 type PersistConfig = SqliteConf
@@ -77,3 +79,5 @@ parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
     <*> o .:? "analytics"
+
+timeZone = TimeZone (60*9) False "Tokyo"

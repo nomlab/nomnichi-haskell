@@ -10,6 +10,9 @@ where
 
 import Import
 import Data.Monoid
+import Data.Time
+import System.Locale (defaultTimeLocale)
+import Settings
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
@@ -21,6 +24,7 @@ editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
   <$> areq textField    "Title"   (articleTitle <$> article)
   <*> areq nicHtmlField "Content" (articleContent <$> article)
+  <*> aformM (liftIO getCurrentTime)
 
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
@@ -79,3 +83,9 @@ getEditArticleR articleId = do
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
   defaultLayout $ do
     $(widgetFile "editArticleForm")
+
+
+formatToNomnichiTime :: Article ->  String
+formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublished_on article
+  where format = "%Y/%m/%d (%a)  %H:%M"
+        utcToNomnichiTime = (utcToLocalTime timeZone)

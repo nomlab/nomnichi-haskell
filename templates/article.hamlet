@@ -1,5 +1,6 @@
 <h1 class=title> #{articleTitle article}
-<div class=published_on> YYYY/MM/DD(wday) hh:mm  AUTHOR
+<div class=published_on> #{formatToNomnichiTime article} AUTHOR
+
 <article> #{articleContent article}
 <hr>
 <div class=article_footer>
