@@ -9,3 +9,14 @@ Email
     UniqueEmail email
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
+
+
+Article
+    title   Text
+    content Html 
+    deriving
+
+Loginuser
+    idstr       Text
+    password    Text Maybe
+    UniqueUsr idstr

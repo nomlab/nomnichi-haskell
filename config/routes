@@ -5,3 +5,10 @@
 /robots.txt RobotsR GET
 
 / HomeR GET POST
+
+/blog               BlogR       GET POST
+/blog/#ArticleId    ArticleR    GET
+
+/userlist UserR GET POST
+
+/loginform LoginformR GET POST

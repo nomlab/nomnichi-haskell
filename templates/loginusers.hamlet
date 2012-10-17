@@ -1,0 +1,15 @@
+<h1> Users
+$if null loginusers
+    -- Show a standard message if there is no article
+    <p> There are no users
+$else
+    -- Show the list of users
+    <ul>
+        $forall Entity _ loginuser <- loginusers
+            <li> 
+                <a href=@{HomeR}> #{loginuserIdstr loginuser}
+<hr>
+  <form method=post enctype=#{enctype}>
+    ^{loginuserWidget}
+    <div>
+        <input type=submit value="Post New Loginuser">
