@@ -21,16 +21,20 @@ getLoginformR = do
     deleteSession "loginname"
     defaultLayout $ do 
         $(widgetFile "loginform")
-
+        
 postLoginformR :: Handler RepHtml
 postLoginformR = do
      -- template/loginform のフォーム:UserIdを取得し，データベースと比較
      loginname <- runInputPost $ ireq textField "UserId"
-     user <- runDB $ selectList [LoginuserIdstr ==. loginname] [Desc LoginuserId]
+     passwd <- runInputPost $ iopt textField "Password"
+     user <- runDB $ selectList [(LoginuserIdstr ==. loginname), (LoginuserPassword ==. passwd)] [Desc LoginuserId]
 
      case user of
-           [] -> do    -- 一致しない場合
-              redirectUltDest HomeR
+           [] ->do 
+            setMessage "login ERROR!" 
+            redirect $ LoginformR
+
+           --    redirectUltDest HomeR
            _ -> do       -- 一致した場合
               -- POST された名前を取得し、セッションに設定する
               loginname <- runInputPost $ ireq textField "UserId"
