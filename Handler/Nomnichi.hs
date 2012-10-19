@@ -13,17 +13,25 @@ import Data.Monoid
 import Data.Time
 import System.Locale (defaultTimeLocale)
 import Settings
+import Data.Maybe
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
 entryForm :: Form Article
-entryForm = editForm Nothing
+entryForm = renderDivs $ Article
+  <$> areq textField    "Title"   Nothing
+  <*> areq nicHtmlField "Content" Nothing
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
 
 editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
   <$> areq textField    "Title"   (articleTitle <$> article)
   <*> areq nicHtmlField "Content" (articleContent <$> article)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
 
 getNomnichiR :: Handler RepHtml
@@ -70,6 +78,7 @@ putArticleR articleId = do
         update articleId
           [ ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
+          , ArticleUpdated_on =. articleUpdated_on article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
