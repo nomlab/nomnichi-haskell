@@ -78,7 +78,7 @@ putArticleR articleId = do
         update articleId
           [ ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
-          , ArticleUpdated_on =. articleUpdated_on article
+          , ArticleUpdatedOn =. articleUpdatedOn article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
@@ -95,6 +95,6 @@ getEditArticleR articleId = do
 
 
 formatToNomnichiTime :: Article ->  String
-formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublished_on article
+formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = (utcToLocalTime timeZone)

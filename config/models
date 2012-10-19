@@ -13,7 +13,7 @@ Email
 Article
     title Text
     content Html
-    created_on UTCTime
-    updated_on UTCTime
-    published_on UTCTime
+    createdOn UTCTime
+    updatedOn UTCTime
+    publishedOn UTCTime
     deriving
