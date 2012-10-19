@@ -5,7 +5,7 @@
       <table>
         <tr>
           <td> ID  : 
-          <td> <input type=text name=UserId>
+          <td> <input type=text name=UserId value=#{id}>
         <tr>
           <td> PASS: 
           <td> <input type=text name=Password> <input type=submit value="Login">
