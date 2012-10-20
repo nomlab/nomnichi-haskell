@@ -5,6 +5,4 @@
 <hr>
 <div class=article_footer>
   <a href=@{EditArticleR articleId}> 編集
-  <form class=deleteForm method=delete>
-    <a class=delete> 削除
-    <input type=button class=delete value="Delete This Article">
+  <a href=@{DeleteArticleR articleId}> 削除

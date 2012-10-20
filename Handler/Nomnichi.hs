@@ -3,8 +3,8 @@ module Handler.Nomnichi
   , postNomnichiR
   , getArticleR
   , putArticleR
-  , deleteArticleR
   , getEditArticleR
+  , getDeleteArticleR
   )
 where
 
@@ -18,6 +18,9 @@ import Data.Maybe
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
+
+-- 記事作成，閲覧 -------------------------------------------
+
 entryForm :: Form Article
 entryForm = renderDivs $ Article
   <$> areq textField    "Title"   Nothing
@@ -26,13 +29,6 @@ entryForm = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
 
-editForm :: Maybe Article -> Form Article
-editForm article = renderDivs $ Article
-  <$> areq textField    "Title"   (articleTitle <$> article)
-  <*> areq nicHtmlField "Content" (articleContent <$> article)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
 
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
@@ -60,14 +56,6 @@ getArticleR articleId = do
     setTitle $ toHtml $ articleTitle article
     $(widgetFile "article")
 
-deleteArticleR :: ArticleId -> Handler RepHtml
-deleteArticleR articleId = do
-  runDB $ do
-    _article <- get404 articleId
-    delete articleId
-  setMessage "successfully deleted."
-  redirect NomnichiR
-
 putArticleR :: ArticleId -> Handler RepHtml
 putArticleR articleId = do
   ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
@@ -86,6 +74,9 @@ putArticleR articleId = do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
 
+
+-- 編集 -------------------------------------------
+
 getEditArticleR :: ArticleId -> Handler RepHtml
 getEditArticleR articleId = do
   article <- runDB $ get404 articleId
@@ -93,6 +84,27 @@ getEditArticleR articleId = do
   defaultLayout $ do
     $(widgetFile "editArticleForm")
 
+editForm :: Maybe Article -> Form Article
+editForm article = renderDivs $ Article
+  <$> areq textField    "Title"   (articleTitle <$> article)
+  <*> areq nicHtmlField "Content" (articleContent <$> article)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+
+
+-- 記事削除 -------------------------------------------
+
+getDeleteArticleR :: ArticleId -> Handler RepHtml
+getDeleteArticleR articleId = do
+  runDB $ do
+    _post <- get404 articleId
+    delete articleId
+  setMessage "successfully deleted."
+  redirect $ NomnichiR
+
+
+-- 時刻 -------------------------------------------
 
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
