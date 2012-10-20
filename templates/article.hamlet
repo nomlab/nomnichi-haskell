@@ -4,5 +4,6 @@
 <article> #{articleContent article}
 <hr>
 <div class=article_footer>
+  <a href=@{NomnichiR}> TOPへ
   <a href=@{EditArticleR articleId}> 編集
   <a href=@{DeleteArticleR articleId}> 削除

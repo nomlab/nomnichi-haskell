@@ -2,7 +2,7 @@ module Handler.Nomnichi
   ( getNomnichiR
   , postNomnichiR
   , getArticleR
-  , putArticleR
+  , postArticleR
   , getEditArticleR
   , getDeleteArticleR
   )
@@ -19,7 +19,7 @@ import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
 
--- 記事作成，閲覧 -------------------------------------------
+-- 記事作成，閲覧，更新 -------------------------------------------
 
 entryForm :: Form Article
 entryForm = renderDivs $ Article
@@ -29,7 +29,7 @@ entryForm = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
 
-
+-- ノムニチトップページ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
@@ -37,6 +37,7 @@ getNomnichiR = do
   defaultLayout $ do
     $(widgetFile "articles")
 
+-- 記事作成
 postNomnichiR :: Handler RepHtml
 postNomnichiR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
@@ -49,6 +50,7 @@ postNomnichiR = do
       setTitle "Please correct your entry form."
       $(widgetFile "articleAddError")
 
+-- 記事表示
 getArticleR :: ArticleId -> Handler RepHtml
 getArticleR articleId = do
   article <- runDB $ get404 articleId
@@ -56,8 +58,9 @@ getArticleR articleId = do
     setTitle $ toHtml $ articleTitle article
     $(widgetFile "article")
 
-putArticleR :: ArticleId -> Handler RepHtml
-putArticleR articleId = do
+-- 記事更新
+postArticleR :: ArticleId -> Handler RepHtml
+postArticleR articleId = do
   ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
   case res of
     FormSuccess article -> do
@@ -74,9 +77,9 @@ putArticleR articleId = do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
 
-
 -- 編集 -------------------------------------------
 
+-- 編集画面
 getEditArticleR :: ArticleId -> Handler RepHtml
 getEditArticleR articleId = do
   article <- runDB $ get404 articleId
