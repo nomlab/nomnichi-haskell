@@ -17,3 +17,10 @@ Article
     updatedOn UTCTime
     publishedOn UTCTime
     deriving
+
+Comment
+    commenter Text
+    body Textarea
+    createdAt UTCTime
+    articleId ArticleId
+    deriving

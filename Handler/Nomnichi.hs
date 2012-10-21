@@ -5,6 +5,7 @@ module Handler.Nomnichi
   , postArticleR
   , getEditArticleR
   , getDeleteArticleR
+  , postCommentR
   )
 where
 
@@ -29,7 +30,7 @@ entryForm = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
 
--- ノムニチトップページ
+-- ノムニチトップページ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
@@ -54,6 +55,8 @@ postNomnichiR = do
 getArticleR :: ArticleId -> Handler RepHtml
 getArticleR articleId = do
   article <- runDB $ get404 articleId
+  comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
+  (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   defaultLayout $ do
     setTitle $ toHtml $ articleTitle article
     $(widgetFile "article")
@@ -103,13 +106,45 @@ getDeleteArticleR articleId = do
   runDB $ do
     _post <- get404 articleId
     delete articleId
+    deleteWhere [ CommentArticleId ==. articleId ]
   setMessage "successfully deleted."
   redirect $ NomnichiR
 
 
+-- コメント ---------------------------------------
+
+commentForm :: ArticleId -> Form Comment
+commentForm articleId = renderDivs $ Comment
+  <$> areq textField     "Commenter" Nothing
+  <*> areq textareaField "Body"      Nothing
+  <*> aformM (liftIO getCurrentTime)
+  <*> pure articleId
+
+
+-- コメント送信
+postCommentR :: ArticleId -> Handler RepHtml
+postCommentR articleId = do
+  _post <- runDB $ get404 articleId
+  ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
+  case res of
+    FormSuccess comment -> do
+      commentId <- runDB $ insert comment
+      setMessage $ toHtml $ (commentCommenter comment)
+      redirect $ ArticleR articleId
+    _ -> do
+      setMessage "add correct comment"
+      redirect $ ArticleR articleId
+
 -- 時刻 -------------------------------------------
 
+-- 記事の時刻
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
+  where format = "%Y/%m/%d (%a)  %H:%M"
+        utcToNomnichiTime = (utcToLocalTime timeZone)
+
+-- コメントの時刻
+formatToCommentTime :: Comment ->  String
+formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = (utcToLocalTime timeZone)

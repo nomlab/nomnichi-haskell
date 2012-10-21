@@ -7,3 +7,19 @@
   <a href=@{NomnichiR}> TOPへ
   <a href=@{EditArticleR articleId}> 編集
   <a href=@{DeleteArticleR articleId}> 削除
+  <hr>
+  <form method=post action=@{CommentR articleId} enctype=#{enctype}>
+    ^{commentWidget}
+    <div>
+      <input type=submit value="コメント投稿">
+  <hr>
+  $if null comments
+    <p> There are no comments in this article.
+  $else
+    $forall Entity commentId comment <- comments
+      <div>
+        Commenter: #{commentCommenter comment}
+        <p>
+          #{commentBody comment}
+        <div class=published_on> #{formatToCommentTime comment}
+      <hr>
