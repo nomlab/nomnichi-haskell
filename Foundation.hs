@@ -19,6 +19,8 @@ import Yesod.Static
 import Yesod.Auth
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail
+import Yesod.Auth.OpenId
+import qualified Yesod.Auth.HashDB as Hdb
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Conduit (Manager)
@@ -108,6 +110,9 @@ instance Yesod App where
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 
+    isAuthorized BlogR _  = isUser
+    isAuthorized _  _  = return Authorized
+
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
     -- expiration dates to be set far in the future without worry of
@@ -121,6 +126,12 @@ instance Yesod App where
     -- in development, and warnings and errors in production.
     shouldLog _ _source level =
         development || level == LevelWarn || level == LevelError
+-- login
+isUser = do
+    mu <- maybeAuthId
+    return $ case mu of
+        Nothing -> AuthenticationRequired
+        Just _ ->  Authorized
 
 -- How to run database actions.
 instance YesodPersist App where
@@ -134,6 +145,7 @@ instance YesodPersist App where
 
 instance YesodAuth App where
     type AuthId App = UserId
+    -- type AuthId App = Hdb.UserId
 
     -- Where to send a user after successful login
     loginDest _ = HomeR
@@ -147,10 +159,11 @@ instance YesodAuth App where
             Nothing -> do
                 fmap Just $ insert $ User (credsIdent creds) Nothing
 
-    -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId, authGoogleEmail]
-
+    -- We use OpenID
+    authPlugins _ = [authOpenId OPLocal []]
     authHttpManager = httpManager
+
+
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.

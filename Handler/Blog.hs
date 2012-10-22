@@ -21,22 +21,12 @@ entryForm = renderDivs $ Article
 -- The view showing the list of articles
 getBlogR :: Handler RepHtml
 getBlogR = do
-    -- session checking 
-    sessionid <- lookupSession "loginname"
-    case sessionid of
-         Nothing -> do -- Without session
-            setUltDestCurrent
-            redirect LoginformR
-         Just name -> do -- With session
-            -- Get the list of articles inside the database.
-            articles <- runDB $ selectList [] [Desc ArticleTitle]
-            -- For logout
-            setUltDestCurrent
-            -- We'll need the two "objects": articleWidget and enctype
-            -- to construct the form (see templates/articles.hamlet).
-            (articleWidget, enctype) <- generateFormPost entryForm
-            defaultLayout $ do
-                $(widgetFile "articles")
+  articles <- runDB $ selectList [] [Desc ArticleTitle]
+  -- We'll need the two "objects": articleWidget and enctype
+  -- to construct the form (see templates/articles.hamlet).
+  (articleWidget, enctype) <- generateFormPost entryForm
+  defaultLayout $ do
+             $(widgetFile "articles")
 
 -- we continue Handler/Blog.hs
 postBlogR :: Handler RepHtml

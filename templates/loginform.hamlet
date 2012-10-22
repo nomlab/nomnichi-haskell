@@ -8,4 +8,4 @@
           <td> <input type=text name=UserId value=#{id}>
         <tr>
           <td> PASS: 
-          <td> <input type=text name=Password> <input type=submit value="Login">
+          <td> <input type=password name=Password> <input type=submit value="Login">

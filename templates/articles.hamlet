@@ -15,4 +15,4 @@ $else
     <div>
         <input type=submit value="Post New Article">
 
-             <a href=@{LoginformR}> Logout
+             <a href=@{HomeR}/auth/logout> Logout
