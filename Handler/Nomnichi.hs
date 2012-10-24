@@ -19,9 +19,7 @@ import Data.Maybe
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
-
 -- 記事作成，閲覧，更新 -------------------------------------------
-
 entryForm :: Form Article
 entryForm = renderDivs $ Article
   <$> areq textField    "Title"   Nothing
@@ -29,7 +27,8 @@ entryForm = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-
+  <*> areq boolField    "Approved" (Just False)
+ 
 -- ノムニチトップページ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
@@ -73,6 +72,7 @@ postArticleR articleId = do
           [ ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
+          , ArticleApproved =. articleApproved article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
@@ -97,7 +97,7 @@ editForm article = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-
+  <*> areq boolField    "Approved" (articleApproved <$> article)
 
 -- 記事削除 -------------------------------------------
 
@@ -148,3 +148,4 @@ formatToCommentTime :: Comment ->  String
 formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = (utcToLocalTime timeZone)
+

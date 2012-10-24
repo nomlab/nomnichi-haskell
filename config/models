@@ -16,6 +16,7 @@ Article
     createdOn UTCTime
     updatedOn UTCTime
     publishedOn UTCTime
+    approved Bool
     deriving
 
 Comment
@@ -24,3 +25,4 @@ Comment
     createdAt UTCTime
     articleId ArticleId
     deriving
+
