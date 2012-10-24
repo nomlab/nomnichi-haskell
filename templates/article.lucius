@@ -1,0 +1,31 @@
+div#article_footer {
+    width: auto;
+}
+
+#article_footer ul{
+    margin :auto;
+    height: 30px;
+    list-style: none;
+    float:right;
+}
+#article_footer ul li {
+    float: left;
+    height: 30px;
+}
+
+#article_footer ul li a {
+    display:block;
+    margin: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+#article_footer input {
+    display: inline;
+    vertical-align:middle;
+}
+
+hr {
+   clear: both;
+}

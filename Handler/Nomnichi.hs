@@ -1,11 +1,11 @@
 module Handler.Nomnichi
-  ( getNomnichiR
-  , postNomnichiR
-  , getArticleR
-  , postArticleR
-  , getEditArticleR
-  , getDeleteArticleR
-  , postCommentR
+  ( getNomnichiR       -- ノムニチトップ
+  , postNomnichiR      -- 記事の投稿
+  , getArticleR        -- 記事の表示
+  , postArticleR       -- 記事の編集
+  , getEditArticleR    -- 記事の編集画面の表示
+  , postDeleteArticleR -- 記事の削除
+  , postCommentR       -- コメントの投稿
   )
 where
 
@@ -20,17 +20,12 @@ import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
 
 
--- 記事作成，閲覧，更新 -------------------------------------------
+-- 記事作成，閲覧，更新
 
 entryForm :: Form Article
-entryForm = renderDivs $ Article
-  <$> areq textField    "Title"   Nothing
-  <*> areq nicHtmlField "Content" Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
+entryForm = editForm Nothing
 
--- ノムニチトップページ
+-- ノムニチトッフ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
@@ -54,7 +49,7 @@ postNomnichiR = do
 -- 記事表示
 getArticleR :: ArticleId -> Handler RepHtml
 getArticleR articleId = do
-  article <- runDB $ get404 articleId
+  article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   defaultLayout $ do
@@ -80,8 +75,6 @@ postArticleR articleId = do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
 
--- 編集 -------------------------------------------
-
 -- 編集画面
 getEditArticleR :: ArticleId -> Handler RepHtml
 getEditArticleR articleId = do
@@ -99,10 +92,10 @@ editForm article = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
 
 
--- 記事削除 -------------------------------------------
+-- 記事削除
 
-getDeleteArticleR :: ArticleId -> Handler RepHtml
-getDeleteArticleR articleId = do
+postDeleteArticleR :: ArticleId -> Handler RepHtml
+postDeleteArticleR articleId = do
   runDB $ do
     _post <- get404 articleId
     delete articleId
@@ -111,12 +104,12 @@ getDeleteArticleR articleId = do
   redirect $ NomnichiR
 
 
--- コメント ---------------------------------------
+-- コメント
 
 commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
-  <$> areq textField     "Commenter" Nothing
-  <*> areq textareaField "Body"      Nothing
+  <$> areq textField     "Name"    Nothing
+  <*> areq textareaField "Comment" Nothing
   <*> aformM (liftIO getCurrentTime)
   <*> pure articleId
 
@@ -135,15 +128,13 @@ postCommentR articleId = do
       setMessage "add correct comment"
       redirect $ ArticleR articleId
 
--- 時刻 -------------------------------------------
-
--- 記事の時刻
+-- 記事表示時の公開時刻の整形
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = (utcToLocalTime timeZone)
 
--- コメントの時刻
+-- コメント投稿時刻の整形
 formatToCommentTime :: Comment ->  String
 formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"

@@ -8,6 +8,6 @@
 
 /nomnichi                         NomnichiR        GET POST
 /nomnichi/#ArticleId              ArticleR         GET POST
-/nomnichi/edit/#ArticleId         EditArticleR     GET
-/nomnichi/delete/#ArticleId       DeleteArticleR   GET
-/nomnichi/#ArticleId/comment/new  CommentR         POST
+/nomnichi/#ArticleId/edit         EditArticleR     GET
+/nomnichi/#ArticleId/delete       DeleteArticleR   POST
+/nomnichi/#ArticleId/comment      CommentR         POST

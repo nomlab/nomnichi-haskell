@@ -54,7 +54,8 @@ aside {
     height: 500px;
     background: #F2F2F2;
     line-height: 1.5em;
-    color: #333;}
+    color: #333;
+}
 
 #main {
     float:left;

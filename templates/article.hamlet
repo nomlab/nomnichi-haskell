@@ -3,23 +3,30 @@
 
 <article> #{articleContent article}
 <hr>
-<div class=article_footer>
-  <a href=@{NomnichiR}> TOPへ
-  <a href=@{EditArticleR articleId}> 編集
-  <a href=@{DeleteArticleR articleId}> 削除
+<div id=article_footer>
+  <ul>
+    <li>
+      <a href=@{NomnichiR}> TOPへ
+    <li>
+      <a href=@{EditArticleR articleId}> 編集
+    <li>
+      <form method="post" action=@{DeleteArticleR articleId}>
+        <input type=submit value=削除>
+
   <hr>
   <form method=post action=@{CommentR articleId} enctype=#{enctype}>
     ^{commentWidget}
     <div>
       <input type=submit value="コメント投稿">
-  <hr>
+
+<hr>
+<div id=comments>
   $if null comments
     <p> There are no comments in this article.
   $else
     $forall Entity commentId comment <- comments
-      <div>
-        Commenter: #{commentCommenter comment}
-        <p>
-          #{commentBody comment}
+      <div id=comment>
+        #{commentCommenter comment} :<br> 
+        #{commentBody comment}
         <div class=published_on> #{formatToCommentTime comment}
-      <hr>
+
