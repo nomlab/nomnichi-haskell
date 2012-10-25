@@ -26,3 +26,7 @@ Comment
     articleId ArticleId
     deriving
 
+Loginuser
+    idstr       Text
+    password    Text Maybe
+    UniqueUsr idstr

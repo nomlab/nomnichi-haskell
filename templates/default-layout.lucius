@@ -18,7 +18,7 @@ div.article_list, div.article_form {
 
 div#message {
     height: 20px;
-    margin-bottom:-20px;}
+}
 
 h1.title {
     border-width: 0px 0px 1px 10px;
@@ -60,7 +60,7 @@ aside {
 #main {
     float:left;
     width: 80%;
-    margin-top: 1px;
+    margin-top: 18px;
     padding-bottom: 70px;}
 
 footer {

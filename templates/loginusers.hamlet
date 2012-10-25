@@ -1,0 +1,13 @@
+<h1> Users
+$if null loginusers
+  <p> There are no users
+$else
+  <ul>
+    $forall Entity _ loginuser <- loginusers
+      <li> 
+        <a href=@{HomeR}> #{loginuserIdstr loginuser}
+<hr>
+  <form method=post enctype=#{enctype}>
+    ^{loginuserWidget}
+    <div>
+      <input type=submit value="Post New Loginuser">

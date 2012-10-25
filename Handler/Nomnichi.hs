@@ -15,6 +15,7 @@ import Data.Time
 import System.Locale (defaultTimeLocale)
 import Settings
 import Data.Maybe
+import Handler.Loginform
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
@@ -22,8 +23,6 @@ instance YesodNic App
 
 -- 記事作成，閲覧，更新
 
-entryForm :: Form Article
-entryForm = editForm Nothing
 
 -- ノムニチトップ
 getNomnichiR :: Handler RepHtml
@@ -84,14 +83,6 @@ getEditArticleR articleId = do
   defaultLayout $ do
     $(widgetFile "editArticleForm")
 
-editForm :: Maybe Article -> Form Article
-editForm article = renderDivs $ Article
-  <$> areq textField    "Title"   (articleTitle <$> article)
-  <*> areq nicHtmlField "Content" (articleContent <$> article)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> areq boolField    "Approved" (articleApproved <$> article)
 
 -- 記事削除
 
@@ -107,12 +98,6 @@ postDeleteArticleR articleId = do
 
 -- コメント
 
-commentForm :: ArticleId -> Form Comment
-commentForm articleId = renderDivs $ Comment
-  <$> areq textField     "Name"    Nothing
-  <*> areq textareaField "Comment" Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> pure articleId
 
 
 -- コメント送信
@@ -140,3 +125,30 @@ formatToCommentTime :: Comment ->  String
 formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = (utcToLocalTime timeZone)
+
+-- フォーム
+entryForm :: Form Article
+entryForm = renderDivs $ Article
+  <$> areq textField    "Title"    Nothing
+  <*> areq nicHtmlField "Content"  Nothing
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> areq boolField    "Approved" (Just False)
+
+
+editForm :: Maybe Article -> Form Article
+editForm article = renderDivs $ Article
+  <$> areq textField    "Title"    (articleTitle <$> article)
+  <*> areq nicHtmlField "Content"  (articleContent <$> article)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> aformM (liftIO getCurrentTime)
+  <*> areq boolField    "Approved" (articleApproved <$> article)
+
+commentForm :: ArticleId -> Form Comment
+commentForm articleId = renderDivs $ Comment
+  <$> areq textField     "Name"    Nothing
+  <*> areq textareaField "Comment" Nothing
+  <*> aformM (liftIO getCurrentTime)
+  <*> pure articleId

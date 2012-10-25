@@ -30,6 +30,8 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.Nomnichi
+                     Handler.Usermanagement
+                     Handler.Loginform
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

@@ -16,3 +16,4 @@
       <a class=preview>プレビュー
 
   <div class="article_preview">
+<a href=@{HomeR}/auth/logout> Logout

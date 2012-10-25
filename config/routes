@@ -11,3 +11,7 @@
 /nomnichi/#ArticleId/edit         EditArticleR     GET
 /nomnichi/#ArticleId/delete       DeleteArticleR   POST
 /nomnichi/#ArticleId/comment      CommentR         POST
+
+/userlist UserR GET POST
+
+/loginform LoginformR GET POST
