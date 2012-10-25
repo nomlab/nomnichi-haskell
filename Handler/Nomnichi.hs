@@ -25,7 +25,7 @@ instance YesodNic App
 entryForm :: Form Article
 entryForm = editForm Nothing
 
--- ノムニチトッフ
+-- ノムニチトップ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
@@ -68,6 +68,7 @@ postArticleR articleId = do
           [ ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
+          , ArticleApproved =. articleApproved article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
@@ -90,7 +91,7 @@ editForm article = renderDivs $ Article
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-
+  <*> areq boolField    "Approved" (articleApproved <$> article)
 
 -- 記事削除
 
@@ -122,10 +123,10 @@ postCommentR articleId = do
   case res of
     FormSuccess comment -> do
       commentId <- runDB $ insert comment
-      setMessage $ toHtml $ (commentCommenter comment)
+      setMessage "your comment was successfully posted."
       redirect $ ArticleR articleId
     _ -> do
-      setMessage "add correct comment"
+      setMessage "please fill up your comment form."
       redirect $ ArticleR articleId
 
 -- 記事表示時の公開時刻の整形

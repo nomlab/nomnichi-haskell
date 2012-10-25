@@ -29,4 +29,4 @@
         #{commentCommenter comment} :<br> 
         #{commentBody comment}
         <div class=published_on> #{formatToCommentTime comment}
-
+      <hr>
