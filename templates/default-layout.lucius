@@ -55,6 +55,36 @@ aside {
     background: #F2F2F2;
     line-height: 1.5em;
     color: #333;
+    font-size:14px;
+}
+
+aside h3 {
+    font-size: 20px;
+}
+
+aside ul,
+aside ul li ul {
+    list-style-type:none;
+    padding: 0;
+    margin:0;
+}
+
+aside ul li,
+aside ul li ul li{
+    margin: 3px 0;
+}
+
+aside ul li a,
+aside ul li ul li a {
+    display: block;
+    text-decoration: none;
+}
+
+ul.depth_0 {
+}
+
+ul.depth_1 {
+    margin-left: 10px;
 }
 
 #main {
