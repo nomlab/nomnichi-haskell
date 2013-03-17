@@ -129,26 +129,34 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
 -- フォーム
 entryForm :: Form Article
 entryForm = renderDivs $ Article
-  <$> areq textField    "Title"    Nothing
-  <*> areq nicHtmlField "Content"  Nothing
+  <$> areq textField    "MemberName"   Nothing
+  <*> areq textField    "Title"        Nothing
+  <*> areq textField    "PermaLink"    Nothing
+  <*> areq nicHtmlField "Content"      Nothing
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> areq boolField    "Approved" (Just False)
-
+  <*> areq intField     "Count"        Nothing
+  <*> areq boolField    "PromoteHeadline" (Just False)
 
 editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
-  <$> areq textField    "Title"    (articleTitle <$> article)
+  <$> areq textField    "MemberName" (articleMemberName <$> article)
+  <*> areq textField    "Title"    (articleTitle <$> article)
+  <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> areq boolField    "Approved" (articleApproved <$> article)
+  <*> areq intField     "Count"    (articleCount <$> article)
+  <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
 
 commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
   <$> areq textField     "Name"    Nothing
   <*> areq textareaField "Comment" Nothing
+  <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
   <*> pure articleId

@@ -11,18 +11,23 @@ Email
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
 
 Article
+    memberName Text
     title Text
+    permaLink Text
     content Html
     createdOn UTCTime
     updatedOn UTCTime
     publishedOn UTCTime
     approved Bool
+    count Int
+    promoteHeadline Bool
     deriving
 
 Comment
     commenter Text
     body Textarea
     createdAt UTCTime
+    updatedAt UTCTime
     articleId ArticleId
     deriving
 
