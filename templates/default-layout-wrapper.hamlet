@@ -24,7 +24,11 @@ $newline never
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
     <body>
         <div class="container">
-            <header> 乃村研究室
+            <header> 
+              <dev> <img src="/static/img/okayama-university-logo.gif" width="80px" height="80px">
+              <div class="blogtitle">
+                <h2> 岡山大学大学院 自然科学研究科 産業創成工学専攻
+                <h1> 計算機科学講座(乃村研究室)
             <aside>
               <h2> Menu
               <ul class="depth_0">

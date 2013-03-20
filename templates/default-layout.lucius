@@ -1,26 +1,42 @@
 html {height: 100%; }
 
 body {
+    margin: 10px;
     height: 100%;
     font-family: Helvatica, sans-serif;
-    font-size: 18px; }
+    font-size: 14px; }
 
 div.article_list, div.article_form {
     padding: 1em;
-    border: #CCC solid 2px;
+    border: #F5DEB3 solid 2px;
     border-radius: 5px;
-    margin: 1em;
-    width: 37em;
-    margin: 1em auto;
-    background: #F2F2F2;
+    margin: 0px 1em 1em 0px;
+    width: auto;
+    background: #FFF;
     line-height: 1.5em;
-    color: #333;}
+    color: #333; }
+
+div.article_form {
+    background-color: #FFF;
+    border: #F5DEB3 solid 2px;
+}
 
 div#message {
     height: 20px;
 }
 
+h1.article_list {
+    font-size: 25px;
+    background: -moz-linear-gradient(left, #FF8C00, #F5DEB3);
+    background: -webkit-gradient(linear, left top, right top, from(#FF8C00), to(#F5DEB3));
+    color: #FFF;
+    padding: 3px 0 0 8px;
+    margin: -16px -16px 0 -16px;
+}
+
 h1.title {
+    color: maroon;
+    border-color: wheat;
     border-width: 0px 0px 1px 10px;
     padding-left: 10px;
     margin-bottom: 5px;
@@ -32,10 +48,27 @@ div.published_on {
     margin-bottom: 15px;}
 
 header {
-    text-align: center;
     border-top: 20px;
-    height: 50px;
+    margin: 8px 0 0 8px;
+    height: 60px;
     width: 100%;}
+
+header dev {
+    float: left;
+    width: 100px;
+}
+
+header.div.blogtitle {
+    float: left;
+}
+
+header h1 {
+    font-size: 25px;
+}
+
+header h2 {
+    font-size: 20px;
+}
 
 div.container {
     height: 100%;
@@ -46,20 +79,38 @@ div.container {
     position: relative;}
 
 aside {
+    clear: both;
     float: left;
-    border: #CCC solid 2px;
+    border: #B2B48C solid 0px;
     border-radius: 5px;
     margin: 18px 20px 20px 10px;
+    padding-left: 5px;
     width: 140px;
     height: 500px;
-    background: #F2F2F2;
+    background: #FFF;
     line-height: 1.5em;
     color: #333;
     font-size:14px;
 }
 
+aside a {color: #000;}
+
+aside a:hover { color: #000; 
+                background-color: #FFFACD;
+                text-decoration: none;}
+aside a:article { color: #000; }
+aside a:visited { color: #000; }
+
 aside h3 {
     font-size: 20px;
+}
+
+aside h2 {
+    background-color: #FF8C00;
+    color: #FFFFFF;
+    font-size: 25px;
+    padding: 3px 0 0 8px;
+    margin: 0 0 10px -8px;
 }
 
 aside ul,
@@ -98,7 +149,7 @@ footer {
     margin-left: 170px;
     position: absolute;
     padding-top: 5px;
-    border-top: 1px solid black;
+    border-top: 1px solid #F5DEB3;
     height: 50px;
     bottom: 0;}
 
@@ -108,14 +159,22 @@ label {
     width: 8em;
     display: inline-block;}
 
-input, textarea {background: #FAFAFA;}
+input, textarea {background: #FFF;}
 
 textarea {width: 27em; height: 9em;}
 
-ul {line-style: square;}
+ul li {
+    margin: 3px 0;
+}
 
-a {color: #A56;}
+ul {
+    line-style: square;
+    list-style-type: none; 
+    margin-left: -25px;
+}
 
-a:hover { color: #C58; }
-a:article { color: #c58; }
-a:visited { color: #943; }
+a {color: #000;}
+
+a:hover { color: #000; }
+a:article { color: #000; }
+a:visited { color: #000; }

@@ -1,6 +1,28 @@
-h1 {
-    text-align: center
+div.home {
+    padding: 1em;
+    border: #F5DEB3 solid 2px;
+    border-radius: 5px;
+    margin: 0px 1em 1em 0px;
+    width: auto;
+    background: #FFF;
+    line-height: 1.5em;
+    color: #333; }
+
+h1.home {
+    background: -moz-linear-gradient(left, #FF8C00, #F5DEB3);
+    background: -webkit-gradient(linear, left top, right top, from(#FF8C00), to(#F5DEB3));
+    color: #FFF;
+    font-size: 25px;
+    padding: 5px 0 0 8px;
+    margin: -16px -16px 0 -16px;
 }
+
+ul.home {
+    list-style-type: disc;
+}
+
+dd.home { padding-top: 5px; }
+
 h2##{aDomId} {
     color: #990
 }

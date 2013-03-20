@@ -28,4 +28,5 @@ div#article_footer {
 
 hr {
    clear: both;
+   border-color: #F5DEB3;
 }
