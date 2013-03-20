@@ -30,7 +30,7 @@ def into_article_table(yaml_data)
       last_id += 1
       number_of_article += 1
       article_sql = <<SQL
-insert into article values ( #{last_id.to_s}, "#{d["member_name"]}", "#{d["title"]}", "#{d["perma_link"]}", "#{d["content"]}", "#{d["created_on"]}", "#{d["updated_on"]}", "#{d["published_on"]}", #{d["approved"].to_i}, #{d["count"].to_i}, #{d["promote_headline"].to_i});
+insert into article values ( #{last_id.to_s}, "#{d["member_name"]}", "#{replace_escape_character(d["title"])}", "#{d["perma_link"]}", "#{d["content"]}", "#{d["created_on"]}", "#{d["updated_on"]}", "#{d["published_on"]}", #{d["approved"].to_i}, #{d["count"].to_i}, #{d["promote_headline"].to_i});
 SQL
       @nomnichi_db.execute(article_sql)
       print '.'
@@ -47,6 +47,9 @@ SQL
     number_of_article.to_s + " articles)\n"
 end
 
+def replace_escape_character(title)
+  return title.gsub('\[','[').gsub('\]',']')
+end
 
 def serach_biggest_id(table_name)
   max = 0
