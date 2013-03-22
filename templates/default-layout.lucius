@@ -2,7 +2,8 @@ html {height: 100%; }
 
 body {
     margin: 10px;
-    height: 100%;
+    height: auto;
+    width: auto;
     font-family: Helvatica, sans-serif;
     font-size: 14px; }
 
@@ -10,7 +11,7 @@ div.article_list, div.article_form {
     padding: 1em;
     border: #F5DEB3 solid 2px;
     border-radius: 5px;
-    margin: 0px 1em 1em 0px;
+    margin: 0em 1em 1em 0em;
     width: auto;
     background: #FFF;
     line-height: 1.5em;
@@ -51,7 +52,7 @@ header {
     border-top: 20px;
     margin: 8px 0 0 8px;
     height: 60px;
-    width: 100%;}
+}
 
 header dev {
     float: left;
