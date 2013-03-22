@@ -27,7 +27,7 @@ instance YesodNic App
 -- ノムニチトップ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
-  articles <- runDB $ selectList [] [Desc ArticleId]
+  articles <- runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "articles")
