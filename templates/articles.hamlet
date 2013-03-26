@@ -5,8 +5,11 @@
   $else
     <ul>
       $forall Entity articleId article <- articles
-        <li>
+        <li class="article_list_title">
           <a href=@{ArticleR articleId}> #{articleTitle article}
+        <li class="article_list">
+          #{formatToNomnichiTime article} #{articleMemberName article}
+        <hr>
 
 <div class="article_form">
   <form method=post enctype=#{enctype}>
