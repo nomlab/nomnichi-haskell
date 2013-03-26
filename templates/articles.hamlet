@@ -11,12 +11,13 @@
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
         $else
           <a href=@{HomeR}/nomnichi?page=2>進む</a>
-        <hr>
+          <hr>
         $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
-          <li>
-            <a href=@{ArticleR articleId}> (#{showGregorian $ articlePublishedOn article}) #{articleTitle article}
-
-        <hr>
+          <li class="article_list_title">
+            <a href=@{ArticleR articleId}> #{articleTitle article}
+          <li class="article_list">
+            #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
+          <hr>
         $if convTextToInt p > 1
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
@@ -24,9 +25,11 @@
           <a href=@{HomeR}/nomnichi?page=2>進む</a>
       $nothing
         $forall Entity articleId article <- I.take 20 articles
-          <li>
-            <a href=@{ArticleR articleId}> (#{showGregorian $ articlePublishedOn article}) #{articleTitle article}
-        <hr>
+          <li class="article_list_title">
+            <a href=@{ArticleR articleId}> #{articleTitle article}
+          <li class="article_list">
+            #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
+          <hr>
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
 <!--
