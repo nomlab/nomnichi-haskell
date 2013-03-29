@@ -1,11 +1,11 @@
 module Handler.Nomnichi
   ( getNomnichiR       -- ノムニチトップ
-  , postNomnichiR      -- 記事の投稿
+--  , postNomnichiR      -- 記事の投稿
   , getArticleR        -- 記事の表示
-  , postArticleR       -- 記事の編集
-  , getEditArticleR    -- 記事の編集画面の表示
-  , postDeleteArticleR -- 記事の削除
-  , postCommentR       -- コメントの投稿
+--  , postArticleR       -- 記事の編集
+--  , getEditArticleR    -- 記事の編集画面の表示
+--  , postDeleteArticleR -- 記事の削除
+--  , postCommentR       -- コメントの投稿
   )
 where
 
@@ -33,6 +33,7 @@ getNomnichiR = do
     $(widgetFile "articles")
 
 -- 記事作成
+{-
 postNomnichiR :: Handler RepHtml
 postNomnichiR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
@@ -44,6 +45,7 @@ postNomnichiR = do
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "articleAddError")
+-}
 
 -- 記事表示
 getArticleR :: ArticleId -> Handler RepHtml
@@ -56,6 +58,7 @@ getArticleR articleId = do
     $(widgetFile "article")
 
 -- 記事更新
+{-
 postArticleR :: ArticleId -> Handler RepHtml
 postArticleR articleId = do
   ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
@@ -74,18 +77,20 @@ postArticleR articleId = do
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
+-}
 
 -- 編集画面
+{-
 getEditArticleR :: ArticleId -> Handler RepHtml
 getEditArticleR articleId = do
   article <- runDB $ get404 articleId
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
   defaultLayout $ do
     $(widgetFile "editArticleForm")
-
+-}
 
 -- 記事削除
-
+{-
 postDeleteArticleR :: ArticleId -> Handler RepHtml
 postDeleteArticleR articleId = do
   runDB $ do
@@ -94,13 +99,14 @@ postDeleteArticleR articleId = do
     deleteWhere [ CommentArticleId ==. articleId ]
   setMessage "successfully deleted."
   redirect $ NomnichiR
-
+-}
 
 -- コメント
 
 
 
 -- コメント送信
+{-
 postCommentR :: ArticleId -> Handler RepHtml
 postCommentR articleId = do
   _post <- runDB $ get404 articleId
@@ -113,6 +119,7 @@ postCommentR articleId = do
     _ -> do
       setMessage "please fill up your comment form."
       redirect $ ArticleR articleId
+-}
 
 -- 記事表示時の公開時刻の整形
 formatToNomnichiTime :: Article ->  String

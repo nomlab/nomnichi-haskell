@@ -7,7 +7,7 @@
       $forall Entity articleId article <- articles
         <li>
           <a href=@{ArticleR articleId}> #{articleTitle article}
-
+<!--
 <div class="article_form">
   <form method=post enctype=#{enctype}>
     ^{articleWidget}
@@ -16,4 +16,5 @@
       <a class=preview>プレビュー
 
   <div class="article_preview">
+-->
 <a href=@{HomeR}/auth/logout> Logout
