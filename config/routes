@@ -8,7 +8,3 @@
 
 /nomnichi                         NomnichiR        GET
 /nomnichi/#ArticleId              ArticleR         GET
-
-/userlist UserR GET POST
-
-/loginform LoginformR GET POST

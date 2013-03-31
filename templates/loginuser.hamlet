@@ -1,2 +1,0 @@
-<h1> #{loginuserIdstr loginuser}
-<h2> #{loginuserPassword loginuser}

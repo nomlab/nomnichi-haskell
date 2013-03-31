@@ -15,7 +15,6 @@ import Data.Time
 import System.Locale (defaultTimeLocale)
 import Settings
 import Data.Maybe
-import Handler.Loginform
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App

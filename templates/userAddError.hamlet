@@ -1,4 +1,0 @@
-<form method=post >
-  ^{loginuserWidget}
-  <div>
-      <input type=submit value="Post New User">
