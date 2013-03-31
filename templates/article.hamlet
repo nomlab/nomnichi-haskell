@@ -7,7 +7,7 @@
   <ul>
     <li>
       <a href=@{NomnichiR}> TOPへ
-    <li>
+<!--    <li>
       <a href=@{EditArticleR articleId}> 編集
     <li>
       <form method="post" action=@{DeleteArticleR articleId}>
@@ -18,7 +18,7 @@
     ^{commentWidget}
     <div>
       <input type=submit value="コメント投稿">
-
+-->
 <hr>
 <div id=comments>
   $if null comments

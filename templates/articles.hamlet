@@ -11,6 +11,7 @@
           #{formatToNomnichiTime article} #{articleMemberName article}
         <hr>
 
+<!--
 <div class="article_form">
   <form method=post enctype=#{enctype}>
     ^{articleWidget}
@@ -19,4 +20,5 @@
       <a class=preview>プレビュー
 
   <div class="article_preview">
+-->
 <a href=@{HomeR}/auth/logout> Logout
