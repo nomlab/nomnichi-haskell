@@ -53,9 +53,17 @@ getArticleR articleId = do
   article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
-  defaultLayout $ do
-    setTitle $ toHtml $ articleTitle article
-    $(widgetFile "article")
+-- 非公開記事の場合は，ページを表示しない
+  if articleApproved article
+    then
+      defaultLayout $ do
+        setTitle $ toHtml $ articleTitle article
+        $(widgetFile "article")
+    else
+      defaultLayout $ do
+        setTitle $ "Forbidden"
+        $(widgetFile "articleReadForbidden")
+
 
 -- 記事更新
 {-
