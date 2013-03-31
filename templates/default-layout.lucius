@@ -152,13 +152,12 @@ ul.depth_1 {
 
 #main {
     float:left;
-    width: 80%;
+    width: 100%;
     margin-top: 18px;
     padding-bottom: 70px;}
 
 footer {
-    width: 80%;
-    margin-left: 170px;
+    width: 100%;
     position: absolute;
     padding-top: 5px;
     border-top: 1px solid #F5DEB3;
