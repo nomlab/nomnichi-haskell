@@ -26,6 +26,17 @@ div#message {
     height: 20px;
 }
 
+li.article_list_title {
+    color: #800000;
+    border-color: wheat;
+    border-width: 0px 0px 1px 10px;
+    padding-left: 10px;
+    margin-bottom: 20px 0px 5px 0px;
+    border-style: solid; }
+
+li.article_list {
+    text-align: right; }
+
 h1.article_list {
     font-size: 25px;
     background: -moz-linear-gradient(left, #FF8C00, #F5DEB3);
