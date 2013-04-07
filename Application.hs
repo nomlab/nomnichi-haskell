@@ -21,7 +21,6 @@ import Data.Text
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
-import Handler.Home
 import Handler.Nomnichi
 
 -- This line actually creates our YesodSite instance. It is the second half
