@@ -39,7 +39,7 @@ def into_article_table(yaml_data)
         last_id += 1
         number_of_article += 1
         create_article(d, last_id, number_of_article)
-      end 
+      end
     end
   end
   print "\nProbably registration has been succeeded. (" +
@@ -51,6 +51,7 @@ end
 private
 
 def create_article(data, last_id, number_of_article)
+  article_sql = ""
   last_id += 1
   number_of_article += 1
   article_sql = <<SQL
@@ -68,32 +69,30 @@ SQL
 end
 
 def update_article(data)
-  article_sql = <<SQL
+  article_search_sql = ""
+  article_sql = ""
+
+  article_search_sql = <<SQL
+select * from article where perma_link = "#{data["perma_link"]}";
+SQL
+
+  @nomnichi_db.execute(article_search_sql).each do |row|
+    article_sql = <<SQL
 update article set member_name = "#{data["member_name"]}"
-                   ,title = "#{data["title"]}"
-                   ,perma_link = "#{data["perma_link"]}"
-                   ,content = "#{data["content"]}"
-                   ,created_on = "#{data["created_on"]}"
-                   ,updated_on = "#{data["updated_on"]}"
-                   ,published_on = "#{data["published_on"]}"
-                   ,approved = "#{data["approved"].to_i}"
-                   ,count = "#{data["count"].to_i}"
-                   ,promote_headline = "#{data["promote_headline"].to_i}"
-                   where id = #{data["article_id"].to_i}
+,title = "#{data["title"]}"
+,perma_link = "#{data["perma_link"]}"
+,content = "#{data["content"]}"
+,created_on = "#{data["created_on"]}"
+,updated_on = "#{data["updated_on"]}"
+,published_on = "#{data["published_on"]}"
+,approved = "#{data["approved"].to_i}"
+,count = "#{data["count"].to_i}"
+,promote_headline = "#{data["promote_headline"].to_i}"
+where id = #{row[0].to_i}
 SQL
-  @nomnichi_db.execute(article_sql)
-  print '.'
-  data["comment"].each do |c|
-    comment_sql = <<SQL
-update comment set commenter ="#{c["commenter"]}"
-                   ,body ="#{c["body"]}"
-                   ,created_at ="#{c["created_at"]}"
-                   ,updated_at ="#{c["updated_at"]}"
-                   ,article_id ="#{c["article_id"].to_i}"
-                   where id = #{c["comment_id"].to_i}
-SQL
-    @nomnichi_db.execute(comment_sql)
-  end if data["comment"]
+    @nomnichi_db.execute(article_sql)
+    print '.'
+  end
 end
 
 def replace_escape_character(title)
@@ -142,24 +141,24 @@ Yesodの型とSqliteの型は以下のような関係にある．
 VARCHAR
 
 << article Table >>
-                     : "id" INTEGER PRIMARY KEY
-memberName Text      : "member_name" VARCHAR NOT NULL
-title Text           : "title" VARCHAR NOT NULL
-permaLink Text       : "perma_link" VARCHAR NOT NULL
-content Html         : "content" VARCHAR NOT NULL
-createdOn UTCTime    : "created_on" TIMESTAMP NOT NULL
-updatedOn UTCTime    : "updated_on" TIMESTAMP NOT NULL
-publishedOn UTCTime  : "published_on" TIMESTAMP NOT NULL
-approved Bool        : "approved" BOOLEAN NOT NULL
-count Int            : "count" INTEGER NOT NULL
+: "id" INTEGER PRIMARY KEY
+memberName Text : "member_name" VARCHAR NOT NULL
+title Text : "title" VARCHAR NOT NULL
+permaLink Text : "perma_link" VARCHAR NOT NULL
+content Html : "content" VARCHAR NOT NULL
+createdOn UTCTime : "created_on" TIMESTAMP NOT NULL
+updatedOn UTCTime : "updated_on" TIMESTAMP NOT NULL
+publishedOn UTCTime : "published_on" TIMESTAMP NOT NULL
+approved Bool : "approved" BOOLEAN NOT NULL
+count Int : "count" INTEGER NOT NULL
 promoteHeadline Bool : "promote_headline" BOOLEAN NOT NULL
 
 << comment Table >>
-                    : "id" INTEGER PRIMARY KEY
-commenter Text      : "commenter" VARCHAR NOT NULL
-body Textarea       : "body" VARCHAR NOT NULL
-createdAt UTCTime   : "created_at" TIMESTAMP NOT NULL
-updatedAt UTCTime   : "updated_at" TIMESTAMP NOT NULL
+: "id" INTEGER PRIMARY KEY
+commenter Text : "commenter" VARCHAR NOT NULL
+body Textarea : "body" VARCHAR NOT NULL
+createdAt UTCTime : "created_at" TIMESTAMP NOT NULL
+updatedAt UTCTime : "updated_at" TIMESTAMP NOT NULL
 articleId ArticleId : "article_id" INTEGER NOT NULL REFERENCES "article"
 
 
