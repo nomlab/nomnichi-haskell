@@ -29,28 +29,71 @@ def into_article_table(yaml_data)
   last_id = serach_biggest_id("article")
   perma_link_list = get_perma_link_list("article")
   number_of_article = 0
+  number_of_updated_article = 0
   @nomnichi_db.transaction do
     yaml_data.each do |d|
-      unless existing_perma_link?(d["perma_link"], perma_link_list)
+      if existing_perma_link?(d["perma_link"], perma_link_list)
+        number_of_updated_article += 1
+        update_article(d)
+      else
         last_id += 1
         number_of_article += 1
-        article_sql = <<SQL
-insert into article values ( #{last_id.to_s}, "#{d["member_name"]}", "#{replace_escape_character(d["title"])}", "#{d["perma_link"]}", "#{d["content"]}", "#{d["created_on"]}", "#{d["updated_on"]}", "#{d["published_on"]}", #{d["approved"].to_i}, #{d["count"].to_i}, #{d["promote_headline"].to_i});
-SQL
-        @nomnichi_db.execute(article_sql)
-        print '.'
-        d["comment"].each do |c|
-          comment_sql = <<SQL
-insert into comment(commenter, body, created_at, updated_at, article_id) values ( "#{c["commenter"]}", "#{c["body"]}", "#{c["created_at"]}", "#{c["updated_at"]}", #{last_id});
-SQL
-          @nomnichi_db.execute(comment_sql)
-          # insert into comment(commenter, body, created_at, update_at, article_id) values ( "murata", "コメント投稿できましたか？", "2013-03-17 20:50:02 +0900", "2013-03-17 20:50:02 +0900", 5);
-        end if d["comment"]
-      end
+        create_article(d, last_id, number_of_article)
+      end 
     end
   end
   print "\nProbably registration has been succeeded. (" +
-    number_of_article.to_s + " articles)\n"
+    number_of_article.to_s + " articles)"
+  print "\nProbably updating has been succeeded. (" +
+    number_of_updated_article.to_s + " articles)\n"
+end
+
+private
+
+def create_article(data, last_id, number_of_article)
+  last_id += 1
+  number_of_article += 1
+  article_sql = <<SQL
+insert into article values ( #{last_id.to_s}, "#{data["member_name"]}", "#{replace_escape_character(data["title"])}", "#{data["perma_link"]}", "#{data["content"]}", "#{data["created_on"]}", "#{data["updated_on"]}", "#{data["published_on"]}", #{data["approved"].to_i}, #{data["count"].to_i}, #{data["promote_headline"].to_i});
+SQL
+  @nomnichi_db.execute(article_sql)
+  print '.'
+  data["comment"].each do |c|
+    comment_sql = <<SQL
+insert into comment(commenter, body, created_at, updated_at, article_id) values ( "#{c["commenter"]}", "#{c["body"]}", "#{c["created_at"]}", "#{c["updated_at"]}", #{last_id});
+SQL
+    @nomnichi_db.execute(comment_sql)
+    # insert into comment(commenter, body, created_at, update_at, article_id) values ( "murata", "コメント投稿できましたか？", "2013-03-17 20:50:02 +0900", "2013-03-17 20:50:02 +0900", 5);
+  end if data["comment"]
+end
+
+def update_article(data)
+  article_sql = <<SQL
+update article set member_name = "#{data["member_name"]}"
+                   ,title = "#{data["title"]}"
+                   ,perma_link = "#{data["perma_link"]}"
+                   ,content = "#{data["content"]}"
+                   ,created_on = "#{data["created_on"]}"
+                   ,updated_on = "#{data["updated_on"]}"
+                   ,published_on = "#{data["published_on"]}"
+                   ,approved = "#{data["approved"].to_i}"
+                   ,count = "#{data["count"].to_i}"
+                   ,promote_headline = "#{data["promote_headline"].to_i}"
+                   where id = #{data["article_id"].to_i}
+SQL
+  @nomnichi_db.execute(article_sql)
+  print '.'
+  data["comment"].each do |c|
+    comment_sql = <<SQL
+update comment set commenter ="#{c["commenter"]}"
+                   ,body ="#{c["body"]}"
+                   ,created_at ="#{c["created_at"]}"
+                   ,updated_at ="#{c["updated_at"]}"
+                   ,article_id ="#{c["article_id"].to_i}"
+                   where id = #{c["comment_id"].to_i}
+SQL
+    @nomnichi_db.execute(comment_sql)
+  end if data["comment"]
 end
 
 def replace_escape_character(title)
