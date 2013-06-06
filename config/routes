@@ -1,8 +1,9 @@
-/static StaticR Static getStatic
+-- /static
 /auth   AuthR   Auth   getAuth
 
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/nomnichi                         NomnichiR        GET
-/nomnichi/#ArticleId              ArticleR         GET
+/lab/nom/nomnichi                NomnichiR        GET
+/lab/nom/nomnichi/!static  StaticR Static getStatic
+/lab/nom/nomnichi/#ArticleId     ArticleR         GET
