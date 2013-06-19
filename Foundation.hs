@@ -36,6 +36,7 @@ import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
 import Data.Text
 import Yesod.Form.Nic(YesodNic, nicHtmlField)
+import Yesod.Form.Jquery
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
@@ -98,6 +99,7 @@ instance Yesod App where
         pc <- widgetToPageContent $ do
             $(widgetFile "normalize")
             addStylesheet $ StaticR css_bootstrap_css
+            addScriptEither $ urlJqueryJs master
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
@@ -132,6 +134,8 @@ isUser = do
     return $ case mu of
         Nothing -> AuthenticationRequired
         Just _ ->  Authorized
+
+instance YesodJquery App
 
 -- How to run database actions.
 instance YesodPersist App where
