@@ -4,6 +4,6 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/lab/nom/nomnichi                NomnichiR        GET
-/lab/nom/nomnichi/!static  StaticR Static getStatic
-/lab/nom/nomnichi/#ArticleId     ArticleR         GET
+/lab/nom/nomnichi/articles                NomnichiR        GET
+/lab/nom/nomnichi/articles/!static  StaticR Static getStatic
+/lab/nom/nomnichi/articles/#ArticleId     ArticleR         GET
