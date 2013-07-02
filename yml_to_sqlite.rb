@@ -15,7 +15,7 @@ Ruby1.9.3でのみ動作確認した．
 -- 使用方法
 nomnichi.sqlite3 と同じ階層に，yml_to_sqlite.rb と nomnichi.yaml を置く．
 以下のコマンドを実行することで，nomnichi.sqlite3 へデータが登録される．
-$ ruby yml_to_sqlite.rb
+$ ruby yml_to_sqlite.rb nomnichi.yaml
 記事1つにつき，ドットが1つ画面に表示される．
 
 nomnichi.yaml はnomnichi.yaml.sample を参考に記述されたい．
@@ -126,8 +126,10 @@ def existing_perma_link?(perma_link, perma_link_list)
   return false
 end
 
+@database_yml = ARGV[0]
+
 @nomnichi_db = SQLite3::Database.new("nomnichi.sqlite3")
-yaml_data = YAML.load_file('./nomnichi.yaml')
+yaml_data = YAML.load_file("./#{@database_yml}")
 into_article_table(yaml_data)
 @nomnichi_db.close
 
