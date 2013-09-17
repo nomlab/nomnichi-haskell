@@ -9,7 +9,7 @@ module Handler.Nomnichi
   )
 where
 
-import Import
+import Import as I
 import Data.Monoid
 import Data.Time
 import System.Locale (defaultTimeLocale)
@@ -17,6 +17,8 @@ import Settings
 import Data.Maybe
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
+-- import Data.Attoparsec.Text
+import Data.Text as T
 instance YesodNic App
 
 
@@ -26,10 +28,21 @@ instance YesodNic App
 -- ノムニチトップ
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
+  paramPage <- lookupGetParam "page"
   articles <- runDB $ selectList [ArticleApproved ==. True] [Desc ArticlePublishedOn]
   (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "articles")
+
+convTextToInt :: Text -> Int
+convTextToInt text = read $ T.unpack text :: Int
+
+calcNumOfArticles :: Text -> Int
+calcNumOfArticles text = (convTextToInt text) * 20
+
+calcNumOfDroppingArticles :: Text -> Int
+calcNumOfDroppingArticles text = (convTextToInt text - 1) * 20
+
 
 -- 記事作成
 {-

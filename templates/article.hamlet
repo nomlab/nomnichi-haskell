@@ -21,7 +21,7 @@
 -->
 <hr>
 <div id=comments>
-  $if null comments
+  $if I.null comments
     <p> There are no comments in this article.
   $else
     $forall Entity commentId comment <- comments
