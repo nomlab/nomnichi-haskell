@@ -1,12 +1,33 @@
 <div class="article_list">
   <h1 class="article_list"> Articles
-  $if null articles
+
+  $if I.null articles
     <p> There are no articles in the blog.
   $else
     <ul>
-      $forall Entity articleId article <- articles
-        <li>
-          <a href=@{ArticleR articleId}> #{articleTitle article}
+      $maybe p <- paramPage
+        $if convTextToInt p > 1
+          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
+          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+        $else
+          <a href=@{HomeR}/nomnichi?page=2>進む</a>
+        <hr>
+        $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
+          <li>
+            <a href=@{ArticleR articleId}> #{articleTitle article}
+
+        <hr>
+        $if convTextToInt p > 1
+          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
+          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+        $else
+          <a href=@{HomeR}/nomnichi?page=2>進む</a>
+      $nothing
+        $forall Entity articleId article <- I.take 20 articles
+          <li>
+            <a href=@{ArticleR articleId}> #{articleTitle article}
+        <hr>
+        <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
 <div class="article_form">
   <form method=post enctype=#{enctype}>
