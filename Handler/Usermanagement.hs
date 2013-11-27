@@ -17,7 +17,7 @@ makingForm = renderDivs $ Loginuser
     <*> aopt   textField "Password" Nothing
 
 -- The view showing the list of users
-getUserR :: Handler RepHtml
+getUserR :: Handler Html
 getUserR = do
     -- Get the list of articles inside the database.
     loginusers <- runDB $ selectList [] [Desc LoginuserIdstr]
@@ -28,7 +28,7 @@ getUserR = do
         $(widgetFile "loginusers")
 
 -- we continue Handler/Blog.hs
-postUserR :: Handler RepHtml
+postUserR :: Handler Html
 postUserR = do
     ((res,loginuserWidget), enctype) <- runFormPost makingForm
     case res of
@@ -41,7 +41,7 @@ postUserR = do
                 $(widgetFile "userAddError")
 
 
--- postNewuserR :: ArticleId -> Handler RepHtml
+-- postNewuserR :: ArticleId -> Handler Html
 -- postNewuserR articleId = do
 --    article <- runDB $ get404 articleId
 --    defaultLayout $ do

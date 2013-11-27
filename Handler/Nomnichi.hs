@@ -10,12 +10,9 @@ module Handler.Nomnichi
 where
 
 import Import
-import Data.Monoid
 import Data.Time
 import System.Locale (defaultTimeLocale)
-import Settings
-import Data.Maybe
-import Handler.Loginform
+import System.IO.Unsafe (unsafePerformIO) 
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 instance YesodNic App
@@ -25,7 +22,7 @@ instance YesodNic App
 
 
 -- ノムニチトップ
-getNomnichiR :: Handler RepHtml
+getNomnichiR :: Handler Html
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
   (articleWidget, enctype) <- generateFormPost entryForm
@@ -33,7 +30,7 @@ getNomnichiR = do
     $(widgetFile "articles")
 
 -- 記事作成
-postNomnichiR :: Handler RepHtml
+postNomnichiR :: Handler Html
 postNomnichiR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
   case res of
@@ -46,7 +43,7 @@ postNomnichiR = do
       $(widgetFile "articleAddError")
 
 -- 記事表示
-getArticleR :: ArticleId -> Handler RepHtml
+getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
   article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
@@ -56,7 +53,7 @@ getArticleR articleId = do
     $(widgetFile "article")
 
 -- 記事更新
-postArticleR :: ArticleId -> Handler RepHtml
+postArticleR :: ArticleId -> Handler Html
 postArticleR articleId = do
   ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
   case res of
@@ -76,7 +73,7 @@ postArticleR articleId = do
       $(widgetFile "editArticleForm")
 
 -- 編集画面
-getEditArticleR :: ArticleId -> Handler RepHtml
+getEditArticleR :: ArticleId -> Handler Html
 getEditArticleR articleId = do
   article <- runDB $ get404 articleId
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
@@ -86,7 +83,7 @@ getEditArticleR articleId = do
 
 -- 記事削除
 
-postDeleteArticleR :: ArticleId -> Handler RepHtml
+postDeleteArticleR :: ArticleId -> Handler Html
 postDeleteArticleR articleId = do
   runDB $ do
     _post <- get404 articleId
@@ -101,7 +98,7 @@ postDeleteArticleR articleId = do
 
 
 -- コメント送信
-postCommentR :: ArticleId -> Handler RepHtml
+postCommentR :: ArticleId -> Handler Html
 postCommentR articleId = do
   _post <- runDB $ get404 articleId
   ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
@@ -118,13 +115,14 @@ postCommentR articleId = do
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
   where format = "%Y/%m/%d (%a)  %H:%M"
-        utcToNomnichiTime = (utcToLocalTime timeZone)
+        utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
 
 -- コメント投稿時刻の整形
 formatToCommentTime :: Comment ->  String
 formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"
-        utcToNomnichiTime = (utcToLocalTime timeZone)
+        utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
+
 
 -- フォーム
 entryForm :: Form Article
@@ -133,9 +131,9 @@ entryForm = renderDivs $ Article
   <*> areq textField    "Title"        Nothing
   <*> areq textField    "PermaLink"    Nothing
   <*> areq nicHtmlField "Content"      Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime) -- 
+  <*> lift (liftIO getCurrentTime) --
+  <*> lift (liftIO getCurrentTime) --
   <*> areq boolField    "Approved" (Just False)
   <*> areq intField     "Count"        Nothing
   <*> areq boolField    "PromoteHeadline" (Just False)
@@ -146,9 +144,9 @@ editForm article = renderDivs $ Article
   <*> areq textField    "Title"    (articleTitle <$> article)
   <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
@@ -157,6 +155,6 @@ commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
   <$> areq textField     "Name"    Nothing
   <*> areq textareaField "Comment" Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
   <*> pure articleId
