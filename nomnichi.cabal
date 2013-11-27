@@ -20,6 +20,9 @@ library
                      Settings.StaticFiles
                      Settings.Development
                      Handler.Home
+                     Handler.Nomnichi
+                     Handler.Loginform
+                     Handler.Usermanagement
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
