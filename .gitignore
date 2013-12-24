@@ -5,3 +5,4 @@ static/tmp
 config/settings.yml
 *.sqlite3
 *~
+\#*
