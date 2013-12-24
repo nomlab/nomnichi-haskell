@@ -30,7 +30,7 @@ instance YesodNic App
 getNomnichiR :: Handler RepHtml
 getNomnichiR = do
   paramPage <- lookupGetParam "page"
-  articles <- runDB $ selectList [] [Desc ArticleId]
+  articles <- runDB $ selectList [] [Desc ArticlePublishedOn]
   (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "articles")
