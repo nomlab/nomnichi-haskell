@@ -77,6 +77,7 @@ postArticleR articleId = do
           [ ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
+          , ArticlePublishedOn =. articlePublishedOn article
           , ArticleApproved =. articleApproved article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
@@ -132,7 +133,7 @@ postCommentR articleId = do
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
   where format = "%Y/%m/%d (%a)  %H:%M"
-        utcToNomnichiTime = (utcToLocalTime timeZone)
+        utcToNomnichiTime = (utcToLocalTime timeZone) . read . (++ " 00:00:00.00000") . showGregorian
 
 -- コメント投稿時刻の整形
 formatToCommentTime :: Comment ->  String
@@ -149,7 +150,7 @@ entryForm = renderDivs $ Article
   <*> areq nicHtmlField "Content"      Nothing
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-  <*> areq textField    "PublishedOn"  Nothing 
+  <*> areq dayField     "PublishedOn" Nothing
   <*> areq boolField    "Approved" (Just False)
   <*> areq intField     "Count"        Nothing
   <*> areq boolField    "PromoteHeadline" (Just False)
@@ -162,7 +163,7 @@ editForm article = renderDivs $ Article
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-  <*> areq textField    "PublishedOn"  Nothing
+  <*> areq dayField     "PublishedOn" (articlePublishedOn <$> article)
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)

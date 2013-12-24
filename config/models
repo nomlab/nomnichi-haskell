@@ -17,7 +17,7 @@ Article
     content Html
     createdOn UTCTime
     updatedOn UTCTime
-    publishedOn UTCTime
+    publishedOn Day
     approved Bool
     count Int
     promoteHeadline Bool
