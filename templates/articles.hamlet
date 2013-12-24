@@ -14,7 +14,7 @@
         <hr>
         $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
           <li>
-            <a href=@{ArticleR articleId}> #{articleTitle article}
+            <a href=@{ArticleR articleId}> (#{showGregorian $ articlePublishedOn article}) #{articleTitle article}
 
         <hr>
         $if convTextToInt p > 1
@@ -25,7 +25,7 @@
       $nothing
         $forall Entity articleId article <- I.take 20 articles
           <li>
-            <a href=@{ArticleR articleId}> #{articleTitle article}
+            <a href=@{ArticleR articleId}> (#{showGregorian $ articlePublishedOn article}) #{articleTitle article}
         <hr>
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
