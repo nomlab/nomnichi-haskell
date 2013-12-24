@@ -162,7 +162,7 @@ editForm article = renderDivs $ Article
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-  <*> areq textField    "PublishedOn"  (articlePublishedOn <$> article)
+  <*> areq textField    "PublishedOn"  Nothing
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
