@@ -7,10 +7,10 @@
     <ul>
       $maybe p <- paramPage
         $if convTextToInt p > 1
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+          <a href=@{NomnichiR}?page=#{convTextToInt p - 1}>戻る</a>
+          <a href=@{NomnichiR}?page=#{convTextToInt p + 1}>進む</a>
         $else
-          <a href=@{HomeR}/nomnichi?page=2>進む</a>
+          <a href=@{NomnichiR}?page=2>進む</a>
           <hr>
         $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
           <li class="article_list_title">
@@ -19,10 +19,10 @@
             #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
           <hr>
         $if convTextToInt p > 1
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+          <a href=@{NomnichiR}?page=#{convTextToInt p - 1}>戻る</a>
+          <a href=@{NomnichiR}?page=#{convTextToInt p + 1}>進む</a>
         $else
-          <a href=@{HomeR}/nomnichi?page=2>進む</a>
+          <a href=@{NomnichiR}?page=2>進む</a>
       $nothing
         $forall Entity articleId article <- I.take 20 articles
           <li class="article_list_title">
@@ -30,7 +30,7 @@
           <li class="article_list">
             #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
           <hr>
-        <a href=@{HomeR}/nomnichi?page=2>進む</a>
+        <a href=@{NomnichiR}?page=2>進む</a>
 
 <!--
 <div class="article_form">
