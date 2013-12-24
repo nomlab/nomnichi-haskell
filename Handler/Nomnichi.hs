@@ -149,7 +149,7 @@ entryForm = renderDivs $ Article
   <*> areq nicHtmlField "Content"      Nothing
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-  <*> areq textField    "PublishedOn"  (liftIO getCurrentTime)
+  <*> areq textField    "PublishedOn"  Nothing 
   <*> areq boolField    "Approved" (Just False)
   <*> areq intField     "Count"        Nothing
   <*> areq boolField    "PromoteHeadline" (Just False)
@@ -162,7 +162,7 @@ editForm article = renderDivs $ Article
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
   <*> aformM (liftIO getCurrentTime)
   <*> aformM (liftIO getCurrentTime)
-  <*> areq textField    "PublishedOn"  (liftIO getCurrentTime)
+  <*> areq textField    "PublishedOn"  (articlePublishedOn <$> article)
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
