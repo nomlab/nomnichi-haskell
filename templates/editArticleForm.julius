@@ -11,3 +11,6 @@ var renderPreview = function(event){
   previewArea.append("<article>"+content+"</article>");
 };
 
+$(document).ready(function(){
+  $('a.preview').click(renderPreview);
+});
