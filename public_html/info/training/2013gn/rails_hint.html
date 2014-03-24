@@ -1,0 +1,45 @@
+<h1 >Ruby on Railsを用いた商品管理プログラムの参考ページ</h1>
+  <p>作成者:木村，吉井<br />作成日:4/1<br />更新者:檀上<br />更新日:3/30</p>
+  <p>研修課題のヒントとなる情報をまとめました．<br />参考にしてくれると幸いです．</p>
+
+<h2 >1. Ruby on Railsについて</h2>
+  <p>RailsによるアジャイルWebアプリケーション開発 第4版で分からないところがあった場合，以下のサイトおよび書籍を参照してください．</p>
+<h3 >[おすすめ]</h3>
+  <ol>
+  <li>サイト：Ruby on Railsドキュメント(v3.2.8)<br />  <a class="external" href="http://railsdoc.com">http://railsdoc.com</a></li>
+    <li>サイト：Ruby on Rails 3.0 日記<br />  <a class="external" href="http://www.oiax.jp/rails/rails3.html">http://www.oiax.jp/rails/rails3.html</a></li>
+    <li>サイト：Ruby on Rails入門<br />  <a class="external" href="http://www.rubylife.jp/rails/">http://www.rubylife.jp/rails/</a></li>
+    <li>書籍：Rails3レシピブック<br />  著者:高橋征義，松田明，諸橋恭介<br />  出版社:ソフトバンク クリエイティブ</li>
+  </ol>
+
+<h2 >2.AmazonAPIについて</h2>
+  <p>以下はAmazonのAPIについて参考となるサイトです．</p>
+
+<h3 >[おすすめ]</h3>
+  <ol>
+  <li>ProductAdvertisingAPI開発者ガイド<br />  <a class="external" href="https://images-na.ssl-images-amazon.com/images/G/09/associates/paapi/dg/index.html">https://images-na.ssl-images-amazon.com/images/G/09/associates/paapi/dg/index.html</a></li>
+    <li>Amazon Web サービス入門(Product Advertising API)<br />  <a class="external" href="http://www.ajaxtower.jp/ecs/">http://www.ajaxtower.jp/ecs/</a></li>
+  </ol>
+
+<h2 >3.ライブラリについて</h2>
+  <p>AmazonAPIの利用をRubyで円滑に行う，「amazon-ecs」というライブラリがあります．<br />本課題でもこのライブラリを用いるのがいいと思われます．<br />以下のコマンドにより，amazon-ecsが利用できるようになります．<br /><pre>
+$ gem install amazon-ecs
+</pre><br />また，Ruby on Railsでは，Gemfileに以下の行を追加し，bundleすることにより利用できます．<br /><pre>
+$ gem amaozn-ecs
+</pre><br />以下はamazon-ecsについて参考となるサイトです．</p>
+
+<h3 >[おすすめ]</h3>
+  <ol>
+  <li>はるかなる熊/Rails On Amazon Web Service [amazon-ecs]<br />  <a class="external" href="http://b.ruyaka.com/2010/02/08/rails-on-amazon-web-service/">http://b.ruyaka.com/2010/02/08/rails-on-amazon-web-service/</a></li>
+    <li>KAGAYOSHITO.COM/【Ruby on Rails】Ruby on Rails で Amazon Product Advertising API を利用する<br />  <a class="external" href="http://kagayoshito.com/posts/show/18">http://kagayoshito.com/posts/show/18</a></li>
+  </ol>
+
+<h2 >4.ISBNについて</h2>
+  <p>書籍には一意の番号であるISBNが登録されています．<br />作成するプログラムは，ISBNを用いてamazonから書籍の情報を取得する機能を持ちます．<br />以下はISBNについて参考となるサイトです．</p>
+
+<h3 >[おすすめ]</h3>
+  <ol>
+  <li>日本図書コード管理センター<br />  <a class="external" href="http://www.isbn-center.jp/index.html">http://www.isbn-center.jp/index.html</a></li>
+    <li>seclanのほえほえルーム/ISBN の表記方法と ISBN-13 への変換方法<br />  <a class="external" href="http://seclan.dll.jp/dtdiary/2006/dt20060210.htm">http://seclan.dll.jp/dtdiary/2006/dt20060210.htm</a><br />  関連にあるリンクも確認することをお勧めします．</li>
+  </ol>
+

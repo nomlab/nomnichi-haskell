@@ -1,0 +1,55 @@
+<h1 >TeX環境構築手順<a href="#TeX" class="wiki-anchor">&para;</a></h1>
+
+<p>このページでは，WindowsとUbuntu 12.10上でTeX環境を構築する手順について示す．(Macは誰か書いて)<br />なお，乃村研はGitLabを用いて卒業論文，および学会論文の内容を乃村先生にご指導いただく．<br />このため，文字コードをUTF-8にする必要がある．<br />このことに注意してTeX環境を構築すること．</p>
+
+<a name="Windows"></a>
+<h2 > Windowsの場合<a href="#Windows" class="wiki-anchor">&para;</a></h2>
+
+<ol>
+<li>WinShellを取得<br />TEXの総合ツール．TeXファイル記述からpdf作成までできます．<br />しかし，UTF-8のファイルを変換しようとするとエラーが発生するバグがあるため，3以降の処理を行う必要がある．<br />なお，今ではWindowsにも簡単にインストールすることができます．<br /><a class="external" href="http://www.winshell.de/">http://www.winshell.de/</a><br />"http://www.ms.u-tokyo.ac.jp/~abenori/mycreate/":Windows版インストーラー</li>
+<li>文字コードの変換<br />WinShellの「オプション-->フォント」でエンコーディングをshiftJISからUTF-8に変更する．</li>
+<li>tex --> dvi
+<ol>
+<li>ユーザ指定プログラムの設定<br />WinShellの「オプション-->ユーザ指定プログラム」で，<br />Tool 1～10のどこかを「主なTexプログラムの設定」の「LaTeX」と同様に設定した上で，以下の点を変更する．
+| プログラム名   | 自身がわかりやすい名前にする |
+| コマンドライン | -kanji=utf8 を追加する |</li>
+<li>ショートカットをツールバーへ追加
+<ol>
+<li>「オプション-->表示-->ユーザ設定」のカテゴリで「ユーザ指定プログラム」を選択</li>
+<li>ショートカットを追加したいユーザ指定プログラムをツールバーにD&#38;D</li>
+<li>ツールバーに表示するアイコンを選択，あるいは編集する</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>dvi --> pdf
+<ol>
+<li>ユーザ指定プログラムの設定<br />WinShellの「オプション-->ユーザ指定プログラム」で，<br />Tool 1～10のどこかを「主なTexプログラムの設定」の「PDFLaTeX」と同様に設定した上で，以下の点を変更する．
+| exeファイル名 | C:\tex\bin\dvipdfmx.exe(各自の環境による) |
+| プログラム名   | 自身がわかりやすい名前にする |
+| コマンドライン | -f msembed.map "%s.dvi" |</li>
+<li>ショートカットをツールバーへ追加
+<ol>
+<li>「オプション-->表示-->ユーザ設定」のカテゴリで「ユーザ指定プログラム」を選択</li>
+<li>ショートカットを追加したいユーザ指定プログラムをツールバーにD&#38;D</li>
+<li>ツールバーに表示するアイコンを選択，あるいは編集する</li>
+</ol></li>
+</ol></li>
+</ol>
+
+<a name="Ubuntu-1210"></a>
+<h3 >Ubuntu 12.10の場合<a href="#Ubuntu-1210" class="wiki-anchor">&para;</a></h3>
+
+<ol>
+<li>パッケージの取得<br />日本語LaTeXに対応したtexlive2012と日本語のdviファイルを閲覧できるxdvikを取得する．<br /><pre>
+$ sudo apt-get install texlive-lang-cjk xdvik-ja
+</pre><br />なお，Ubuntuのバージョンが低いとtexlive2012がUTF-8に対応していないため，注意すること．</li>
+<li>ファイルの編集<br />VimやEmacsを使用してTeXファイルを作成する．</li>
+<li>tex->dvi<br />pLaTeXを実行してTeXファイルをDVIファイルに変換<br /><pre>
+$ platex &lt;ファイル名&gt;.tex
+</pre></li>
+<li>dvi->pdf<br />dvipdfmxを実行してDVIファイルをPDFファイルに変換<br /><pre>
+$ dvipdfmx &lt;ファイル名&gt;.dvi
+</pre></li>
+<li>Makefile<br />また，その他諸々の環境が整っている場合，<a href="../../pdf_makefile/index.html" class="wiki-page">PDFに図を入れるカッコイイ方法</a>にあるMakefileでPDFファイルを作成することができる．</li>
+</ol>

@@ -1,0 +1,151 @@
+<h1 >各種VM<a href="#VM" class="wiki-anchor">&para;</a></h1>
+
+<h2 >1. VM一覧<a href="#1-VM" class="wiki-anchor">&para;</a></h2>
+  <table>
+    <tr>
+      <td>No.</td>
+      <td>名前 </td>
+      <td>IPアドレス </td>
+      <td>説明 </td>
+      <td>管理者</td>
+      <td>サーバ</td>
+      <td>備考        </td>
+    </tr>
+    <tr>
+      <td> 1</td>
+      <td> hayabusa  </td>
+      <td> 172.21.16.27</td>
+      <td> GNグループ旧実験用VM</td>
+      <td>fukuda</td>
+      <td>???   </td>
+      <td>動かしてない</td>
+    </tr>
+    <tr>
+      <td> 2</td>
+      <td> kawasemi  </td>
+      <td> 172.21.3.1</td>
+      <td> GNグループ現実験用VM            </td>
+      <td>fukuda</td>
+      <td>VMS1  </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>  3</td>
+      <td>kingfisher</td>
+      <td>    172.21.3.5</td>
+      <td>LastNote                        </td>
+      <td>fukuda</td>
+      <td>VMS2  </td>
+      <td>            </td>
+    </tr>
+    <tr>
+      <td>  4</td>
+      <td>tsubame   </td>
+      <td>   172.21.1.90</td>
+      <td>乃村研HP，ノムニチ              </td>
+      <td>fukuda</td>
+      <td>VMS1  </td>
+      <td>            </td>
+    </tr>
+    <tr>
+      <td>  5</td>
+      <td>suzaku    </td>
+      <td>163.43.140.135</td>
+      <td>ホームディレクトリの管理，？？？</td>
+      <td>fukuda</td>
+      <td>----  </td>
+      <td>学外VPS     </td>
+    </tr>
+  </table>
+  
+<h2 >2. 管理者Tips<a href="#2-Tips" class="wiki-anchor">&para;</a></h2>
+
+<h3 >2.1. アカウントの作成<a href="#21-" class="wiki-anchor">&para;</a></h3>
+
+  <pre>
+$ useradd -d /home/USER_NAME -m -s LOGIN_SHELL USER_NAME
+  </pre><br />
+例： $ useradd -d /home/fukufa -m -s /bin/bash fukuda
+
+<h3 >2.2. 時刻設定<a href="#22-" class="wiki-anchor">&para;</a></h3>
+
+  <pre>
+% sudo dpkg-reconfigure tzdata
+  </pre><br />
+例:Asia/Tokyoを選択した場合<br />
+Current default time zone: 'Asia/Tokyo'<br />
+Local time is now:      Tue Feb 26 13:28:30 JST 2013.<br />
+Universal Time is now:  Tue Feb 26 04:28:30 UTC 2013.
+
+<h3 >2.3. 管理者権限の付与<a href="#23-" class="wiki-anchor">&para;</a></h3>
+
+<p>以下の方法で，ユーザまたはグループに権限を付与できる．</p>
+<ol>
+  <li>特定のユーザに権限を付与<br />
+  visudo を実行し，以下のような行を追加<br />
+  <pre>
+USER_NAME ALL=(ALL) ALL
+  </pre><br />
+  例：fukuda ALL=(ALL) ALL</li>
+  <li>特定のグループに権限を付与<br />
+  <pre>
+%GROUP_NAME ALL=(ALL) ALL
+  </pre><br />
+  例： %nomlab ALL=(ALL) ALL</li>
+</ol>
+
+<p>グループに権限を付与する場合，実際に権限を付与したいユーザをそのグループに追加する必要がある．<br />
+グループへのユーザの追加は，以下の方法で行う．
+</p>
+
+<ol>
+  <li>グループにユーザを追加<br />
+  <pre>
+$ usermod -G GROUP_NAME USER_NAME
+  </pre><br />
+  例： $ usermod -G root fukuda<br />
+       $ usermod -G net-mgr fukuda</li>
+</ol>
+
+<h3 >2.4. アカウントの削除<a href="#24-" class="wiki-anchor">&para;</a></h3>
+
+<pre>
+$ userdel USER_NAME
+</pre><br />
+例： $ userdel fukuda
+
+<h3 >2.5. 停電時<a href="#25-" class="wiki-anchor">&para;</a></h3>
+
+<p>以下では，停電によるダウンから各VMを復旧する手順について述べる．</p>
+
+<p>2.5.1 VMSおよびVMの起動</p>
+
+<p>suzaku 以外のVMは，全て <acronym title="1 or 2">VMS</acronym> 上で動作している．<br />
+このため，VMを起動するためには，まずVMSを起動する必要がある．<br />
+VMS起動後，各VMの起動を行う．<br />
+これらの作業は計算機幹事が行う．</p>
+
+<p>2.5.2. 各サービスの再開</p>
+
+<ol>
+  <li>LastNote<br />
+    lastnote ユーザで kingfisher にログインし，以下のコマンドを実行する．<br />
+  <pre>
+# cd /home/rails/lastnote/production
+# rails s -p 12345 -e production -d
+  </pre></li>
+  <li>乃村研HPとノムニチ<br />
+  lastnote ユーザでtsubame にログインし，以下のコマンドを実行する．<br />
+  <pre>
+# cd /hnomnichi/production
+# ruby reboot_nomnichi.rb
+  </pre></li>
+</ol>
+
+<p>2.5.3. 確認作業</p>
+
+<p>LastNote: <a class="external" href="http://lastnote.swlab.cs.okayama-u.ac.jp">http://lastnote.swlab.cs.okayama-u.ac.jp</a><br />
+乃村研HP: <a class="external" href="http://www.swlab.cs.okayama-u.ac.jp/lab/nom">http://www.swlab.cs.okayama-u.ac.jp/lab/nom</a><br />
+にアクセスし，Webページが表示されることを確認する．
+</p>
+

@@ -1,0 +1,68 @@
+<h1>PDFに図を入れるカッコイイ方法</h1>
+<div align="right">
+作成日：2013年2月1日<br>
+最終更新日：2013年2月1日<br>
+村田　裕哉<br>
+
+</div>
+<hr>
+
+<h2>はじめに</h2>
+このページでは，PDFに図を入れるカッコイイ方法を紹介する．<br>
+これにより，epsファイルをいくつも作る必要がなくなる．
+
+<h2>画像ファイルの準備</h2>
+<ol>
+<li>画像ファイルをPDFで保存する．複数の画像を1つのPDFとして良い．</li>
+</ol>
+
+<h2>Makefileの入手</h2>
+<ol>
+<li>乃村先生直伝の<a href="./Makefile">Makefile</a>を入手する．</li>
+<li>取得したMakefileをTexファイルがあるディレクトリに置く．</li>
+<li>Makefileを各自の環境に合わせて編集する．</li>
+</ol>
+
+<h2>Makefileの編集</h2>
+<ol>
+<li>Texファイルの文字コードに合わせる．<br>
+文字コードがsjisの場合は，以下のように変更する．</li>
+<pre>
+PLATEX = platex-sjis -interaction=nonstopmode
+</pre>
+<li>PROJECTにTexファイルの名前を指定する．thesis.texの場合は以下のように書く．
+</li>
+<pre>
+PROJECT = thesis
+</pre>
+<li>画像を置くディレクトリとファイル名をFIG_MASTER_FILEに指定する．</li>
+<pre>
+FIG_MASTER_FILE = fig/fig.pdf
+</pre>
+<li>PDFの何ページ目から画像を取り出すかを指定する．<br>
+例えば，fig.pdfの1～5ページから画像を取り出す場合は，以下のように書く．<br>
+これにより，各画像は fig1.pdf，fig2.pdf…というファイル名になる．<br>
+<pre>
+FIG_PAGES = 1 2 3 4 5
+</pre>
+</ol>
+
+<h2>Texファイルの編集</h2>
+<a href="./paper-sample-for-latex-makefile.tex">サンプルTexファイル</a>を参考にすると，よりカッコイイ．
+<ol>
+<li>usepackageを変更する．</li>
+<pre>
+\usepackage[dvipdfm]{graphics}
+</pre>
+<li>画像の参照方法を変更する．この時，clipを忘れないようにする．</li>
+<pre>
+\includegraphics[clip,widht=1\columnwidth]{.fig/fig1.pdf}
+</pre>
+</ol>
+
+<h2>実際に使う</h2>
+makeを叩くだけで，画像が個々のpdfに分割されたりあれされたりしてtexファイルがpdfになって完成する．
+<pre>
+$ make
+</pre>
+

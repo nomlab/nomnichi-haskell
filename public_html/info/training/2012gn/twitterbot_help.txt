@@ -1,0 +1,51 @@
+RubyによるTwitterBotプログラム作成の参考ページ
+
+作成者:木村，吉井
+作成日:4/1
+
+TwitterBotプログラムの作成のヒントとなる情報をまとめました．
+参考にしてくれると幸いです．
+
+(TwitterBotプログラムの入手方法)
+課題の作成環境で以下のコマンドを実行します．
+% git clone gitosis@redmine.swlab.cs.okayama-u.ac.jp:TwitterBot
+
+(認証)
+TwitterBotを動作させるためには，認証が必要です．認証の手順は以下のとおりです．
+自分のTwitterアカウントへのログイン後，
+http://www.swlab.cs.okayama-u.ac.jp/lab/nom/info/training/2012gn/oauth_script.rb
+にあるスクリプトを使用し，次の手順で行います．
+(1) 「Access this URL and approve」の後に示されるURLに，ブラウザからアクセスする
+(2) 「許可」ボタンを押す
+(3) 「Input OAuth Verifier」と表示して入力待ちの状態になっているスクリプトに「許可」ボタンを後に表示される7桁の数字を入力する
+上記の操作終了後，表示されるAccess tokenとAccess token secretと以下の2つを合わせた計4つの文字列を使用します．
+Consumer token        : tuwAf85K7bJ6OqWG3Eomg
+Consumer token secret : MokGhmoBR8XTa17wYkNT67rK6gHrUEgFGiPZbbGYT8
+
+(Rubyを使う)
+以下のサイトや書籍を参考にRubyを使ってみるといいと思います．
+[おすすめ]
+　(基本) オブジェクト指向スクリプト言語 Ruby リファレンスマニュアル
+　http://doc.okkez.net/static/187/doc/index.html
+　(初心者向け) Ruby ではじめるプログラミング
+　http://jp.rubyist.net/magazine/?0002-FirstProgramming
+　(少し深く理解する) プログラミング言語Ruby　-ありえるえりあ-
+　http://dev.ariel-networks.com/articles/workshop/ruby/
+  (書籍) たのしいRuby 第2版
+  著者:高橋征義，後藤裕蔵
+  出版社:ソフトバンク クリエイティブ
+
+(HTTPを勉強)
+TwitterBotを作成するには，TwitterAPIを利用しなければなりません．
+　TwitterAPI仕様書
+　http://watcher.moe-nifty.com/memo/docs/twitterAPI.txt
+しかし，この仕様書はHTTPを理解していないと，書いてあることの意味がわからないはずです．
+HTTPがどのようなものかわからない人は，HTTPについて勉強するべきです．
+（また，TwitterAPIにはOAuth認証が必要になります．OAuth認証についても，理解しておいて下さい）
+[おすすめ]
+　(基本)rfc2616
+　http://tools.ietf.org/html/rfc2616
+　(わかりやすい解説1)HTTP入門
+　http://www.tohoho-web.com/ex/http.htm
+　(わかりやすい解説2)HTTPプロトコルとサーバへのリクエスト
+　http://segroup.fujitsu.com/sdas/technology/web-apl/01-http-protocol.html

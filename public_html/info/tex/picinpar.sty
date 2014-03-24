@@ -1,0 +1,747 @@
+% This is picinpar.sty
+% Macros for making windows with LaTeX
+%
+% By Friedhelm Sowa, Heinrich-Heine-University D\"usseldorf,
+%                    Computing Center
+%                    In case of emergency try to get the email adress
+%                    after having checked the input :-)
+%                    Okay, for those who are too lazy:
+%                          tex@ze8.rz.uni-duesseldorf.de
+%                          sowa@convex.rz.uni-duesseldorf.de
+%
+% Incorporated are basic ideas of Alan Hoenig (Thanks Alan!)
+% Thanks to Phil Taylor, who gave some useful hints during his
+% tutorial at the EURO TeX 92 in Prague.
+%
+% Also thanks to Ulrik Vieth, who incorporated the macros for
+% generating captions within the windows.
+%
+%----------------
+% Known problems:
+%
+%    - Don't use \samepage
+%    - Use \footnotemark within and \footnotetext outside the
+%      window-environment instead of \footnote
+%    - When using the epic-package load picinpar before epic
+%      like \documentstyle[...,picinpar,epic]{...}
+%----------------
+%
+%                       Here we go
+%
+% Counts
+\newcount\br     \newcount\bl
+\newcount\na     \newcount\nb  \newcount\tcdsav
+\newcount\tcl    \newcount\tcd \newcount\tcn
+\newcount\cumtcl \newcount\cumpartcl
+% Dimens
+\newdimen\lftside   \newdimen\rtside
+\newdimen\hpic      \newdimen\vpic
+\newdimen\strutilg  \newdimen\picwd
+\newdimen\topheight \newdimen\ilg
+\newdimen\lpic      \newdimen\cumpar
+% Tokens
+\newtoks\twa \newtoks\la \newtoks\ra
+\newtoks\ha  \newtoks\pictoc
+% Boxes
+\newbox\rawtext   \newbox\holder
+\newbox\windowbox \newbox\wartext
+\newbox\finaltext \newbox\aslice    \newbox\bslice
+\newbox\wbox      \newbox\wstrutbox \newbox\picbox
+\newbox\waslice   \newbox\wbslice   \newbox\fslice
+% Another strut
+\def\wstrut{\relax\ifmmode\copy\wstrutbox\else\unhcopy\wstrutbox\fi}
+%
+\long\def\window[#1,#2,#3,#4] {%
+% #1 is an integer---no.  of lines down from par top
+% #2 is l, r or c what means left, right or centered
+%    default is, that the picture is printed at the left side
+% #3 is the material for setting a graphic box
+% #4 is the explanation for the graphic
+\vskip\parskip
+\global\cumpar=0pt
+\global\cumpartcl=0
+\global\cumtcl=0
+    \tcd=#1
+    \lftside=0pt \rtside=0pt
+%    \hpic=\linewidth
+    \twa={} \la={} \ra={} \ha={}
+\setbox\wbox=\hbox{(}
+\computeilg
+\pictoc={#3}
+\setbox\windowbox=\vbox{\hbox{#3}}
+\setbox\wbox=\vbox{\hbox{\noindent#4}}
+\picwd=\wd\windowbox
+\hpic=\picwd
+\vpic=\ht\windowbox\advance\vpic\dp\windowbox
+\if #2c\lftside=\linewidth\advance\lftside-\picwd\rtside=0.5\lftside
+       \lftside=\rtside
+\else \if #2r\lftside=\linewidth\advance\lftside-\picwd
+              \rtside=0pt
+      \else\rtside=\linewidth\advance\rtside-\picwd
+           \lftside=0pt
+      \fi
+\fi
+%
+% In case of a centered picture, that does not allow text beside
+% we have to add some glue between preceding text, window and
+% following text.
+%
+\if #2c
+ \ifdim\rtside<72pt
+  \rtside=0pt\lftside=0pt
+  \setbox\windowbox=\vbox{%
+    \hrule width\picwd height0pt depth0pt
+    \vskip.5\parskip\box\windowbox\vskip.5\parskip
+    \hrule width\picwd height0pt depth0pt}
+  \vpic=\ht\windowbox\advance\vpic\dp\windowbox
+ \fi
+ \parskip0pt % Within the window area a \parskip>0pt may look ugly
+\fi
+\ifnum\picwd=0\setbox\picbox=\vbox{\hbox{\noindent#4}}   % without picture
+                               \hpic=\wd\picbox % calculate dimensions
+              \ifnum\lftside=0\rtside=\linewidth\advance\rtside-\hpic
+              \else\ifnum\rtside=0\lftside=\linewidth\advance\lftside-\hpic
+              \else\rtside=0.5\linewidth\advance\rtside-0.5\hpic
+                   \lftside=\rtside
+              \fi\fi
+\else\setbox\picbox=\vbox{\hsize=\hpic\vbox to\vpic{\box\windowbox\vfill}%
+\ifdim\ht\wbox>0pt\vskip\ilg\vbox{\hsize=\hpic\noindent#4
+%
+% See above, this is the second part of glue
+%
+\if #2c
+ \ifdim\rtside=0pt \ifdim\lftside=0pt
+ \vskip\parskip\hrule width\hpic height0pt depth0pt
+ \fi \fi
+\fi
+}
+\fi}\fi
+\vpic=\ht\picbox\advance\vpic\dp\picbox
+\ifdim\lftside>0pt\advance\lftside-0.5\baselineskip\fi  % put in a distance
+\ifdim\rtside>0pt\advance\rtside-0.5\baselineskip\fi    % between text and
+                                                        % window
+\global\br=\rtside \global\bl=\lftside
+\ifnum\picwd=0
+\ifdim\vpic>0pt\picwd=\hpic
+\else\vpic=\ht\picbox\advance\vpic\dp\picbox
+\fi
+\fi
+    \global\tcl=0 \lpic=0pt
+    \loop\global\advance\tcl by 1 \lpic=\tcl\baselineskip
+    \ifdim\lpic<\vpic\repeat
+    \vpic=\lpic
+    \global\cumtcl=\tcl
+%
+% Here we know exactly the number of indented lines and
+% are able to generate the tokens for the \parshape list
+%
+    \ifnum\bl>0\la={ 0pt \lftside}\fi
+    \ifnum\br>0\ra={ 0pt \rtside}\fi
+    \ifnum\tcd>0\ha={ 0pt \linewidth}\fi
+    \ifnum\tcl<1\global\tcl=1\fi
+    \createparshapespec
+    \tcd=#1                        % restore the lintel
+    \global\tcdsav=#1
+%
+% This is a very tricky part of the package. Some day there
+% will exist a detailed documentation.
+%
+\ifdim\parskip>0pt
+    \def\par{\hfill\vadjust{\vskip0pt\vbox to\parskip{\vss}}
+             \global\advance\cumpartcl by 1
+             \global\advance\cumpar by \parskip
+             \global\lpic=\ht\wstrutbox
+             \global\advance\lpic by \dp\wstrutbox
+             \ifdim\cumpar<\lpic
+             \else\advance\cumpar by -\lpic
+                  \advance\cumtcl by -1
+             \fi
+             \egroup\global\tcd=\tcdsav
+             \setbox\wartext=\vbox{\unvbox\rawtext}
+\setbox\rawtext=\vbox\bgroup
+\clubpenalty=0\widowpenalty=0
+\tolerance=1000
+\global\lpic=\ht\wstrutbox
+\global\advance\lpic by \dp\wstrutbox
+%
+% Pick up header lines
+%
+\ifnum\tcd>0\vbadness=10000\splittopskip0pt
+ \loop\setbox\holder=\vsplit\wartext to \lpic
+  \hpic=\wd\holder\prune\holder\hpic
+  \ifdim\ht\holder=\parskip
+   \hbox{\vrule height\parskip width0pt depth0pt}
+   \typeout{A paragraph ended within headlines! Please change }
+   \typeout{the number of headlines for the window environment!}
+   \global\advance\tcd by -1
+  \else\hbox{\vbox{\box\holder\unskip}}
+   \global\advance\tcd by -1
+  \fi
+ \ifnum\tcd>0\repeat
+ \global\tcd=0
+ \ifdim\ht\wartext>0pt
+ \ifdim\ht\wartext=\parskip\global\advance\tcdsav by 1
+       \setbox\holder=\vsplit\wartext to \lpic
+       \hbox{\vrule height\parskip width0pt depth0pt}
+       \global\advance\cumpar by -\parskip
+       \global\advance\cumpartcl by -1
+ \fi\fi
+\fi
+%
+% Pick up lines beside window, the rest too
+%
+\global\tcn=0
+\topheight=0pt
+\ifdim\ht\wartext>0pt\vbadness=10000\splittopskip0pt
+ \loop\setbox\holder=\vsplit\wartext to \lpic
+  \hpic=\wd\holder\prune\holder\hpic
+  \ifdim\ht\holder=\parskip
+  \hbox{\vrule height\parskip width0pt depth0pt}
+  \global\advance\topheight by \parskip
+  \else
+   \setbox\fslice=\hbox{\box\holder}
+    \hpic=\ht\fslice
+    \advance\hpic by\dp\fslice
+   \ifdim\hpic>\lpic
+   \global\advance\topheight by\hpic
+   \hbox{\vbox{\box\fslice\vss}}
+   \else\ifdim\hpic=0pt\relax
+   \else\global\advance\topheight by \lpic
+   \hbox{\vbox{\box\fslice}}\fi\fi
+  \fi
+ \ifdim\ht\wartext>0pt\repeat
+\tcn=0
+\loop\advance\tcn by 1
+\advance\topheight by -\lpic
+\ifdim\topheight>0pt\repeat
+\hpic=\topheight
+\ifdim\hpic<0pt\advance\tcn by -1\fi
+\global\topheight=\tcn\lpic
+\fi
+%
+% If the indented part is not completed we have to generate a
+% new token for the \parshape list
+%
+\ifnum\tcn<\cumtcl
+\global\tcl=\cumtcl
+\global\advance\topheight by\cumpartcl\parskip
+             \global\advance\tcl by -\tcn \global\twa={}
+             \ifnum\tcl>0
+\global\vpic=\topheight
+\global\topheight=\tcl\lpic
+\global\advance\vpic by \topheight
+\global\advance\vpic by \lpic
+             \createparshapespec
+             \parshape=\tcn \the\twa
+             \else\parshape=0
+             \fi
+\else\parshape=0\fi}
+\else\def\par{\\}
+\fi % new definition of \par in case of \parskip>0 ends here
+%
+% This is where we start to pick up the paragraph(s)
+%
+    \setbox\rawtext=\vbox\bgroup\unvbox\rawtext\unskip
+    \clubpenalty=0\widowpenalty=0
+    \tolerance=1000
+    \parshape=\tcn \the\twa }
+%
+\def\endwindow{%
+    \global\tcd=\tcdsav
+    \egroup\vskip\parskip\parshape=0 % reset parshape; end \box\rawtext
+    \vbadness=10000
+    \splittopskip=0pt
+%
+% Typeset the lines above the window
+%
+\ifnum\tcd>0\setbox\holder=\vsplit\rawtext to \tcd\baselineskip
+\tcn=\tcd
+\loop\advance\tcn -1
+\setbox\fslice=\vsplit\holder to\baselineskip
+\prune\fslice\linewidth
+\topheight=0pt
+\ifnum\dp\fslice>\dp\wstrutbox
+       \advance\topheight-\dp\fslice
+       \advance\topheight\dp\wstrutbox
+       \advance\topheight\ilg\fi
+\hbox to\linewidth{\box\fslice}
+\vskip-\topheight
+\ifdim\ht\holder>0pt\repeat
+\fi
+%
+% Now we build the boxes beside the window
+%
+\global\topheight=\tcl\baselineskip
+\ifnum\cumpartcl>0\global\tcl=\cumtcl
+      \global\topheight=\vpic
+\fi
+\ifnum\bl>0\ifnum\br>0\multiply\topheight by 2\fi\fi
+\ifnum\bl>0\setbox\holder=\vsplit\rawtext to\topheight
+\else\ifnum\br>0\setbox\holder=\vsplit\rawtext to\topheight\fi\fi
+\tcn=\tcl \na=0 \nb=0
+\ifnum\bl>0\ifnum\br>0\multiply\tcn by 2\fi\fi
+\ifnum\bl>0\na=\tcn\ifnum\br>0\divide\na by 2\fi\fi
+\ifnum\br>0\nb=\tcn\ifnum\bl>0\divide\nb by 2\fi\fi
+\ifnum\na=0\ifnum\nb=0
+      \setbox\waslice=\vbox to\vpic{\vss}
+      \setbox\wbslice=\vbox to\vpic{\vss}
+      \bl=1\br=1
+      \vskip\ilg
+\fi\fi
+%
+% both sides
+%
+\ifnum\na>0 \ifnum\nb>0
+\loop\advance\nb -1
+\advance\na -1
+\setbox\aslice=\vsplit\holder to\baselineskip
+\prune\aslice\lftside
+\setbox\waslice=\vbox{\unvbox\waslice\hbox
+to\lftside{\box\aslice\hfil}}
+\setbox\bslice=\vsplit\holder to\baselineskip
+\prune\bslice\rtside
+\setbox\wbslice=\vbox{\unvbox\wbslice\hbox
+to\rtside{\box\bslice\hfil}}
+\ifnum\nb>0\repeat
+\fi\fi
+%
+% only text on the left side
+%
+\ifnum\na>0
+    \loop\advance\na -1
+    \setbox\aslice=\vsplit\holder to\baselineskip
+    \prune\aslice\lftside
+    \setbox\waslice=\vbox{\unvbox\waslice\hbox
+    to\lftside{\box\aslice\hfil}}
+    \ifdim\ht\holder>0pt\repeat
+\fi
+%
+% only text on the right side
+%
+\ifnum\nb>0
+    \loop\advance\nb -1
+    \setbox\bslice=\vsplit\holder to\baselineskip
+    \prune\bslice\rtside
+    \setbox\wbslice=\vbox{\unvbox\wbslice\hbox
+    to\rtside{\box\bslice\hfil}}
+    \ifdim\ht\holder>0pt\repeat
+\fi
+%
+% fixing the dimensions of the window part
+%
+\ifnum\bl=0\topheight=\ht\wbslice
+\else\ifnum\br=0\topheight=\ht\waslice
+      \else\ifdim\ht\waslice>\ht\wbslice\topheight=\ht\waslice
+            \else\topheight=\ht\wbslice\fi\fi\fi
+%
+% ship out the window material to the main vertical list
+%
+\setbox\windowbox=\vbox{\hbox to\linewidth{%
+\ifnum\bl>0\box\waslice\hfill\fi%
+\vbox to\topheight{\hrule width\picwd height0pt depth0pt\vskip0pt%
+\vfill\unvbox\picbox%
+\ifnum\picwd>0\vfill\fi%
+\vss}\ifnum\br>0\hfill\box\wbslice\fi}}%
+\unvbox\windowbox%
+\loop
+ \setbox\bslice=\vsplit\rawtext to\baselineskip
+ \prune\bslice\linewidth
+ \setbox\wbslice=\vbox{\hbox to\linewidth{\box\bslice\hfil}}
+ \unvbox\wbslice
+ \ifdim\ht\rawtext>0pt
+\repeat
+}% FINITO
+%
+% What else do we need?
+%
+\def\prune#1#2{
+% take a \vbox containing a single \hbox,
+% \unvbox it, and cancel the \lastskip
+% put in a \hbox of width #2
+ \unvbox#1 \setbox#1=\lastbox % \box#1 now is an \hbox
+ \ifdim\ht#1=\parskip
+ \setbox#1=\hbox to#2{\vrule height\parskip depth0pt width0pt\hfill}
+ \else\ifdim\ht#1=0pt\relax
+ \else\setbox#1=\hbox to#2{\wstrut\unhbox#1\unskip}\fi\fi}
+%
+% Here the token \twa is generated.
+% It's not so difficult as it looks like.
+%
+\def\createparshapespec{%
+\global\tcn=0
+\ifnum\bl>0\global\tcn=\tcl\else\ifnum\br>0\global\tcn=\tcl\fi\fi
+\na=0 \nb=0
+\ifnum\bl>0\ifnum\br>0\multiply\tcn by 2\fi\fi
+\ifnum\bl>0\na=\tcn\ifnum\br>0\divide\na by 2\fi\fi
+\ifnum\br>0\nb=\tcn\ifnum\bl>0\divide\nb by 2\fi\fi
+\global\advance\tcn by\tcd \global\advance\tcn by1
+\ifnum\tcd>0
+\loop\twa=\expandafter{\the\twa\the\ha}\advance\tcd -1
+\ifnum\tcd>0\repeat
+\fi
+\ifnum\bl>0 \ifnum\br>0
+\loop\twa=\expandafter{\the\twa\the\la}\advance\na -1
+\twa=\expandafter{\the\twa\the\ra}\advance\nb -1
+\ifnum\na>0\repeat
+\fi\fi
+\ifnum\na>0
+\loop\twa=\expandafter{\the\twa\the\la}\advance\na -1
+\ifnum\na>0\repeat
+\fi
+\ifnum\nb>0
+\loop\twa=\expandafter{\the\twa\the\ra}\advance\nb -1
+\ifnum\nb>0\repeat
+\fi
+\global\twa=\expandafter{\the\twa 0pt \the\linewidth}}
+%
+\def\computeilg{% compute the interline glue
+ \tcl=0\ilg=0pt\strutilg=0pt
+ \loop\setbox\wbox=\hbox{\char\tcl}
+ \ifdim\ht\wbox>\ilg\ilg=\ht\wbox\fi
+ \ifdim\dp\wbox>\strutilg\strutilg=\dp\wbox\fi
+ \advance\tcl by 1
+ \ifnum\tcl<128\repeat
+ \ht\wbox=\ilg
+ \dp\wbox=\strutilg
+ \strutilg=\ht\wbox %\advance\strutilg by\ilg
+ \ifdim\strutilg>\baselineskip
+  \typeout{character with height greater baselineskip found in font}
+  \typeout{baselineskip changed to 1.5 of that height!}
+  \baselineskip=1.5\strutilg
+ \fi
+ \global\ilg=\baselineskip
+ \global\advance\ilg-\ht\wbox \global\advance\ilg-\dp\wbox
+ \strutilg=\ht\wbox \advance\strutilg by\ilg
+ \setbox\wstrutbox=\hbox{\vrule height\strutilg depth\dp\wbox width0pt}}
+%
+% frames
+%
+\def\framepic#1{\vbox{%
+\hsize\expandafter\wd\csname #1box\endcsname
+\advance\hsize .8pt \hrule%
+\hbox to\hsize%
+{\vrule\hfill\vbox to\expandafter\ht\csname #1box\endcsname{%
+\expandafter\box\csname #1box\endcsname }\hfill\vrule}\hrule\vss}}
+%
+\def\wframepic#1{\vbox{%
+\hsize\expandafter\wd\csname #1box\endcsname
+\advance\hsize 3.8pt\hrule%
+\hbox to\hsize%
+{\vrule\hfill\vbox{\kern1.5pt%
+\expandafter\box\csname #1box\endcsname
+\kern1.5pt}\hfill\vrule}\hrule\vss}}
+%
+% caption
+%
+\def\winstepcounter#1{\global\advance\csname c@#1\endcsname 1
+    {\let\@elt\@stpelt \csname cl@#1\endcsname}}
+
+\def\winrefstepcounter#1{\winstepcounter{#1}\let\@tempa\protect
+\def\protect{\noexpand\protect\noexpand}%
+\edef\@currentlabel{\csname p@#1\endcsname\csname the#1\endcsname}%
+\let\protect\@tempa}
+\long\def\w@dblarg#1{\@ifnextchar[{#1}{\w@xdblarg{#1}}}
+\long\def\w@xdblarg#1#2\par{#1[{#2}]#2\par}
+
+\def\wincaption{\winrefstepcounter\@captype \w@dblarg{\@wincaption\@captype}}
+
+\long\def\@wincaption#1[#2]#3\par{\par\addcontentsline{\csname
+  ext@#1\endcsname}{#1}{\protect\numberline{\csname
+  the#1\endcsname}{\ignorespaces #2}}\begingroup
+    \@parboxrestore
+    \normalsize
+    \@makewincaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
+  \endgroup}
+
+\long\def\@makewincaption#1#2{%
+   \setbox\@tempboxa\hbox{\footnotesize{\bf #1:\enspace}{#2}}%
+   \ifdim\wd\@tempboxa>\picwd
+      {\footnotesize{\bf #1:\enspace}{#2\par}}
+   \else
+      \hbox to\picwd{\hfil\box\@tempboxa\hfil}
+   \fi}
+
+\long\def\figwindow[#1,#2,#3,#4] {%
+     \advance\c@figure -1
+     \begin{window}[#1,#2,{#3},{\def\@captype{figure}%
+        \wincaption#4\par}] }
+
+\long\def\tabwindow[#1,#2,#3,#4] {%
+     \advance\c@table -1
+     \begin{window}[#1,#2,{#3},{\def\@captype{table}%
+        \wincaption#4\par}] }
+
+\def\endfigwindow{\end{window}}
+\def\endtabwindow{\end{window}}
+\endinput
+%%%
+\documentstyle[german,picinpar]{article}
+\setlength{\parskip}{.66\baselineskip}
+\setlength{\parindent}{0pt}
+\begin{document}
+\section*{Beispiele zu {\tt picinpar.sty}}
+\font\yn=cmss17 scaled \magstep5 %oder sonst was gro"ses (yinit?)
+\begin{verbatim}
+\begin{window}[0,l,{\yn V},{}]
+or einigen Jahren wurde von ...
+... Abschnitts erfolgten automatisch.
+\end{window}
+\end{verbatim}
+
+\begin{window}[0,l,{\yn V},{}]
+or einigen Jahren wurde von Donald E.~Knuth im TUGboat ein kleines
+Problem mit der Bitte um L"osung vorgestellt. Es handelte sich darum,
+in einem Paragraphen ein Fenster zu erzeugen, in das man beliebigen Text
+oder eine Zeichnung hineinsetzen kann. Prompt kamen dann in den folgenden
+Ausgaben L"osungsvorschl"age: Einer von DEK pers"onlich, der andere von
+Alan Hoenig. Der letztgenannte brachte die elegantere L"osung, die keine
+manuellen Korrekturen mehr notwendig machte. Sein Makro verlangte lediglich
+in den Parametern Informationen "uber die Breite und H"ohe der
+freizulassenden Stelle im Paragraphen. Die Einz"uge und der Satz der
+Fragmente des Abschnitts erfolgten automatisch.
+\end{window}
+
+\begin{verbatim}
+\begin{figwindow}[2,r,{
+\unitlength1cm
+\begin{picture}(3,1.4)
+\put(0.7,0.7){\circle*{0.2}}     \put(0.7,0.7){\circle{1.2}}
+\put(0.7,0.7){\vector(0,1){0.6}} \put(2.5,0.7){\circle*{0.5}}
+\end{picture}
+},{Kreise und Pfeile}]
+Was leisten nun diese Macros ...
+... sieht hierbei wie folgt aus:
+\end{figwindow}
+\end{verbatim}
+
+\begin{figwindow}[2,r,{
+\unitlength1cm
+\begin{picture}(3,1.4)
+\put(0.7,0.7){\circle*{0.2}}     \put(0.7,0.7){\circle{1.2}}
+\put(0.7,0.7){\vector(0,1){0.6}} \put(2.5,0.7){\circle*{0.5}}
+\end{picture}
+},{Kreise und Pfeile}]
+Was leisten nun diese Macros? Einen kleinen Eindruck hat man schon
+zu Anfang dieses Artikels bekommen: der erste Buchstabe des Absatzes
+ist in einer anderen Schriftgr"o"se gedruckt und in den Absatz eingepa"st.
+Es mu"s aber nicht unbedingt Text sein, der so einger"uckt wird. Es kann
+ebenso eine \verb?picture?--Umgebung sein, die so in den Absatz eingef"ugt
+wird. Das rechts stehende Beispiel, das aus "'\LaTeX , Eine Einf"uhrung"'
+bekannt sein d"urfte, ist in einer \verb?minipage?--Umgebung gesetzt
+worden. Die Eingabe im Text sieht hierbei wie oben aus.
+\end{figwindow}
+
+\begin{verbatim}
+\begin{tabwindow}[1,r,{
+\begin{tabular}[t]{|r|l|r@{:}l|}
+\hline
+1&HSV&12&0\\
+...
+\end{tabular}
+},{Tabelle}]
+Auch der Satz von Tabellen in ...
+... w"urde sie etwas durchh"angen.
+
+Nachdem die Tastatur gequ"alt ...
+... noch die Nummerierung stimmt.
+\end{tabwindow}
+\end{verbatim}
+
+\begin{tabwindow}[1,r,{
+\begin{tabular}[t]{|r|l|r@{:}l|}
+\hline
+1&HSV&12&0\\
+\hline
+2&MSV&11&1\\
+\hline
+3&VfB&10&2\\
+\hline
+4&SVW&9&3\\
+\hline
+5&1.\ FCK&8&4\\
+\hline
+\end{tabular}
+},{Tabelle}]
+Auch der Satz von Tabellen in ein Fenster ist kein gro"ses Problem.
+Man nimmt einfach eine Tabelle, oder denkt sich auch eine aus.
+Dann wird daf"ur Sorge getragen, da"s sie auch mit der unteren
+Zeile ausgerichtet wird. Ansonsten w"urde sie etwas durchh"angen.
+
+Nachdem die Tastatur gequ"alt und das Hirn zermartert wurde kommt
+dann so etwas heraus, wie es hier rechts zu sehen ist. Sogar die
+Tabellenbezeichnung ist erschienen. Aber wirklich interessant wird's,
+wenn auch bei der n"achsten Tabelle noch die Nummerierung stimmt.
+\end{tabwindow}
+
+\begin{verbatim}
+\begin{tabwindow}[2,l,{
+\begin{tabular}[t]{|r|l|r@{:}l|}
+...
+\end{tabular}
+},{Tabelle}]
+Was wahnsinnig ...
+... sagt's denn?
+\end{tabwindow}
+\end{verbatim}
+
+\begin{tabwindow}[2,l,{
+\begin{tabular}[t]{|r|l|r@{:}l|}
+\hline
+1&HSV&12&0\\
+\hline
+2&MSV&11&1\\
+\hline
+3&VfB&10&2\\
+\hline
+4&SVW&9&3\\
+\hline
+5&1.\ FCK&8&4\\
+\hline
+\end{tabular}
+},{Tabelle}]
+Was wahnsinnig auflockernd wirkt, ist der st"andige Positionswechsel
+von Abbildungen auf einer Seite. Das Auge wird nicht m"ude bei
+der Erkundung der typographischen Vielfalt, die in gedruckten
+Werken enthalten ist. Aber man sollte sich nichtsdestotrotz doch
+auf die wesentlichen Mitteilungen konzentrieren, die mit derartigen
+Werken vermittelt werden sollen.
+
+Was sind aber nun die essentiellen Informationen? Naja, ein kleines
+{\tt l} und eine {\tt 2} bewirkt ein g"anzlich anderes Erscheinungsbild
+der Realit"at, wie sie mit den Augen eines Fu"sballfans der sechziger
+Jahre gesehen sein k"onnte. Bevor wir es vergessen: Da war doch noch
+die Unsicherheit wegen der Nummerierung von Tabellen. Na also, wer
+sagt's denn?
+\end{tabwindow}
+
+\begin{verbatim}
+\begin{tabwindow}[4,c,{
+\begin{tabular}[t]{|r|l|r@{:}l|r@{:}l|}
+...
+\end{tabular}
+},{Tabelle}]
+\sloppy
+Aber jetzt wird alles auf ...
+... genug der Beispiele.
+\end{tabwindow}
+\end{verbatim}
+
+\begin{tabwindow}[4,c,{
+\begin{tabular}[t]{|r|l|r@{:}l|r@{:}l|}
+\hline
+1&HSV&12&0&14&1\\
+\hline
+2&MSV&11&1&10&4\\
+\hline
+3&VfB&10&2&12&9\\
+\hline
+4&SVW&9&3&11&9\\
+\hline
+5&1.\ FCK&8&4&10&10\\
+\hline
+\end{tabular}
+},{Tabelle}]
+\sloppy
+Aber jetzt wird alles auf die Spitze getrieben. Oder vielmehr
+in die Mitte gesetzt. Ja doch, auch der zentrierte Satz einer Tabelle
+ist ebenfalls kein gro"ses Problem. Ein Problem ist jedoch, wie denn
+der Text gelesen werden soll. Erst die linke Spalte und dann die
+rechte oder einfach von links nach rechts? Oft kann man es nicht
+falsch machen. Das tr"ostet doch ungemein!
+
+Nun noch ein kleiner Hinweis in eigener Sache:
+Beim zentrierten Satz ist es schon besser, wenn der Abstand zwischen
+den Abschnitten auf $0pt$ gesetzt wird oder nur ein Paragraph verwendet
+wird. Der Grund? Die Abst"ande k"onnen unabh"angig vom Zeilenabstand
+sein und so ist ein optisch korrekter Satz der Spalten rechts und
+links vom Fenster etwas m"uhsam {\tt :-)}. Um nichts dem Zufall zu
+"uberlassen wird dies gleich von {\tt picinpar} erledigt.
+\end{tabwindow}
+
+Jetzt noch der Fall, bei dem eine Abbildung zentriert in den Text gesetzt
+werden soll, aber rechts und links so wenig Platz ($<=72pt$) bleibt,
+da"s dort die Probleme mit den Trennungen zu gro"s werden w"urden. Als
+Beispiel wird im Fenster die \TeX{}--Eingabe zu diesem Fall gezeigt. Um
+gleich etwaigen Problemen vorzubeugen, wird zun"achst wie folgt vorgegangen:
+
+{\parskip0pt\topsep0pt
+\begin{verbatim}
+\newbox\pppbox
+\setbox\pppbox=\vbox{\hsize=11cm
+\begin{verbatim}
+\begin{figwindow}[4,c,{\wframepic{ppp}
+},
+{Die Eingabe zu diesem Textteil!}]
+Diese Vorgehensweise ist wegen der Benutzung
+...
+dem Einsatz im Wege.
+\end{figwindow}
+\end{verbatim}
+\verb?\end{verbatim}?
+\begin{verbatim}
+}
+\end{verbatim}
+}
+\newbox\pppbox
+\setbox\pppbox=\vbox{\hsize=11cm
+\begin{verbatim}
+\begin{figwindow}[4,c,{\wframepic{ppp}
+},
+{Die Eingabe zu diesem Textteil!}]
+Diese Vorgehensweise ist wegen der Benutzung
+...
+dem Einsatz im Wege.
+\end{figwindow}
+\end{verbatim}
+}
+\begin{figwindow}[4,c,{\wframepic{ppp}},
+{Die Eingabe zu diesem Textteil!}]
+Diese Vorgehensweise ist wegen der Benutzung von {\tt figwindow} und
+der {\tt verbatim} dargestellten Eingabe notwendig. Aber ist ja auch egal.
+Wichtig ist einfach, da"s festgestellt wird, ob rechts und links vom
+zentrierten Bild noch genug Platz frei ist, um dort Text ohne gro"se
+Probleme zu setzen. Die Wahl von $72pt$ ist mehr oder weniger willk"urlich
+vorgenommen worden. Letztlich h"angt diese Grenze ja auch von der
+verwendeten Sprache ab. Falls also nicht genug Platz an den Seiten
+vorhanden ist, dann wird einfach nach dem Fenster mit dem Text fortgefahren.
+Noch mal schnell ein Blick auf die Nummerierung der Abbildungen...
+Ja, stimmt genau. Jetzt steht also dem Einsatz nichts im Wege.
+\end{figwindow}
+
+\begin{window}[3,r,{\arraycolsep=2.5pt \def\arraystretch{.75}
+$\left(\begin{array}{ccccccccc}%
+	 *&*&*&*&&&&&\\
+        **&*&*&*&*&&&&\\ \cline{3-6}
+	 *&*&\multicolumn{1}{|c}{*}&*&*&\multicolumn{1}{c|}{*}&&&\\
+	 &*&\multicolumn{1}{|c}{*}&*&*&\multicolumn{1}{c|}{*}&*&&\\
+	 &&\multicolumn{1}{|c}{*}&*&*&\multicolumn{1}{c|}{*}&*&*&\\ \cline{3-6}
+	 &&&*&*&*&*&*&*\\
+	 &&&&*&*&*&*&*\\
+	 &&&&&*&*&*&*\\
+	 &&&&&&*&*&*
+	 \end{array}
+   \right)$},{}]
+Doch halt! Es handelt sich hier ja um \TeX{}. Und das ist Grund genug, auch
+noch kurz auf mathematischen Formelsatz einzugehen. Sowohl im Fenster als
+auch im Text neben dem Fenster k"onnen Formeln erscheinen, deren Dimensionen
+beim Satz weitestgehend ber"ucksichtigt werden. Da ist also rechts ein
+{\tt array} und hier folgt eine Formel:
+
+\def\formel#1#2#3#4#5{#1(#4)-#1(#3)=
+\int_{#3}^{#4}\sum_{j=0}^{#5}#2(x_j)
+\prod_{{k=0}\atop{k\not= j}}^{#5}
+{x-x_k\over x_j-x_k}\; dx}
+$\formel Ffabn$
+
+Der zentrierte Satz von Formeln neben dem Text ist bisher mit
+{\tt picinpar.sty} nicht m"oglich, vielleicht kommt es aber eines
+Tages. Und "uberhaupt hat sich gerade der Mathematiksatz als gro"ses
+Problem bei der Entwicklung herausgestellt, da doch viel {\tt glue} in
+den {\tt boxes} verwendet wird. Aber es geht ja doch so halbwegs.
+\end{window}
+\vfill
+\centerline{Friedhelm Sowa, Heinrich--Heine--Universit"at D"usseldorf,
+Universit"atsrechenzentrum}
+\centerline{Email: sowa@convex.rz.uni-duesseldorf.de {\sl oder}
+tex@ze8.rz.uni-duesseldorf.de}
+\end{document}

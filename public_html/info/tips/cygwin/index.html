@@ -1,0 +1,179 @@
+<h1 >Cygwinの導入方法 ～utf-8編～<a href="#Cygwin-utf-8" class="wiki-anchor">&para;</a></h1>
+<ul>
+<li>Cygwinのダウンロード，インストール
+<ul>
+<li>ダウンロード<br /><a class="external" href="http://www.cygwin.com/">http://www.cygwin.com/</a><br />上記のサイトから，setup.exe をダウンロードしてくる．</li>
+<li>インストール
+<ul>
+<li>起動
+<ol>
+<li>Windowsキー + r で ファイル名を指定して実行を起動する</li>
+<li>名前: 「setup.exeのパス -X」でOKを押し，setup.exe を実行する．<br />(-X ファイル中のスクリプトを抽出するオプション) これを付けないとptetexがインストールできない． -> ptetexのサイトに接続ができない．</li>
+</ol>
+</li>
+<li>Choose A Download Source<br />Install from Internet</li>
+<li>Select Root Install Directory
+<ol>
+<li>Root Directory<br />C:\cygwin</li>
+<li>Install For<br />All Users (RECOMMENDED)</li>
+</ol>
+</li>
+<li>Select Local Package Directory
+<ol>
+<li>Local Package Directory<br />C:\Users\username\Downloads</li>
+</ol>
+</li>
+<li>Select Your Internet Connection
+<ol>
+<li>Direct Connection</li>
+</ol>
+</li>
+<li>Choose A Download Site
+<ol>
+<li>User URL:http://ptetexwin.sourceforge.jp</li>
+<li>Add をクリック</li>
+<li>Available Download Sites の <a class="external" href="http://ptetexwin.sourceforge.jp">http://ptetexwin.sourceforge.jp</a> を選択</li>
+</ol>
+</li>
+<li>Select Packages<br />EditorとDevelをDefaultからInstallへ<br />Develは <del>tex環境のみならいらないかも?</del> gitコマンドを利用するために必要．後で追加でダウンロード可能<br />sshコマンドを使うためNetカテゴリ中のopensshを選択しておく．<br />右上のviewをクリックしてFullを選び，<br /><del>Packageがptetexである行のNew項目をSkipからバージョン情報に変えて次へ</del><br />ptetexは乃村先生の用意してくださっているMakefileが正常に動作しないので，texliveパッケージを導入すること．</li>
+<li>Resolving Dependencies<br />Select required packages (RECOMMENDED)にチェック<br />依存関係で警告が出たらRECOMENDにチェックがあるのを確認してOK<br />インストールを待つ</li>
+<li>Create Icons
+<ol>
+<li>Create icon on Desktop にチェック</li>
+<li>Add icon to Start Menu にチェック</li>
+</ol></li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li>NTEmacsのダウンロード，インストール
+<ul>
+<li>ダウンロード<br /><a class="external" href="http://sourceforge.jp/projects/gnupack/">http://sourceforge.jp/projects/gnupack/</a><br />上記URLから，NTEmacsをダウンロードする．<br />NTEmacsはWindows用にビルドしたGNU Emacsの通称である．<br />ページ上部にある最新ダウンロードファイルをダウンロードする．<br />今回は"emacs_24.3_20130317.exe"をダウンロードした．<br />場所はcygwin内の方がよい⇒cygwin/usr/share内がおすすめ</li>
+<li>環境変数の設定<br />コンピュータを右クリック⇒プロパティ⇒システムの詳細設定⇒環境変数から<br />ユーザ環境変数に以下を追加する
+<table>
+<tr>
+<th>変数名 </th>
+<th>変数値 </th>
+</tr>
+<tr>
+<td>HOME </td>
+<td>cygwin Terminal 起動時にホームディレクトリにしたい場所のアドレス </td>
+</tr>
+<tr>
+<td>MAKE_MODE </td>
+<td>UNIX </td>
+</tr>
+<tr>
+<td>SHELL </td>
+<td>/bin/bash </td>
+</tr>
+<tr>
+<td>CYGWIN </td>
+<td>ntsec(NTFSなら)またはnontsec(NTFS以外) </td>
+</tr>
+</table></li>
+</ul></li>
+</ul>
+<ul>
+<li>設定例1(Windowsのhomeをhomeにする)
+<ul>
+<li>シンボリックリンクの設定<br />cygwin terminalを起動して，シンボリックリンクの設定をする.<br /><pre>
+$ cd /home
+$ ln -s /cygdrive/c/Users/username/
+</pre></li>
+<li>確認<br />cygwin terminalを再起動して，以下の結果が出ればOK.
+<ul>
+<li>pwdを確認<br /><pre>
+$ pwd
+/home/username
+</pre></li>
+<li>/etc/passwdを確認<br />pwdの出力結果と一致することを確認する．</li>
+</ul>
+</li>
+<li>環境変数の設定
+<table>
+<tr>
+<th>変数名 </th>
+<th>変数値 </th>
+</tr>
+<tr>
+<td>HOME </td>
+<td>C:\cygwin\home\username </td>
+</tr>
+<tr>
+<td>MAKE_MODE </td>
+<td>UNIX </td>
+</tr>
+<tr>
+<td>SHELL </td>
+<td>/bin/bash </td>
+</tr>
+<tr>
+<td>CYGWIN </td>
+<td>ntsec </td>
+</tr>
+</table></li>
+</ul></li>
+</ul>
+<ul>
+<li>設定例2(C:cygwin\homeをhomeにする)
+<ul>
+<li>確認<br />環境変数を設定した後，cygwin terminalを再起動して，以下の結果が出ればOK.
+<ul>
+<li>pwdを確認<br /><pre>
+$ pwd
+/home/username
+</pre></li>
+<li>/etc/passwdを確認<br />pwdの出力結果と一致することを確認する．</li>
+</ul>
+</li>
+<li>環境変数の設定
+<table>
+<tr>
+<th>変数名 </th>
+<th>変数値 </th>
+</tr>
+<tr>
+<td>HOME </td>
+<td>C:\cygwin\home\username </td>
+</tr>
+<tr>
+<td>MAKE_MODE </td>
+<td>UNIX </td>
+</tr>
+<tr>
+<td>SHELL </td>
+<td>/bin/bash </td>
+</tr>
+<tr>
+<td>CYGWIN </td>
+<td>ntsec </td>
+</tr>
+</table></li>
+</ul></li>
+</ul>
+<ul>
+<li>シンボリックリンクの設定<br />NTEmacsのrunemacs.exeに対してシンボリックリンクをはるコマンドは<br /><pre>
+$ln -s (ディレクトリ) (リンク名)
+</pre><br />これでリンク名をたたくと起動できるようになる<br />このコマンドをたたいたディレクトリをユーザ環境変数のPATHに追加すること</li>
+</ul>
+<ul>
+<li>aliasの設定<br />シンボリックリンクを設定しなくても，aliasの設定でも可?<br />.bashrcに以下を記述する．<br /><pre>
+alias emacs=runemacs.exeのパス
+</pre></li>
+<li>文字コードの変換
+<ul>
+<li>cygwin端末上で右クリックし，Optionを選択してtextを選ぶ<br />Fontを日本語にして，Localeをja_JP，Character setをutf-8とする</li>
+<li>cygwinを起動して.emacs.dのあるディレクトリで.emacsを作る<br />ファイルの先頭に以下をコピー&#38;ペーストし<br /><pre>
+(set-language-environment "Japanese")
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+</pre><br />ファイルの末尾にコピー&#38;ペーストする<br /><pre>
+(set-default-coding-systems 'utf-8)
+</pre><br />これでcygwin上でntemacsが使え，かつ保存したtexファイルの文字コードがutf-8となっているはずである<br />ちなみに，このファイルをplatexするときは<br /><pre>
+$platex-utf8 (ファイル名)
+</pre><br />とする必要がある</li>
+</ul></li>
+</ul>

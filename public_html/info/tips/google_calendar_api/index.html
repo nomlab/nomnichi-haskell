@@ -1,0 +1,34 @@
+<h1 >GoogleCalendarAPIで予定(Event)を取得するまで<a href="#GoogleCalendarAPIEvent" class="wiki-anchor">&para;</a></h1>
+
+<ol>
+<li>自分のgoogleアカウントにログインする</li>
+<li>GoogleAPIsConsoleでServicesを選択しCalenderAPIのところをoffからonに変更する<br /><a class="external" href="https://code.google.com/apis/console/?pli=1#project:856487986522:services">https://code.google.com/apis/console/?pli=1#project:856487986522:services</a><br />途中で2つ承認を求められるのでそれぞれチェックを入れ認証する</li>
+<li>GoogleAPIsConsole中のAPIAccessの項目から青いボタンを押してProductnameを登録．<br /><a class="external" href="https://code.google.com/apis/console/?pli=1#project:856487986522:access">https://code.google.com/apis/console/?pli=1#project:856487986522:access</a>　<br />ページ下部にSimple API Accessができれば登録が完了している</li>
+<li>同ページのCreate Client ID から，Installed application を選んでラジオボタンのOtherを選びIDを作成すると，以後APIAccessのページでClient ID for installed applicationsの項目からclientID，client_secret，Ridrect URIが閲覧できる</li>
+<li>ブラウザを開けるコマンドラインで(←開けないとブラウザーコマンドラインが見つからないというエラ―が発生します) <br /><pre>
+$google-api oauth-2-login --scope=https://www.googleapis.com/auth/calendar --client-id=CLIENT_ID --client-secret=CLIENT_SECRET
+</pre><br />上記のコマンドを実行するとブラウザでページがポップアップするので認証をクリックするとホームディレクトリに.google-api.yamlができるので必要なディレクトリにコピーする</li>
+<li>以下のGoogleDevelopersのGoogleCalendarAPI中のYourFirstApp内のConfigure your App<br /><a class="external" href="https://developers.google.com/google-apps/calendar/instantiate?hl=ja">https://developers.google.com/google-apps/calendar/instantiate?hl=ja</a><br />にアクセスすると，RubyでGoogleCalendarAPIを使うためのソースコードが記述されているので貼りつけて利用する<br /><pre>
+require 'rubygems'
+require 'google/api_client'
+require 'yaml'
+
+oauth_yaml = YAML.load_file('.google-api.yaml')
+client = Google::APIClient.new
+client.authorization.client_id = oauth_yaml["client_id"]
+client.authorization.client_secret = oauth_yaml["client_secret"]
+client.authorization.scope = oauth_yaml["scope"]
+client.authorization.refresh_token = oauth_yaml["refresh_token"]
+client.authorization.access_token = oauth_yaml["access_token"]
+
+if client.authorization.refresh_token &#38;&#38; client.authorization.expired?
+  client.authorization.fetch_access_token!
+end
+
+service = client.discovered_api('calendar', 'v3')
+</pre></li>
+</ol>
+
+<ol>
+<li>GoogleCalenderAPIのReference内にさまざまな関数の使い方が記載されている<br /><a class="external" href="https://developers.google.com/google-apps/calendar/v3/reference/?hl=ja">https://developers.google.com/google-apps/calendar/v3/reference/?hl=ja</a><br />予定を取得するには<br /><a class="external" href="https://developers.google.com/google-apps/calendar/v3/reference/events/list?hl=ja">https://developers.google.com/google-apps/calendar/v3/reference/events/list?hl=ja</a><br />こちらのリンクのEvents:listを使う<br />ExampleのソースコードとResponseに記載された返り値を参考にプログラミングを進める</li>
+</ol>

@@ -1,0 +1,37 @@
+<h1>Hiki記述方法</h1>
+
+<div align="right">
+作成日：2009年5月15日<br>
+最終更新日：2009年6月2日<br>
+作成者：香西 英樹<br>
+
+</div>
+
+<hr>
+<h2>はじめに</h2>
+このページでは，Lastnoteやノムニチで使用されているHikiの記述法を説明する．<br>
+基本的な記述法は<a href="http://hikiwiki.org/ja/TextFormattingRules.html">TextFormattingRules</a>を見てもらいたい．<br>
+また，RedmineのWikiに関しては<a href="http://redmine.jp/tech_note/RedmineWikiFormatting/">Redmineにおけるwiki記法</a>を参照してもらいたい．<br>
+ほとんどのテキスト入力エリアで<a href="http://redmine.jp/tech_note/textile/">textile記法</a>が使用できる．<br>
+以下，ノムニチのみで使える記述法を説明する．
+<hr>
+
+<h3>InterWiki記法</h3>
+<pre>
+bibdata:id             文献DBへの参照
+nomnichi:parmalink     ノムニチの他記事へのリンク
+</pre>
+<h3>plugin記法</h3>
+<pre>
+{{attachment(name)}}   添付ファイルの参照
+{{image(name)}}        添付のイメージ表示
+{{asin(number)}}       Amazonへのリンク
+</pre>
+<h3>その他</h3>
+<pre>
+//...                  続きを読むのブレーク位置
+
+//&lt;secret
+    ～                 ここに書かれた文章を読めるのはログインした人のみ
+//secret&gt;
+</pre>

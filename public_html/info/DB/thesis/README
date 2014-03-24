@@ -1,0 +1,67 @@
+谷口研 卒業/修了 論文一覧 
+作成: noguchi@csce.kyushu-u.ac.jp  1998.10.19
+更新: kurihara@swlab.cs.okayama-u.ac.jp 2009.4.1
+更新: nakahara@swlab.cs.okayama-u.ac.jp 2011.2.21
+
+手順 --- ユーザ名 "FOO" の場合
+(注) カレントディレクトリはこの README ファイルがあるところ
+(/var/www/lab/nom/info/DB/thesis)
+とする
+
+(1) 自分の名前のディレクトリを作成する(必ずしもログイン名と同じでなくともよい)
+  
+        % mkdir FOO
+
+
+(2) 作成したディレクトリ中に
+      ・卒論     --> bachelor
+      ・修論     --> master
+      ・博士論文 --> doctor
+    とそれぞれの論文ファイルを置くディレクトリを作成する。すべてをつくる
+    必要はない。
+        
+        % cd FOO
+        % mkdir bachelor master doctor
+
+
+(3) それぞれのディレクトリに『論文』と『試問予稿』の
+      ・ps  形式のファイル (hogehoge.ps)
+      ・pdf 形式のファイル (hogehoge.pdf)
+    それぞれ2種類のファイルを置く。
+        論文のファイル名は thesis.{ps,pdf}
+        予稿のファイル名は abstract.{ps,pdf}
+
+
+       % cp $bachelor_file_dir/thesis.ps  bachelor/
+       % cp $bachelor_file_dir/thesis.pdf bachelor/
+       % cp $bachelor_file_dir/abstract.ps  bachelor/
+       % cp $bachelor_file_dir/abstract.pdf bachelor/
+
+   
+    (ある人は、)修論・博士論文も同様にそれぞれのディレクトリにコピーする。
+
+
+(4) 各ディレクトリおよびファイルには localusers のグループ書込み許可を与えておく
+    (自分が卒業した後のメンテナンスのため)
+       % chown -R FOO:localusers FOO
+       % chmod -R g+w FOO
+       % chmod -R +t FOO
+
+(5) member.list.euc に、
+       (A)先頭ディレクトリ名(この例では、FOO)
+       (B)自分の名前
+       (C)学部卒業年
+       (D)卒業論文論文タイトル
+       (E)修士修了年
+       (F)修士論文論文タイトル
+       (G)博士修了年
+       (H)博士論文論文タイトル
+    を、この順番で追加する。各エントリは`,'で区切る。
+    【注意】
+        空行を作らないこと
+
+(6) {www-data}/lab/nom/info に移動し，以下のPerlスクリプトを実行
+    ※ 現在以下のスクリプトは正常に動作しない．
+       スクリプトを修正するか，手動でページを作成すること．
+
+  # perl update-thesis.pl > thesis.html

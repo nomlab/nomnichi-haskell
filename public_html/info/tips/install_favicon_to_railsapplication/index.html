@@ -1,0 +1,27 @@
+<h1 >Railsアプリにfaviconを導入する手順</h1>
+  <p>作成者:吉井英人<br />作成日:2013/2/27(水)<br />最終更新日:2013/3/19(火)</p>
+
+<h2 >手順</h2>
+  <p>+ faviconの作成<br />+ Railsアプリにfaviconを導入</p>
+
+<h2 >1. faviconの作成</h2>
+  <p>新しく作成する，あるいは既存の画像から作成するという方法があります．<br />
+  以下のサイトが使いやすかったです．<br />
+  <a href="http://www.xiconeditor.com" class="external">X-Icon Editor</a><br />
+  16x16, 24x24, 32x32, および64x64の4種類のfaviconを生成することができます．</p>
+  <p>以下のサイトはその他のfavicon作成用サイトについてまとめてあります．<br />
+  参考サイト - <a class="external" href="http://www.ideaxidea.com/archives/2008/02/faviconico.html">http://www.ideaxidea.com/archives/2008/02/faviconico.html</a></p>
+
+<h2 >2. Railsアプリにfaviconを設置</h2>
+  <p>参考サイト - <a class="external" href="http://d.hatena.ne.jp/hrendoh/20111102/1320236055">http://d.hatena.ne.jp/hrendoh/20111102/1320236055</a></p>
+
+<h3 >faviconファイルを設置</h3>
+  <p>faviconファイル(favicon.ico)を設置する．<br />Rails3.1系以上では，app/assets/imagesに設置する．<br />
+  Rails3.0系では，public/images以下に設置する．<br />
+ 
+<h3 >リンクの追加</h3>
+
+  <p>app/views/layouts/application.html.erbのheadに以下の行を追加する．<br />
+  <pre>
+  favicon_link_tag 'favicon.ico'<br />
+  </pre>

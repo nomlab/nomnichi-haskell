@@ -1,0 +1,52 @@
+Ruby on Railsを用いた商品管理プログラムの参考ページ
+
+作成者:木村，吉井
+作成日:4/1
+
+研修課題のヒントとなる情報をまとめました．
+参考にしてくれると幸いです．
+
+(Ruby on Railsについて)
+RailsによるアジャイルWebアプリケーション開発 第4版で分からないところがあった場合，以下のサイトおよび書籍を参照してください．
+[おすすめ]
+  (1)サイト：Ruby on Rails 3.0 日記
+  http://www.oiax.jp/rails/rails3.html
+  (2)サイト：Ruby on Rails入門
+  http://www.rubylife.jp/rails/
+  (3)書籍：Rails3レシピブック
+  著者:高橋征義，松田明，諸橋恭介
+  出版社:ソフトバンク クリエイティブ
+
+(AmazonAPIについて)
+以下はAmazonのAPIについて参考となるサイトです．
+[おすすめ]
+  (1)ProductAdvertisingAPI開発者ガイド
+  https://images-na.ssl-images-amazon.com/images/G/09/associates/paapi/dg/index.html
+  (2)Amazon Web サービス入門(Product Advertising API)
+  http://www.ajaxtower.jp/ecs/
+
+(ライブラリについて)
+AmazonAPIの利用をRubyで円滑に行う，「amazon-ecs」というライブラリがあります．
+本課題でもこのライブラリを用いるのがいいと思われます．
+以下のコマンドにより，amazon-ecsが利用できるようになります．
+% gem install amazon-ecs
+また，Ruby on Railsでは，Gemfileに以下の行を追加し，bundleすることにより利用できます．
+gem amaozn-ecs
+以下はamazon-ecsについて参考となるサイトです．
+[おすすめ]
+  (1)はるかなる熊/Rails On Amazon Web Service [amazon-ecs]
+  http://b.ruyaka.com/2010/02/08/rails-on-amazon-web-service/
+  (2)KAGAYOSHITO.COM/【Ruby on Rails】Ruby on Rails で Amazon Product Advertising API を利用する
+  http://kagayoshito.com/posts/show/18
+
+(ISBNについて)
+書籍には一意の番号であるISBNが登録されています．
+作成するプログラムは，ISBNを用いてamazonから書籍の情報を取得する機能を持ちます．
+以下はISBNについて参考となるサイトです．
+[おすすめ]
+  (1)日本図書コード管理センター
+  http://www.isbn-center.jp/index.html
+  (2)seclanのほえほえルーム/ISBN の表記方法と ISBN-13 への変換方法
+  http://seclan.dll.jp/dtdiary/2006/dt20060210.htm
+  関連にあるリンクも確認することをお勧めします．
+
