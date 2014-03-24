@@ -35,22 +35,22 @@ $newline never
                 <li>
                   <a href=@{HomeR}>トップページ
                 <li>
-                  <a href="static/html/members.html">構成員
+                  <a href="ourstatic/members.html">構成員
                 <li>
-                  <a href="static/html/research/index.html">研究紹介
+                  <a href="ourstatic/research/index.html">研究紹介
                   <ul class="depth_1">
                     <li>
-                      <a href="static/html/research/gn.html"> GN
+                      <a href="ourstatic/research/gn/index.html"> GN
                     <li>
-                      <a href="static/html/research/new.html"> New
+                      <a href="ourstatic/research/new/index.html"> New
                 <li>研究業績
                   <ul class="depth_1">
                     <li>
-                      <a href="static/html/thesis/index.html">学位論文一覧
+                      <a href="ourstatic/thesis/index.html">学位論文一覧
                     <li>
-                      <a href="static/html/bibs/index.html">発表論文一覧
+                      <a href="ourstatic/bibs/index.html">発表論文一覧
                 <li>
-                  <a href="static/html/access/index.html">アクセス
+                  <a href="ourstatic/access/index.html">アクセス
                 <li>
                   <a href=@{NomnichiR}>ノムニチ
                   <ul class="depth_1">
