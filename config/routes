@@ -15,3 +15,5 @@
 /userlist UserR GET POST
 
 /loginform LoginformR GET POST
+
+/ourstatic/*Texts OurStaticR GET
