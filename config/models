@@ -1,6 +1,7 @@
 User
     ident Text
     password Text Maybe
+    salt Text
     UniqueUser ident
     deriving Typeable
 Email
@@ -33,6 +34,6 @@ Comment
     deriving
 
 Loginuser
-    idstr       Text
-    password    Text Maybe
+    idstr Text
+    password Text Maybe
     UniqueUsr idstr
