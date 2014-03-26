@@ -19,5 +19,5 @@ instance HashDBUser User where
     userPasswordHash = userPassword
     userPasswordSalt = Just . userSalt
     setSaltAndPasswordHash s h p = p { userSalt = s,
-                           userPassword = Just . h
+                           userPassword = Just h
                            }
