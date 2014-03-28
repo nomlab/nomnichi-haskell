@@ -8,12 +8,6 @@
         <li>
           <a href=@{ArticleR articleId}> #{articleTitle article}
 
-<div class="article_form">
-  <form method=post enctype=#{enctype}>
-    ^{articleWidget}
-    <div>
-      <input type=submit value="Post New Article">
-      <a class=preview>プレビュー
-
-  <div class="article_preview">
+<a href=@{HomeR}/nomnichi/create> Create Article
+<br>
 <a href=@{HomeR}/auth/logout> Logout

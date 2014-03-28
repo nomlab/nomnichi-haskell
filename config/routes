@@ -6,11 +6,13 @@
 
 / HomeR GET POST
 
-/nomnichi                         NomnichiR        GET POST
-/nomnichi/#ArticleId              ArticleR         GET POST
+/nomnichi                         NomnichiR        GET 
+/nomnichi/create 				  CreateArticleR   GET POST
+/nomnichi/#ArticleId/show         ArticleR         GET POST
 /nomnichi/#ArticleId/edit         EditArticleR     GET
 /nomnichi/#ArticleId/delete       DeleteArticleR   POST
 /nomnichi/#ArticleId/comment      CommentR         POST
+
 
 /userlist UserR GET POST
 

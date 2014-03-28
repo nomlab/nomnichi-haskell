@@ -1,6 +1,7 @@
 module Handler.Nomnichi
   ( getNomnichiR       -- ノムニチトップ
-  , postNomnichiR      -- 記事の投稿
+  , getCreateArticleR  -- 記事投稿ページの表示
+  , postCreateArticleR -- 記事の投稿
   , getArticleR        -- 記事の表示
   , postArticleR       -- 記事の編集
   , getEditArticleR    -- 記事の編集画面の表示
@@ -25,13 +26,21 @@ instance YesodNic App
 getNomnichiR :: Handler Html
 getNomnichiR = do
   articles <- runDB $ selectList [] [Desc ArticleId]
-  (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "articles")
 
+-- 飲む日トップころす
+getCreateArticleR :: Handler Html
+getCreateArticleR = do
+  (articleWidget, enctype) <- generateFormPost entryForm
+  defaultLayout $ do
+    $(widgetFile "createArticleForm")
+
+
 -- 記事作成
-postNomnichiR :: Handler Html
-postNomnichiR = do
+--ここを切り分けるんか？？？
+postCreateArticleR :: Handler Html
+postCreateArticleR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
   case res of
     FormSuccess article -> do
