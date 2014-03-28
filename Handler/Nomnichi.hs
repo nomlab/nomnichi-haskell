@@ -16,6 +16,7 @@ import System.Locale (defaultTimeLocale)
 import System.IO.Unsafe (unsafePerformIO) 
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
+import Yesod.Auth
 instance YesodNic App
 
 
@@ -25,11 +26,13 @@ instance YesodNic App
 -- ノムニチトップ
 getNomnichiR :: Handler Html
 getNomnichiR = do
-  articles <- runDB $ selectList [] [Desc ArticleId]
+  creds <- maybeAuthId
+  articles <- case creds of 
+    Just _ -> runDB $ selectList [] [Desc ArticleId]
+    Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   defaultLayout $ do
     $(widgetFile "articles")
 
--- 飲む日トップころす
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
   (articleWidget, enctype) <- generateFormPost entryForm
@@ -38,7 +41,6 @@ getCreateArticleR = do
 
 
 -- 記事作成
---ここを切り分けるんか？？？
 postCreateArticleR :: Handler Html
 postCreateArticleR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
@@ -54,12 +56,24 @@ postCreateArticleR = do
 -- 記事表示
 getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
+  creds <- maybeAuthId
   article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
-  defaultLayout $ do
-    setTitle $ toHtml $ articleTitle article
-    $(widgetFile "article")
+  case creds of
+    Just _ -> 
+      defaultLayout $ do
+        setTitle $ toHtml $ articleTitle article
+        $(widgetFile "article")
+    Nothing ->
+      case articleApproved article of
+        True ->
+          defaultLayout $ do
+            setTitle $ toHtml $ articleTitle article
+            $(widgetFile "article")
+        False ->
+          defaultLayout $ do
+          redirect $ NomnichiR
 
 -- 記事更新
 postArticleR :: ArticleId -> Handler Html
