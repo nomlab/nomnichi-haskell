@@ -1,5 +1,5 @@
-<div class="article_list">
-  <h1 class="article_list"> Articles
+<div class="home">
+  <h1 class="home"> Articles
   $if null articles
     <p> There are no articles in the blog.
   $else
