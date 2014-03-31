@@ -11,6 +11,7 @@ body {
 p {
   margin: 10px;
   font-size: 14px;
+  line-height: 20px;
 }
 
 /* div: content box */
@@ -18,6 +19,7 @@ div {
     margin: 5px;
     }
 
+/* centering */
 div.center {
     width: 1px;
     margin: 0 auto 0 auto;
@@ -25,6 +27,22 @@ div.center {
 
 div.text_center {
     text-align: center;
+}
+
+/* float left */
+
+div.left {
+    float: left;
+}
+
+/* float right */
+div.right {
+    float: right;
+}
+
+/* float clear both(left and right) */
+div.clear {
+    clear: both;
 }
 
 div.article_list, div.article_form, div.home {
@@ -228,7 +246,7 @@ input, textarea {background: #FFF;}
 
 textarea {width: 27em; height: 9em;}
 
-/* li, ul: itemize*/
+/* li, ul, ol: itemize*/
 li {
     margin: 1em 0 0 0;
 }
@@ -240,6 +258,11 @@ ul {
 
 ul.depth1 {
     list-style-type: circle;
+}
+
+/* ol is used at only research index page */
+ol {
+    margin: 1em 1em 1em 4em;
 }
 
 /* a: link */
