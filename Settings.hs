@@ -42,7 +42,7 @@ staticDir = "static"
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
 staticRoot :: AppConfig DefaultEnv x -> Text
-staticRoot conf = [st|#{appRoot conf}/lab/nom2/static|]
+staticRoot conf = [st|#{appRoot conf}/lab/nom/static|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.

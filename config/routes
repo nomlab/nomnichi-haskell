@@ -1,20 +1,20 @@
-/lab/nom2/static StaticR Static getStatic 
-/lab/nom2/auth AuthR Auth getAuth
+/lab/nom/static StaticR Static getStatic 
+/lab/nom/auth AuthR Auth getAuth
 
-/lab/nom2/favicon.ico FaviconR GET
-/lab/nom2/robots.txt RobotsR GET
+/lab/nom/favicon.ico FaviconR GET
+/lab/nom/robots.txt RobotsR GET
 
-/lab/nom2/ HomeR GET POST
+/lab/nom/ HomeR GET POST
 
-/lab/nom2/nomnichi                         NomnichiR        GET 
-/lab/nom2/nomnichi/create                  CreateArticleR   GET POST
-/lab/nom2/nomnichi/#ArticleId/show         ArticleR         GET POST
-/lab/nom2/nomnichi/#ArticleId/edit         EditArticleR     GET
-/lab/nom2/nomnichi/#ArticleId/delete       DeleteArticleR   POST
-/lab/nom2/nomnichi/#ArticleId/comment      CommentR         POST
+/lab/nom/nomnichi                         NomnichiR        GET 
+/lab/nom/nomnichi/create                  CreateArticleR   GET POST
+/lab/nom/nomnichi/#ArticleId/show         ArticleR         GET POST
+/lab/nom/nomnichi/#ArticleId/edit         EditArticleR     GET
+/lab/nom/nomnichi/#ArticleId/delete       DeleteArticleR   POST
+/lab/nom/nomnichi/#ArticleId/comment      CommentR         POST
 
-/lab/nom2/userlist UserR GET POST
+/lab/nom/userlist UserR GET POST
 
-/lab/nom2/loginform LoginformR GET POST
+/lab/nom/loginform LoginformR GET POST
 
-/lab/nom2/ourstatic/*Texts OurStaticR GET
+/lab/nom/ourstatic/*Texts OurStaticR GET
