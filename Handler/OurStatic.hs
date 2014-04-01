@@ -31,6 +31,7 @@ getOurStaticR path =
                   [whamlet|#{preEscapedToHtml body}|]
       "png" -> sendFile typePng $ textsToFilePath path
       "jpg" -> sendFile typeJpeg $ textsToFilePath path
+      _ -> sendFile typeOctet $ textsToFilePath path
     where 
       body = readStaticFile $ textsToFilePath path
       fileExtension = reverse $ fst $ break (=='.') $ reverse $ textsToFilePath path
