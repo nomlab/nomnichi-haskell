@@ -26,7 +26,7 @@ $newline never
         <div class="container">
             <header>
               <dev>
-                <a href=@{HomeR}><img src="/static/img/okayama-university-logo.gif" width="80px" height="80px">
+                <a href=@{HomeR}><img src="/lab/nom/static/img/okayama-university-logo.gif" width="80px" height="80px">
               <div class="blogtitle">
                 <h2> 岡山大学大学院 自然科学研究科 産業創成工学専攻
                 <h1> 計算機科学講座(乃村研究室)
@@ -36,27 +36,27 @@ $newline never
                 <li>
                   <a href=@{HomeR}>トップページ
                 <li>
-                  <a href="@{HomeR}ourstatic/members.html">構成員
+                  <a href="@{HomeR}/ourstatic/members.html">構成員
                 <li>
-                  <a href="@{HomeR}ourstatic/research/index.html">研究紹介
+                  <a href="@{HomeR}/ourstatic/research/index.html">研究紹介
                   <ul>
                     <li>
-                      <a href="@{HomeR}ourstatic/research/gn/index.html"> GN
+                      <a href="@{HomeR}/ourstatic/research/gn/index.html"> GN
                     <li>
-                      <a href="@{HomeR}ourstatic/research/new/index.html"> New
+                      <a href="@{HomeR}/ourstatic/research/new/index.html"> New
                 <li>研究業績
                   <ul>
                     <li>
-                      <a href="@{HomeR}ourstatic/thesis/index.html">学位論文一覧
+                      <a href="@{HomeR}/ourstatic/thesis/index.html">学位論文一覧
                     <li>
-                      <a href="@{HomeR}ourstatic/bibs/index.html">発表論文一覧
+                      <a href="@{HomeR}/ourstatic/bibs/index.html">発表論文一覧
                 <li>
-                  <a href="@{HomeR}ourstatic/access/index.html">アクセス
+                  <a href="@{HomeR}/ourstatic/access/index.html">アクセス
                 <li>
                   <a href=@{NomnichiR}>ノムニチ
                   <ul>
                     <li>
-                      <a href="@{HomeR}ourstatic/nomnichi/about.html">ノムニチとは
+                      <a href="@{HomeR}/ourstatic/nomnichi/about.html">ノムニチとは
 
             <div id="main" role="main">
               ^{pageBody pc}
