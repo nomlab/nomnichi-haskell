@@ -3,15 +3,7 @@
 -- In addition, you can configure a number of different aspects of Yesod
 -- by overriding methods in the Yesod typeclass. That instance is
 -- declared in the Foundation.hs file.
-module Settings
-    ( widgetFile
-    , PersistConfig
-    , staticRoot
-    , staticDir
-    , Extra (..)
-    , parseExtra
-    , timeZone
-    ) where
+module Settings where
 
 import Prelude
 import Text.Shakespeare.Text (st)
@@ -25,10 +17,9 @@ import Control.Applicative
 import Settings.Development
 import Data.Default (def)
 import Text.Hamlet
-import Data.Time.LocalTime
 
 -- | Which Persistent backend this site is using.
-type PersistConfig = SqliteConf
+type PersistConf = SqliteConf
 
 -- Static setting below. Changing these requires a recompile
 
@@ -51,10 +42,14 @@ staticDir = "static"
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
 staticRoot :: AppConfig DefaultEnv x -> Text
-staticRoot conf = [st|#{appRoot conf}/static|]
+staticRoot conf = [st|#{appRoot conf}/lab/nom/static|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
+--
+-- For more information on modifying behavior, see:
+--
+-- https://github.com/yesodweb/yesod/wiki/Overriding-widgetFile
 widgetFileSettings :: WidgetFileSettings
 widgetFileSettings = def
     { wfsHamletSettings = defaultHamletSettings
@@ -79,5 +74,3 @@ parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
     <*> o .:? "analytics"
-
-timeZone = TimeZone (60*9) False "Tokyo"

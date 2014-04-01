@@ -1,0 +1,98 @@
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+\usepackage[dvipdfm]{graphicx}
+\begin{document}
+
+\title{Writing papers}
+\author{\IEEEauthorblockN{
+    Taro Momo,
+    Saru Kiji,
+    and
+    Aka Oni}
+  \IEEEauthorblockA{Onigashima Science and Technology, \\
+    Okayama, Japan\\
+    e-mail: .......
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% user defined macros
+
+\def\figdir{graphics}
+\def\figext{pdf}
+
+%\insertfigure[magnification]{label}{filename}{caption}
+\newcommand{\insertfigure}[4][0.9]{
+  \begin{figure}[tb]
+    \begin{center}
+      \vspace{1em}
+      \includegraphics[clip,width=#1\columnwidth]{\figdir/#3.\figext}
+      \caption{#4\label{#2}}
+      \vspace{1em}
+    \end{center}
+  \end{figure}
+}
+
+\newcommand\figref[1]{Figure~\ref{#1}}
+\newcommand\tabref[1]{Table~\ref{#1}}
+
+\maketitle
+
+\begin{abstract}
+abstract blah blah...
+\end{abstract}
+
+\begin{IEEEkeywords}
+  foo, bar, baz.
+\end{IEEEkeywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{sec:introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\insertfigure[magnification]{label}{filename}{caption}
+\insertfigure{fig:foo}{fig1}{Overview of foo ...}
+
+blah blah ...
+
+\insertfigure[0.9]{fig:bar}{fig2}{Details of bar...}
+
+... \figref{fig:foo} shows ...
+... \figref{fig:bar} shows ...
+... \tabref{tab:baz} shows ...
+
+\begin{table}[tb]
+  \begin{center}
+    \caption{Baz table...}\label{tab:baz}
+    \scalebox{0.8}{
+      \begin{tabular}{r|r|r|r}
+    	\hline
+        \hline
+        No & time length (minutes) & freq. (times) & cumulated freq. (\%)\\
+        \hline
+        1 & {\texttt{120}} $\sim$ {\texttt{150}} & 17 & 40\\
+        2 & {\texttt{150}} $\sim$ {\texttt{180}} & 12 & 67\\
+        3 & {\texttt{90}} $\sim$ {\texttt{120}} & 7 & 84\\
+        4 & {\texttt{180}} $\sim$ {\texttt{210}} & 4 & 93\\
+        5 & $\sim$ {\texttt{90}} & 2 & 98\\
+        6 & {\texttt{210}} $\sim$ & 1 & 100\\
+        \hline
+      \end{tabular}
+    }
+  \end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Acknowledgment}
+This study was partially supported by...
+
+\begin{thebibliography}{10}
+\bibitem{Schedule information}
+Author1, Author2, and Author3,
+``title,''
+Foo Technical Report, No.~1, Vol.~1, pp.~7--12, 1995.
+
+% \newpage % adjust for column height.
+\end{thebibliography}
+\end{document}

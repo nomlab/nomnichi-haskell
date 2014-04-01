@@ -1,0 +1,85 @@
+<h1>Git</h1>
+<div align="right">
+作成日：2010年4月10日<br>
+最終更新日：2010年4月12日<br>
+作成者：牛尾 裕<br>
+
+</div>
+<hr>
+
+<h2>はじめに</h2>
+このページでは，tsubame上のホームディレクトリでnomnichiの開発を行う方法を例に，Gitを利用した開発方法について説明する．
+<br>
+
+
+<h2>Gitを利用したnomnichiの開発</h2>
+
+(1) ローカルリポジトリを作成
+<ul>
+  <pre>git clone ssh://tsubame.swlab.cs.okayama-u.ac.jp/home/home_directory_name/nomnichi /home/home_directory_name/</pre>
+</ul>
+
+(2) ファイルを編集
+<br>
+
+(3) 編集内容を確認
+<ul>
+ <li>ローカルリポジトリの状態を確認</li>
+  <pre>git status</pre>
+ <li>ファイルの変更点を確認</li>
+  <pre>git diff</pre>
+ <li>Web上で確認</li>
+ <a href="#web">作成したWebページをWeb上で確認</a>を参照
+</ul>
+
+(4) 編集したファイルをコミット
+<ul>
+ <li>編集したファイルをindexにステージ</li>
+  <pre>git add file_path</pre>
+ <li>indexにある変更点をコミット</li>
+  <pre>git commit</pre>
+ <li>エディタでコミットメッセージを入力し，保存して修了</li>
+</ul>
+
+(5) コミットを確認
+<ul>
+ <li>コミットログを確認</li>
+  <pre>git log</pre>
+ <li>編集内容を確認</li>
+  <pre>git show</pre>
+  </ul>
+<br>
+
+(6) リモートブランチに変更点を送信
+<ul>
+ <li>リモートのmasterリポジトリに変更点を送信</li>
+ <pre>git push origin master</pre>
+</ul>
+<br>
+
+
+<a name="web"><h2>作成したWebページをWeb上で確認</h2></a>
+
+(1) 必要なファイルを稼働中のものからコピー<br>
+<pre>
+cp /home/rails/nomnichi/production/config/database.yml config
+cp /home/rails/nomnichi/production/db/development.sqlite3 db
+cp -r /home/rails/nomnichi/production/db/large_objects db
+</pre>
+<br>
+
+ (2) データベーステーブルの作成<br>
+   <pre>rake db:migrate</pre>
+<br>
+
+ (3) サーバ立ち上げ<br>
+   <pre>./script/server -p 11223(適当なポート番号)</pre>
+<br>
+
+ (4) Web上で確認<br>
+  以下のurlにアクセスして確認<br>
+  <a href="http://tsubame.swlab.cs.okayama-u.ac.jp:11223">http://tsubame.swlab.cs.okayama-u.ac.jp:11223</a><br>
+<br>
+
+ (5) サーバ停止<br>
+ <pre>ctr+c</pre>

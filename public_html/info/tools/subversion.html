@@ -1,0 +1,83 @@
+
+<h1 align="center">Subversionの使い方</h1>
+
+<hr>
+<div align=right>
+作成日  2009/05/13<br>
+最終更新日  2009/05/26<br>
+作成者  中原 大貴
+</div>
+<hr>
+
+<h2>はじめに</h2>
+Subversionとは，日々更新されるファイルやディレクトリを管理するバージョン管理システムである．<br>
+ファイルのバージョンに関する情報は，リポジトリと呼ばれるディレクトリに置かれる．<br>
+リポジトリにはファイルやディレクトリに関する変更内容が記録される．<br>
+このため，古いバージョンのファイルのデータを復活させたり，変更履歴を調べたりすることが出来る．
+<br>
+このページではSubversionの使用方法の例を示す．
+
+<hr>
+
+<h3>Subversionの使用例</h3>
+以下に例として，乃村研HPに個人ページを追加する方法を示す．
+
+<dl>
+
+<dt>(1) 作業コピーの作成</dt>
+<dd>
+<pre>
+  $ svn checkout svn+ssh://tsubame.swlab.cs.okayama-u.ac.jp/var/svn/lastnote/experimentals/nomlab/nomnichi
+</pre>
+</dd>
+
+<br>
+
+<dt>(2) 移動</dt>
+<dd>
+<pre>
+  $ cd nomnichi/public_html/users
+</pre>
+</dd>
+
+<br>
+
+<dt>(3) 自分のアカウント名のディレクトリの作成</dt>
+<dd>
+<pre>
+  $ mkdir アカウント名
+</pre>
+</dd>
+
+<br>
+
+<dt>(4) (3)のディレクトリの中にindex.htmlを作成(index.htmlは先輩のものを参考に作成)</dt>
+<dd>
+(注) 文字のエンコーディングをUTF-8にする．
+</dd>
+
+<br>
+
+<dt>(5) レポジトリに作成したディレクトリを追加する準備</dt>
+<dd>
+<pre>
+  $ cd ..
+  $ svn add 追加したディレクトリ
+</pre>
+</dd>
+
+<br>
+
+<dt>(6) 作業コピーの変更点をレポジトリに送る</dt>
+<dd>
+<pre>
+  $ svn commit -m "変更点に関するコメント"
+</pre>
+</dd>
+
+</dl>
+
+<br>
+
+追加完了．
+

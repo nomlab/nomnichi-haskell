@@ -6,14 +6,14 @@ where
 import Import
 import Data.Monoid()
 
-getLoginformR :: Handler RepHtml
+getLoginformR :: Handler Html
 getLoginformR = do
     deleteSession "loginname"
     id <- return ("" :: Text)
     defaultLayout $ do
         $(widgetFile "loginform")
 
-postLoginformR :: Handler RepHtml
+postLoginformR :: Handler Html
 postLoginformR = do
      -- template/loginform のフォーム:UserIdを取得し，データベースと比較
      loginname <- runInputPost $ ireq textField "UserId"

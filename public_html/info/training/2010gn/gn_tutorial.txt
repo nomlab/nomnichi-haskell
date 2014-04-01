@@ -1,0 +1,64 @@
+GN研究課題チュートリアル
+
+作成者:三原
+作成日:2010年4月5日
+
+GNの新人研修課題をどのような段階を踏んで進めればよいか，私見をまとめました．
+参考にしてくれると幸いです．
+
+
+(段階1) Rubyを使う
+以下のサイトや本を参考にRubyを使ってみると良いと思います．
+[おすすめ]
+　(基本) オブジェクト指向スクリプト言語 Ruby リファレンスマニュアル
+　http://doc.okkez.net/static/187/doc/index.html
+　(初心者向け) Ruby ではじめるプログラミング
+　http://jp.rubyist.net/magazine/?0002-FirstProgramming
+　(少し深く理解する) プログラミング言語Ruby　-ありえるえりあ-
+　http://dev.ariel-networks.com/articles/workshop/ruby/
+
+
+(段階2) HTTPを勉強
+TwitterBotを作成するには，TwitterAPIを利用しなければなりません．
+　TwitterAPI仕様書
+　http://watcher.moe-nifty.com/memo/docs/twitterAPI.txt
+しかし，この仕様書はHTTPを理解していないと，書いてあることの意味がわからないはずです．
+HTTPがどのようなものかわからない人は，HTTPについて勉強するべきです．
+（また，TwitterAPIの一部はBasic認証が必要になります．Basic認証についても，理解しておいて下さい）
+[おすすめ]
+　(基本)rfc2616
+　http://tools.ietf.org/html/rfc2616
+　(わかりやすい解説1)HTTP入門
+　http://www.tohoho-web.com/ex/http.htm
+　(わかりやすい解説2)HTTPプロトコルとサーバへのリクエスト
+　http://segroup.fujitsu.com/sdas/technology/web-apl/01-http-protocol.html
+　(telnetを使ってHTTPを体験)HTTP クライアントを作ってみよう(1)-(5)
+　http://x68000.q-e-d.net/‾68user/net/http-1.html
+
+
+(段階3) 任意の文字列をツイートする機能の作成
+HTTPについて知れば，TwitterAPI仕様書の内容がある程度理解できるはずです．
+まずは，任意の文字列をツイートする機能を作成するのが良いと思います．Botの基本機能です．
+Rubyでhttpを使う場合は，標準添付ライブラリであるnet/httpを使います．
+net/httpの使い方は以下のサイトが参考になります．
+[おすすめ]
+　(基本) library net/http
+　http://doc.okkez.net/static/187/library/net=2fhttp.html
+　(わかりやすい使い方)標準添付ライブラリ紹介 【第 7 回】 net/http
+　http://jp.rubyist.net/magazine/?0013-BundledLibraries
+
+また，TwitterAPIについては以下を参考にしてください．
+[おすすめ]
+　(基本)TwitterAPI仕様書
+　http://watcher.moe-nifty.com/memo/docs/twitterAPI.txt
+　(例が参考になる)Twitter REST API の使い方
+　http://www.ibm.com/developerworks/jp/xml/library/x-twitterREST/
+　(Basic認証が必要な場合の参考)Twitter APIを使ってログインしてみた
+　http://d.hatena.ne.jp/d-kami/20090425/1240610922
+
+
+(段階4) オブジェクト指向を意識してプログラムを拡張
+段階3の機能が作成できれば，今後どのようにプログラムを作成すれば良いか，ある程度見通しが立つと思います．
+課題の機能を実現するために，プログラムを拡張していきましょう．
+拡張していく際には，オブジェクト指向でプログラムを作成することを意識してみて下さい．
+（特に，複数の形式のファイルを読み込む部分をどのようにプログラミングするべきか考えてみると良いと思います）

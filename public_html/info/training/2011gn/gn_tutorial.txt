@@ -1,0 +1,78 @@
+GN研究課題チュートリアル
+
+作成者:福田
+作成日:2011年4月2日
+
+GNの新人研修課題をどのような段階を踏んで進めればよいか，私見をまとめました．
+参考にしてくれると幸いです．
+
+
+(段階1) Rubyを使う
+以下のサイトや本を参考にRubyを使ってみると良いと思います．
+[おすすめ]
+　(基本) オブジェクト指向スクリプト言語 Ruby リファレンスマニュアル
+　http://doc.okkez.net/static/187/doc/index.html
+　(初心者向け) Ruby ではじめるプログラミング
+　http://jp.rubyist.net/magazine/?0002-FirstProgramming
+　(少し深く理解する) プログラミング言語Ruby　-ありえるえりあ-
+　http://dev.ariel-networks.com/articles/workshop/ruby/
+
+
+(段階2) HTTPを勉強
+TwitterBotを作成するには，TwitterAPIを利用しなければなりません．
+　TwitterAPI仕様書
+　http://watcher.moe-nifty.com/memo/docs/twitterAPI.txt
+しかし，この仕様書はHTTPを理解していないと，書いてあることの意味がわからないはずです．
+HTTPがどのようなものかわからない人は，HTTPについて勉強するべきです．
+（また，TwitterAPIにはOAuth認証が必要になります．OAuth認証についても，理解しておいて下さい）
+[おすすめ]
+　(基本)rfc2616
+　http://tools.ietf.org/html/rfc2616
+　(わかりやすい解説1)HTTP入門
+　http://www.tohoho-web.com/ex/http.htm
+　(わかりやすい解説2)HTTPプロトコルとサーバへのリクエスト
+　http://segroup.fujitsu.com/sdas/technology/web-apl/01-http-protocol.html
+　(telnetを使ってHTTPを体験)HTTP クライアントを作ってみよう(1)-(5)
+　http://x68000.q-e-d.net/‾68user/net/http-1.html
+
+
+(段階3) 認証
+TwitterBotの作成を開始する前に，自分のアカウントへのBotからのアクセスを許可する必要があります．
+これは，自分のTwitterアカウントへのログイン後，
+http://www.swlab.cs.okayama-u.ac.jp/lab/nom/info/training/2011gn/oauth_script.rb 
+にあるスクリプトを使用し，次の手順で行います．
+
+　1．「Access this URL and approve」の後に示されるURLに，ブラウザからアクセスする
+　2．「許可」ボタンを押す
+　3．「Input OAuth Verifier」と表示して入力待ちの状態になっているスクリプトに，2. の後に表示される7桁の数字を入力する
+
+以上の操作が終了すると，Access token と Access token secret が表示されます．
+これらに以下の2つを合わせた計4つの文字列を，TwitterBotの認証に使用します．
+　Consumer token　　　　: tuwAf85K7bJ6OqWG3Eomg
+  Consumer token secret : MokGhmoBR8XTa17wYkNT67rK6gHrUEgFGiPZbbGYT8
+
+
+(段階4) 任意の文字列をツイートする機能の作成
+HTTPについて知れば，TwitterAPI仕様書の内容がある程度理解できるはずです．
+まずは，任意の文字列をツイートする機能を作成するのが良いと思います．Botの基本機能です．
+Twitterの認証には，OAuthライブラリを使います．
+OAuthについては以下のサイトが参考になります．
+[おすすめ]
+　(基本) OAuthプロトコルの中身をざっくり解説してみるよ - ゆろよろ日記
+　http://d.hatena.ne.jp/yuroyoro/20100506/1273137673
+  (使い方) TwitterのbotをOAuthに対応させる - しばそんノート
+  http://d.hatena.ne.jp/shibason/20090802/1249204953
+
+また，TwitterAPIについては以下を参考にしてください．
+[おすすめ]
+　(基本)TwitterAPI仕様書
+　http://watcher.moe-nifty.com/memo/docs/twitterAPI.txt
+　(例が参考になる)Twitter REST API の使い方
+　http://www.ibm.com/developerworks/jp/xml/library/x-twitterREST/
+
+
+(段階4) オブジェクト指向を意識してプログラムを拡張
+段階3の機能が作成できれば，今後どのようにプログラムを作成すれば良いか，ある程度見通しが立つと思います．
+課題の機能を実現するために，プログラムを拡張していきましょう．
+拡張していく際には，オブジェクト指向でプログラムを作成することを意識してみて下さい．
+（特に，複数の形式のファイルを読み込む部分をどのようにプログラミングするべきか考えてみると良いと思います）

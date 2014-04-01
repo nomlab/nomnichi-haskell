@@ -1,0 +1,92 @@
+<h1 style="text-align: center">卒論/修論のテンプレート</h1>
+<div style="text-align: right; font-family:monospace,sans-serif;">$Date: 2001/02/03 09:15:58 $</div>
+<hr>
+<table>
+<tr><td>
+<pre>\documentclass{graduate2001}
+%documentclass[no-colon]{graduate2001}
+                           %図や表のキャプションに":"を入れたくない
+                           %時はこちらを使います。
+%documentclass[tanilab-enum]{graduate2001}
+                           % enumerate 環境での項番を
+                           % (1)->(A)->(a)->(ii) とします。
+%documentclass[no-colon,tanilab-enum]{graduate2001}
+                           % no-colon と tanilab-enum を両方指定する場合。
+
+\usepackage{makeidx}
+\usepackage[dvips]{graphicx}
+  \title { 卒業論文及び修士論文を書くにあたって }
+   \author{ 情報 太郎 }
+%  \major{電気情報工学科}  %デフォルトは``修士課程 情報工学専攻''
+                           %卒業論文の時は、行頭の%を消してください。
+%  \department{九州大学工学部電気情報工学科}
+                           %デフォルトは``システム情報科学府''です。
+                           %卒業論文の場合は、行頭の%を消してください。
+                           %また正しい名称は事務室で確認してください。
+%  \subdepart{}            %デフォルトは``情報工学専攻''です。
+                           %卒業論文の場合は、行頭の%を消してください。
+   \date{\today}
+
+\makeindex
+\begin{document}
+
+  \maketitle  % タイトルページを出力
+  \listoffigures % 図の目次
+  \listoftables  % 表の目次
+
+
+   \preface{はじめに}
+
+   \chapter{論文を書く上での諸注意}
+   % 本文開始
+
+   卒業論文や修士論文を書くにあたって注意すべき点挙げます。
+   \begin{itemize}
+    \item 索引\index{さくいん@索引}を必ずつけましょう。
+    \item 先生方にみていただく前に、``推敲''にかけてチェックしましょう。
+    \item 参考文献の挙げる順序には、一貫性を持たせましょう。
+          よくある例としては以下のようなものがあります。
+     \begin{itemize}
+      \item 論文中での出現順
+      \item 参考文献の筆者の名前順
+      \item 参考文献の出版年月順
+     \end{itemize}
+    \item 参考文献の挙げたものは、本文中で言及しなければいけません。
+    \item 参考文献の例\cite{Thesis2000}。
+   \end{itemize}
+
+   \conclusion{おわりに}
+
+\acknowledgment  % 謝辞
+
+\begin{thebibliography}{99} % 参考文献
+
+ \bibitem{Thesis2001} % 論文
+ 著者,
+ ``論文タイトル,'' 出典, ページ, 年.
+
+ \bibitem{Book2001} % 本
+ 著者,
+ ``本タイトル,'' 出版社, (通巻,) 年.
+
+\end{thebibliography}
+
+\appendix         % 付録
+  \chapter{プログラムの全ソース}
+
+    \section{ファイル名}
+
+    \small
+    \begin{verbatim}
+       % ソースの実体
+    \end{verbatim}
+
+\insertindex % 索引を出力
+\printindex
+
+\end{document}</pre>
+</table>
+<hr>
+<a href="../" style="color:black"><address>Nom lab.</address></a>
+<span style="text-align: right">
+<address>管理者 ： 小笠原 良  -&gt;  ogasawara@swlab.cs.okayama-u.ac.jp</address>

@@ -1,0 +1,30 @@
+<h1 >TwitterBot</h1>
+
+<h2 >TwitterBotプログラムの入手方法</h2>
+  <ol>
+  <li>GitHubにアカウントを作成します．</li>
+    <li>作成したGitHubアカウントを，nomlabに登録します．<br />この登録は，M1あるいはM2に頼む必要があります．</li>
+    <li>nomlabが持っているリポジトリ GN-B4-Exercises.git を自分のGitHubリポジトリにForkします．</li>
+    <li>課題の作成環境で以下のコマンドを実行します．<br />ただし，hogehogeは自分のユーザ名に変更してください．<br /><pre>
+$ git clone https://github.com/hogehoge/GN-B4-Exercises.git
+</pre></li>
+  </ol>
+
+<h2 >認証</h2>
+TwitterBotを動作させるためには，認証が必要です．認証の手順は以下のとおりです．<br />自分のTwitterアカウントへのログイン後，<br /><a class="external" href="http://www.swlab.cs.okayama-u.ac.jp/lab/nom/info/training/2012gn/oauth_script.rb">http://www.swlab.cs.okayama-u.ac.jp/lab/nom/info/training/2012gn/oauth_script.rb</a><br />にあるスクリプトを使用し，次の手順で行います．
+  <ol>
+  <li>「Access this URL and approve」の後に示されるURLに，ブラウザからアクセスする</li>
+    <li>「許可」ボタンを押す</li>
+    <li>「Input OAuth Verifier」と表示して入力待ちの状態になっているスクリプトに「許可」ボタンを後に表示される7桁の数字を入力する<br />上記の操作終了後，表示されるAccess tokenとAccess token secretと以下の2つを合わせた計4つの文字列を使用します．<br />Consumer token        : tuwAf85K7bJ6OqWG3Eomg<br />Consumer token secret : MokGhmoBR8XTa17wYkNT67rK6gHrUEgFGiPZbbGYT8</li>
+    <li>4つの文字列を，setting.yml に書き込みます．</li>
+    <li>setting.yml と同じディレクトリで以下のコマンドを実行します．<br />
+<pre>
+$ git update-index --assume-unchanged setting.yml
+</pre>
+これは，4つのトークンを誤って外部に公開してしまわないようにするためです．<br />以下のコマンドで正しく設定が変更されたか，確認します．<br />
+<pre>
+$ git ls-files -v
+</pre>
+setting.yml に表示される"H"が小文字になっていれば，正しく設定が変更されています．</li>
+  </ol>
+

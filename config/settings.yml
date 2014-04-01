@@ -15,5 +15,9 @@ Staging:
   <<: *defaults
 
 Production:
-  #approot: "http://www.example.com"
-  <<: *defaults
+  host: "*4" # any IPv4 host
+  port: 54321
+  approot: "http://www.swlab.cs.okayama-u.ac.jp"
+  copyright: Nomura Laboratory (C)
+  #analytics: UA-YOURCODE
+

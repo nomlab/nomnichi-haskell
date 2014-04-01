@@ -1,0 +1,179 @@
+<h1 >平成25年度GNグループ<a href="#25GN" class="wiki-anchor">&para;</a></h1>
+
+<a name=""></a>
+<h2 >課題目的<a href="#" class="wiki-anchor">&para;</a></h2>
+
+<p>本課題で勉強してもらいたいことは，以下の4点である．</p>
+
+<ol>
+<li>Rubyを使用したプログラミング</li>
+<li>Ruby on Railsを使用したプログラミング</li>
+<li>Gitによるプログラム・資料の管理</li>
+<li>資料の書き方</li>
+</ol>
+
+<a name="-2"></a>
+<h2 >課題内容<a href="#-2" class="wiki-anchor">&para;</a></h2>
+
+<p>課題は，以下の2つである．</p>
+
+<ol>
+<li>RubyによるTwitterBotプログラムの作成</li>
+<li>Ruby on Railsによる商品管理プログラムの作成</li>
+</ol>
+
+<p>これらのプログラムはGitHub上で管理する．<br />また，課題の成果物として作成する資料はGitLab上で管理する．<br />GitLabでの資料の管理方法についてはほかのページを参照する．<br />成果物については後述する．</p>
+
+<a name="1-RubyTwitterBot"></a>
+<h2 >(課題1) RubyによるTwitterBotプログラムの作成<a href="#1-RubyTwitterBot" class="wiki-anchor">&para;</a></h2>
+
+<a name="1-1-"></a>
+<h3 >(1-1) 任意の文字列をツイートするプログラムの作成<a href="#1-1-" class="wiki-anchor">&para;</a></h3>
+
+<p>TwitterBotプログラムの作成には，Rubyを用いる．(バージョンの指定はなし．)<br />また，以下の2つの機能を持つTwitterBotクラスを用いる．</p>
+
+<ol>
+<li>任意の文字列をツイートする機能</li>
+<li>ツイートを受信する機能</li>
+</ol>
+
+<p>上記2つの機能を持つTwitterBotクラスを継承したクラスを新たに作成し，以下の機能を実装
+する．</p>
+
+<ol>
+<li>受信したツイートの中に"「〇〇〇」と言って"といった文字列があった場合は，〇〇〇とツイートする．</li>
+</ol>
+
+<p>上記の機能を作成し，動作を確認した時点でM1もしくはM2に確認してもらう．<br />TwitterBotプログラムの入手方法は<a href="2013gn/twitterbot.html" class="wiki-page">こちら</a>を参考にする．<br />課題のヒントについては<a href="2013gn/hint.html" class="wiki-page">こちら</a>を参考にする．</p>
+
+<a name="1-2-TwitterBot"></a>
+<h3 >(1-2) TwitterBotプログラムへの機能追加<a href="#1-2-TwitterBot" class="wiki-anchor">&para;</a></h3>
+
+TwitterBotプログラムへ新機能を追加する．<br />追加する機能の例を以下に示す．
+<ol>
+<li>乃村研のメンバの誕生日にツイート</li>
+<li>検討打合せの3日前に打合せの予定をツイート(資料作成を促す)</li>
+<li>雨が降る日にツイート</li>
+<li>nomlaballへのメールが流れたらツイート</li>
+<li>乃村先生の出張時にツイート</li>
+<li>欠席・遅刻をツイート</li>
+</ol>
+
+<a name="2-Ruby-on-Rails"></a>
+<h2 >(課題2) Ruby on Railsによる商品管理プログラムの作成<a href="#2-Ruby-on-Rails" class="wiki-anchor">&para;</a></h2>
+
+<p>商品管理プログラムの作成にはRuby on Railsを用いる． バージョン指定は以下のとおりである．<br />Ruby:1.9系<br />Ruby on Rails:3.2.9</p>
+
+<p>商品管理プログラムの作成は以下の手順で行う．</p>
+
+<a name="2-1-Ruby-on-RailsMVC"></a>
+<h3 >(2-1) Ruby on Rails，MVCに関する勉強会に参加してもらう．<a href="#2-1-Ruby-on-RailsMVC" class="wiki-anchor">&para;</a></h3>
+
+勉強会の内容は，以下を予定している．
+<ul>
+<li>Ruby on Railsの環境構築</li>
+<li>MVCの学習</li>
+<li>Ruby on Railsの使い方学習</li>
+</ul>
+
+<p>勉強会の日程は，以下を予定している．<br />日付: 4月15日(月)<br />時間帯: 10:00～12:00<br />使用した資料: <a href="2013gn/rails2013.pptx" class="attachment">Rails勉強会2013.pptx</a></p>
+
+<a name="2-2RailsWeb-459"></a>
+<h3 >(2-2)「RailsによるアジャイルWebアプリケーション開発 第4版」の5章から9章までの内容を読み進め，商品管理プログラムを実装する．<a href="#2-2RailsWeb-459" class="wiki-anchor">&para;</a></h3>
+
+<p>前述したように，ここで実装するプログラムはGitHub上で管理する．</p>
+
+<p>なお，書籍ではRails3.1.0を使用しているが，本課題ではRails3.2.9を使用する．<br />このため，書籍通りにプログラムを作成しても動作しないことがあるので注意する．<br />例：更新対象の属性は，models内でattr_accessibleに指定しておかないと更新できない．</p>
+各章で行う詳しい内容は以下のとおりである．
+<ol>
+<li>5章について
+<ol>
+<li>5.1節 読解</li>
+<li>5.2節 読解</li>
+<li>5.3節 読解</li>
+</ol>
+</li>
+<li>6章について
+<ol>
+<li>6.1節 読解・実装(testは除く)</li>
+<li>6.2節 読解・実装(stylesheetに関しては， products.css.scss を用いる．)</li>
+</ol>
+</li>
+<li>7章について
+<ol>
+<li>7.1節 読解・実装(testは除く)</li>
+<li>7.2節 省略</li>
+</ol>
+</li>
+<li>8章について
+<ol>
+<li>8.1節 読解・実装(stylesheetに関しては， store.css.scss を用いる．)</li>
+<li>8.2節 読解・実装(stylesheetに関しては， layout.css.scss を用いる．)</li>
+<li>8.3節 読解・実装</li>
+<li>8.4節 省略</li>
+</ol>
+</li>
+<li>9章について
+<ol>
+<li>9.1節 読解・実装</li>
+<li>9.2節 読解・実装</li>
+<li>9.3節 読解・実装(testは除く．stylesheetに関しては， layout.css.scss を用いる．)</li>
+</ol></li>
+</ol>
+
+<a name="2-3-"></a>
+<h3 >(2-3) 商品管理プログラムの課題<a href="#2-3-" class="wiki-anchor">&para;</a></h3>
+
+(2-1)と(2-2)が完了した後，余裕があれば以下を行う．
+<ol>
+<li>9章自由課題<br />商品管理プログラムに以下の機能を実装する．
+<ol>
+<li>新しい変数をセッションに加えて，ユーザが何回storeコントローラのindexにアクションしたか記録する．</li>
+<li>上記のカウンタをテンプレートに渡して，カタログページの上部に表示する．</li>
+<li>ユーザがカートに何かを入れた時にカウンタが0にリセットされるようにする．</li>
+</ol>
+</li>
+<li>isbnを用いて，商品を登録する．<br />isbnを用いて，amazonから情報を取得して，商品を登録する．
+<ol>
+<li>isbn入力用のフォームを作る．</li>
+<li>Amazon APIを用いて，Amazonから商品の情報を取得する．</li>
+<li>取得した情報を用いて，商品を登録する．<br />(登録の際，descriptionには，著者，出版社，およびページ数を入力する．)<br />Amazon APIを使用するには各種キーが必要となる．<br /><a href="2013gn/amazon_secret_token.rb" class="external">こちら</a> にあるファイルをconfig/initializers下に置くことでAPIが使用できる．</li>
+</ol>
+</li>
+<li>stylesheetを編集し，ページデザインを改良する．</li>
+<li>新たな機能を追加する．</li>
+<li>書籍を読み進める．<br />本課題のヒントについては<a href="2013gn/rails_hint.html" class="wiki-page">こちら</a>を参照する．</li>
+</ol>
+
+<a name="-3"></a>
+<h2 >成果物について<a href="#-3" class="wiki-anchor">&para;</a></h2>
+
+課題の成果物として，次の3つを提出すること．
+<ol>
+<li>作成したTwitterBotプログラムのコード</li>
+<li>TwitterBotプログラムの仕様書</li>
+<li>課題の報告書</li>
+</ol>
+
+TwitterBotプログラムの仕様書には，以下の項目があること．
+<ol>
+<li>概要</li>
+<li>機能</li>
+<li>動作環境</li>
+<li>動作確認済み環境</li>
+<li>使用方法</li>
+<li>エラー処理と保障しない動作</li>
+</ol>
+
+課題報告書には，以下の項目があること．
+<ol>
+<li>理解できなかった部分</li>
+<li>作成できなかった機能</li>
+<li>自主的に作成した機能</li>
+</ol>
+
+<a name="-4"></a>
+<h2 >開発期限<a href="#-4" class="wiki-anchor">&para;</a></h2>
+
+<p>自身で設定する．（最終締切日は，4 月26 日(金)）</p>
+

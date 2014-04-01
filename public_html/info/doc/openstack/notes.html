@@ -1,0 +1,58 @@
+<h1>OpenStackマニュアル読解時の注意点</h1>
+
+<div align="right">
+作成日：2011年6月14日<br>
+最終更新日：2011年10月25日<br>
+作成者：吉井 英人<br>
+</div>
+
+<hr>
+
+<h2>はじめに</h2>
+　OpenStackのマニュアルを読解する際に，英語の日本語翻訳に関しての注意すべき点をまとめたものである．以下の表は，OpenStack勉強会における指導内容を元にしたものである．以下の表には，英語が記述してあるページの番号，英語，日本語訳の例，および注釈を載せている．
+<h2>使用したマニュアル</h2>
+　使用したマニュアルは2011/5/25時点で最新のものである．<br>
+<a href="os-compute-adminguide-cactus.pdf">OpenStack Compute Administration Manual(PDF版)</a></li><br>
+<h2>対応表</h2>
+
+<div id="eng1">
+<span id="eng2">
+
+<table>
+<tr><th width="10%">ページ</th><th width="30%">英語</th><th width="30%">日本語訳</th><th width="30%">注釈</th>
+<tr><td>p1</td><td>as well as ～</td><td>～だけでなく，～と</td><td>×～のような　～のようなと訳すとイコールではないという意味が含まれる</td>
+<tr><td>p1</td><td>implement</td><td>実装</td><td>道具という意味もあるがここでは，実装の意味で用いる</td>
+<tr><td>p1</td><td>orchestrate</td><td>管理する</td><td>通常は，調整するという意味であるが，クラウドにおいては，管理すると訳す方がいい</td>
+<tr><td>p1</td><td>scalable</td><td>スケーラブル</td><td>小規模なものから大規模なものまで同じように構築できることという意味であるが，カタカナでスケーラブルと書けば伝わる</td>
+<tr><td>p1</td><td>virtual computing</td><td>仮想化された計算環境，仮想計算機</td><td>×仮想計算　仮想計算という技術用語はない</td>
+<tr><td>p2</td><td>variety of</td><td>様々な</td><td>×色々な 色々なは口語的</td>
+<tr><td>p2</td><td>with data storage integration</td><td>データストレージを内部に持つ</td><td></td>
+<tr><td>p3</td><td>metered or measured service</td><td>はかり販売できるサービス</td><td>×計測サービス</td>
+<tr><td>p3</td><td>utilities</td><td>(時間ごとに課金されるサービス)一般的なサービスのようにリソースの使用量を管理</td><td></td>
+<tr><td>p3</td><td>with little human intervention</td><td>人間が手間をかけずに</td><td>×人間の干渉なしに</td>
+<tr><td>p6</td><td>Quota</td><td>ディスク容量を制限する機能</td><td>linuxでは一般的に使用</td>
+<tr><td>p24</td><td>pre-service</td><td>サービスごとの</td><td></td>
+<tr><td>p24</td><td>support</td><td>対応</td><td>×提供</td>
+<tr><td>p24</td><td>stateless address</td><td>ステートレスな自動生成メカニズム</td><td>×ステートレスアドレス</td>
+<tr><td>p25</td><td>fixed</td><td>固定した，一定の(静的な)</td><td>×修正した</td>
+<tr><td>p27</td><td>bond</td><td>充てがう</td><td>×保証する　bonded NICは充てがわれたNICと訳す</td>
+<tr><td>p27</td><td>establish</td><td>作成する</td><td>directory establishedという場合，ディレクトリが作成されると訳す</td>
+<tr><td>p27</td><td>maintain</td><td>保持する</td><td>×維持する</td>
+<tr><td>p27</td><td>out of order</td><td>故障して</td><td>×乱れて</td>
+<tr><td>p27</td><td>redistribute</td><td>再配置する</td><td>×区分する</td>
+<tr><td>p27</td><td>set of ～</td><td>～の集合，集まり</td><td>×一組の 一組というわけではない</td>
+<tr><td>p27</td><td>wrap</td><td>覆い隠す</td><td></td>
+<tr><td>p28</td><td>appropriate</td><td>適切な</td><td>×流用</td>
+<tr><td>p28</td><td>bandwidth</td><td>ネットワークの帯域</td><td></td>
+<tr><td>p28</td><td>connection string</td><td>コネクション(糸)</td><td></td>
+<tr><td>p28</td><td>let's say</td><td>ここでは～とする</td><td></td>
+<tr><td>p28</td><td>since ～</td><td>～なので</td><td>since～は，～以来という意味のほかに，～なのでといった意味もある</td>
+<tr><td>p30</td><td>retry count</td><td>リトライする回数</td><td></td>
+<tr><td>p31</td><td>enable</td><td>可能にする</td><td></td>
+<tr><td>p31</td><td>listen on</td><td>監視する</td><td></td>
+<tr><td>p32</td><td>comma separated list</td><td>コンマ区切りのリスト</td><td></td>
+<tr><td>p32</td><td>federate</td><td>複数の認証システムで共有する</td><td></td>
+<tr><td>p32</td><td>roles</td><td>役割，権限</td><td></td>
+</table>
+</span>
+</div>

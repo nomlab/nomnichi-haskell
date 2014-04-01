@@ -1,0 +1,77 @@
+<h1 >Gitを使用したnomnichi開発</h1>
+  <p>このページでは，kawasemi上のホームディレクトリでnomnichiの更新を行う方法を例に，Gitを利用した開発方法について説明する．<br />なお，このページで扱うnomnichiはRailsで開発されているものを指す．<br />また，nomnichiは現在GitHubで管理されている．</p>
+
+<h2 >Gitを使用してnomnichiを更新</h2>
+  <ol>
+  <li>ローカルリポジトリを作成<br />
+<pre>
+$ git clone git@github.com:nomlab/nomnichi-rails.git /home/home_directory_name
+</pre></li>
+    <li>ファイルを編集</li>
+    <li>編集内容を確認
+  <ol>
+  <li>ローカルリポジトリの状態を確認<br />
+<pre>
+$ git status
+</pre></li>
+    <li>ファイルの変更点を確認<br />
+<pre>
+$ git diff
+</pre></li>
+    <li>Web上で確認
+  <ol>
+  <li>必要なファイルを稼働中のものからコピー<br />
+<pre>
+$ cp /home/rails/nomnichi/production/config/database.yml config
+$ cp /home/rails/nomnichi/production/db/development.sqlite3 db
+$ cp -r /home/rails/nomnichi/production/db/large_objects db
+</pre>
+  </li>
+    <li>データベーステーブルの作成<br />
+<pre>
+$ rake db:migrate
+</pre>
+</li>
+    <li>サーバ立ち上げ<br />
+<pre>
+$ rails s -p 12345(お好きなポート番号)
+</pre></li>
+    <li>Web上で確認<br />以下のurlにアクセスして確認<br /><a class="external" href="http://kawasemi.swlab.cs.okayama-u.ac.jp:12345">http://kawasemi.swlab.cs.okayama-u.ac.jp:12345</a></li>
+    <li>サーバ停止<br /><pre>
+Ctrl + c
+</pre></li>
+  </ol>
+  </li>
+  </ol>
+  </li>
+    <li>編集したファイルをadd&#38;commit
+  <ol>
+  <li>編集したファイルをindexにステージ<br />
+<pre>
+$ git add file_path
+</pre></li>
+    <li>indexにある変更点をコミット<br />
+<pre>
+$ git commit
+</pre></li>
+    <li>コミットメッセージを入力し，保存して終了．(Ctrl + x -> yes -> Enter)</li>
+  </ol>
+  </li>
+    <li>コミットを確認
+  <ol>
+  <li>コミットログを確認<br />
+<pre>
+$ git log
+</pre></li>
+    <li>編集内容を確認<br />
+<pre>
+$ git show
+</pre></li>
+  </ol>
+  </li>
+    <li>リモートリポジトリに変更点をpush<br />リモートリポジトリのmasterブランチに変更点を送信<br />
+<pre>
+$ git push origin master
+</pre></li>
+  </ol>
+

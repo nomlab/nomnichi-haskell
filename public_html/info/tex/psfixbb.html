@@ -1,0 +1,95 @@
+<html>
+<body>
+<pre>
+From swlab-admin-admin@swlab.csce.kyushu-u.ac.jp  Thu Aug 24 13:43:29 2000
+Return-Path: <swlab-admin-admin@swlab.csce.kyushu-u.ac.jp>
+Received: from crest.csce.kyushu-u.ac.jp (localhost [127.0.0.1])
+	by crest.csce.kyushu-u.ac.jp (8.9.3+3.2W/3.7W99041514) with SMTP id NAA29208;
+	Thu, 24 Aug 2000 13:43:27 +0900 (JST)
+Date: Thu, 24 Aug 2000 13:43:26 +0900
+Posted: Thu, 24 Aug 2000 13:43:23 +0900
+From: Tsutomu HARADA <tharada@swlab.csce.kyushu-u.ac.jp>
+Reply-To: swlab-admin@swlab.csce.kyushu-u.ac.jp
+Subject: Re: [install] psfixbb
+To: swlab-admin@swlab.csce.kyushu-u.ac.jp
+Cc: tanilab@swlab.csce.kyushu-u.ac.jp
+Cc: tharada@swlab.csce.kyushu-u.ac.jp
+Message-Id: <20000824134323F.tharada@swlab.csce.kyushu-u.ac.jp>
+In-Reply-To: <20000824125150V.noguchi@swlab.csce.kyushu-u.ac.jp>
+References: <20000824122842M.tharada@swlab.csce.kyushu-u.ac.jp>
+	<20000824125150V.noguchi@swlab.csce.kyushu-u.ac.jp>
+X-ML-Name: swlab-admin
+X-Mail-Count: 01972
+X-MLServer: fml [fml 2.1C#10]; post only from anyone
+X-ML-Info: If you have a question, send a mail with the body
+	"# help" (without quotes) to the address swlab-admin-ctl@swlab.csce.kyushu-u.ac.jp
+X-Mailer: Mew version 1.94b52 on Emacs 19.34 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+Precedence: bulk
+Lines: 60
+
+原田です。
+
+From: NOGUCHI Yusuke <noguchi@swlab.csce.kyushu-u.ac.jp>
+Subject: Re: [install] psfixbb
+Date: Thu, 24 Aug 2000 12:51:53 +0900
+
+> 野口です。
+> 
+> From: Tsutomu HARADA <tharada@swlab.csce.kyushu-u.ac.jp>
+> Subject: [install] psfixbb
+> Date: Thu, 24 Aug 2000 12:28:45 +0900
+> 
+> > ○crest:/usr/local/bin/psfixbb をインストールしました。
+> > PSFIXBB computes the BoundingBox of a postscript file and sets the
+> > %%BoundingBox comment in the file accordingly. 
+> > 
+> > See.
+> > http://www.strw.leidenuniv.nl/~dominik/Tools/psfixbb/
+> > 
+> > 要は eps ファイルの %%BoundingBox の値を(余白のないように)
+> > 修正してくれるツールです。Windows で出力した eps ファイル
+> > の余白を取り除きたい時など、便利です。
+> 
+> 対したことじゃありませんが、これに関連した「Windows で eps ファイルを
+> つくる場合の tips」
+> 
+> エクセルやパワーポイントでつくた図を TeX に取り込む際、一旦 eps ファイ
+> ルを作る必要があります。おそらく、alps や pclsr などの通常のネットワー
+> クプリンタを利用して(ただし、ファイルに出力する)作成していると思います
+> 。これで作成した eps を取り込んだ TeX 文書をコンパイルした PS ファイ
+> ルの中には、正常に印刷できなくなる場合があります。
+> 
+> 一つの解決策として、
+> 「Windows に eps ファイルを作成する、専用プリンタを用意する」
+> という手があります。
+> 
+> (1) [スタート] -> [設定] -> [プリンタ]  で、『プリンタウィンドウ』を出す。
+> (2) [プリンタの追加] ウィザードを起動
+> (3) [ローカルプリンタ] -> [製造元=postscript] -> [FILE:ディスクにファイルを作成]
+>     と選択する。
+
+○Windows 2000 ユーザの方へ
+
+(3) ですが、Windows 2000 の場合、[製造元=postscript] がありません。
+Windows 2000 を使っている方は、Adobe の ftp サイト(*)から
+ドライバをダウンロードし、インストールして使うといいです。
+
+(*) ftp://ftp.adobe.com/pub/adobe/printerdrivers/win/drivers/aps102jpn.exe
+
+インストールしたら、プリンタのプロパティで 
+[印刷設定] -> [詳細設定]-> [PostScriptオプション] -> 
+[PostScript出力オプション] を、"簡易PostScript[EPS]" に設定します。
+
+# Windows で eps ファイルを作るには、WMF2EPS というシェア
+# ウェアもあるみたいです。僕は使ったことありませんが。
+# http://www.lake.de/home/lake/p60/wmf2eps/
+
+--
+原田 努    九州大学大学院システム情報科学研究科情報工学専攻
+tharada@swlab.csce.kyushu-u.ac.jp      修士2年 / 牛島研究室
+</pre>
+</body>
+</html>

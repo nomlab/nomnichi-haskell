@@ -1,6 +1,5 @@
-<div class="article_list">
-  <h1 class="article_list"> Articles
-
+<div class="home">
+  <h1 class="home"> Articles
   $if I.null articles
     <p> There are no articles in the blog.
   $else
@@ -16,7 +15,7 @@
           <li class="article_list_title">
             <a href=@{ArticleR articleId}> #{articleTitle article}
           <li class="article_list">
-            #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
+            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
           <hr>
         $if convTextToInt p > 1
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
@@ -28,16 +27,10 @@
           <li class="article_list_title">
             <a href=@{ArticleR articleId}> #{articleTitle article}
           <li class="article_list">
-            #{showGregorian $ articlePublishedOn article} #{articleMemberName article}
+            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
           <hr>
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
-<div class="article_form">
-  <form method=post enctype=#{enctype}>
-    ^{articleWidget}
-    <div>
-      <input type=submit value="Post New Article">
-      <a class=preview>プレビュー
-
-  <div class="article_preview">
+<a href=@{HomeR}/nomnichi/create> Create Article
+<br>
 <a href=@{HomeR}/auth/logout> Logout

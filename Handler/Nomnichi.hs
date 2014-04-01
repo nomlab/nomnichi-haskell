@@ -1,6 +1,7 @@
 module Handler.Nomnichi
   ( getNomnichiR       -- ノムニチトップ
-  , postNomnichiR      -- 記事の投稿
+  , getCreateArticleR  -- 記事投稿ページの表示
+  , postCreateArticleR -- 記事の投稿
   , getArticleR        -- 記事の表示
   , postArticleR       -- 記事の編集
   , getEditArticleR    -- 記事の編集画面の表示
@@ -13,13 +14,13 @@ import Import as I
 import Data.Monoid
 import Data.Time
 import System.Locale (defaultTimeLocale)
-import Settings
-import Data.Maybe
-import Handler.Loginform
+import System.IO.Unsafe (unsafePerformIO)
 
 import Yesod.Form.Nic (YesodNic, nicHtmlField)
 -- import Data.Attoparsec.Text
 import Data.Text as T
+import Yesod.Auth
+
 instance YesodNic App
 
 
@@ -27,11 +28,13 @@ instance YesodNic App
 
 
 -- ノムニチトップ
-getNomnichiR :: Handler RepHtml
+getNomnichiR :: Handler Html
 getNomnichiR = do
+  creds <- maybeAuthId
+  articles <- case creds of
+    Just _ -> runDB $ selectList [] [Desc ArticleId]
+    Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   paramPage <- lookupGetParam "page"
-  articles <- runDB $ selectList [] [Desc ArticlePublishedOn]
-  (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "articles")
 
@@ -44,10 +47,16 @@ calcNumOfArticles text = (convTextToInt text) * 20
 calcNumOfDroppingArticles :: Text -> Int
 calcNumOfDroppingArticles text = (convTextToInt text - 1) * 20
 
+getCreateArticleR :: Handler Html
+getCreateArticleR = do
+  (articleWidget, enctype) <- generateFormPost entryForm
+  defaultLayout $ do
+    $(widgetFile "createArticleForm")
+
 
 -- 記事作成
-postNomnichiR :: Handler RepHtml
-postNomnichiR = do
+postCreateArticleR :: Handler Html
+postCreateArticleR = do
   ((res, articleWidget), enctype) <- runFormPost entryForm
   case res of
     FormSuccess article -> do
@@ -59,17 +68,29 @@ postNomnichiR = do
       $(widgetFile "articleAddError")
 
 -- 記事表示
-getArticleR :: ArticleId -> Handler RepHtml
+getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
+  creds <- maybeAuthId
   article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
-  defaultLayout $ do
-    setTitle $ toHtml $ articleTitle article
-    $(widgetFile "article")
+  case creds of
+    Just _ ->
+      defaultLayout $ do
+        setTitle $ toHtml $ articleTitle article
+        $(widgetFile "article")
+    Nothing ->
+      case articleApproved article of
+        True ->
+          defaultLayout $ do
+            setTitle $ toHtml $ articleTitle article
+            $(widgetFile "article")
+        False ->
+          defaultLayout $ do
+          redirect $ NomnichiR
 
 -- 記事更新
-postArticleR :: ArticleId -> Handler RepHtml
+postArticleR :: ArticleId -> Handler Html
 postArticleR articleId = do
   ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
   case res of
@@ -90,7 +111,7 @@ postArticleR articleId = do
       $(widgetFile "editArticleForm")
 
 -- 編集画面
-getEditArticleR :: ArticleId -> Handler RepHtml
+getEditArticleR :: ArticleId -> Handler Html
 getEditArticleR articleId = do
   article <- runDB $ get404 articleId
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
@@ -100,7 +121,7 @@ getEditArticleR articleId = do
 
 -- 記事削除
 
-postDeleteArticleR :: ArticleId -> Handler RepHtml
+postDeleteArticleR :: ArticleId -> Handler Html
 postDeleteArticleR articleId = do
   runDB $ do
     _post <- get404 articleId
@@ -115,7 +136,7 @@ postDeleteArticleR articleId = do
 
 
 -- コメント送信
-postCommentR :: ArticleId -> Handler RepHtml
+postCommentR :: ArticleId -> Handler Html
 postCommentR articleId = do
   _post <- runDB $ get404 articleId
   ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
@@ -132,13 +153,14 @@ postCommentR articleId = do
 formatToNomnichiTime :: Article ->  String
 formatToNomnichiTime article = formatTime defaultTimeLocale format $ utcToNomnichiTime $ articlePublishedOn article
   where format = "%Y/%m/%d (%a)  %H:%M"
-        utcToNomnichiTime = (utcToLocalTime timeZone) . read . (++ " 00:00:00.00000") . showGregorian
+        utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
 
 -- コメント投稿時刻の整形
 formatToCommentTime :: Comment ->  String
 formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnichiTime $ commentCreatedAt comment
   where format = "%Y/%m/%d (%a)  %H:%M"
-        utcToNomnichiTime = (utcToLocalTime timeZone)
+        utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
+
 
 -- フォーム
 entryForm :: Form Article
@@ -147,9 +169,9 @@ entryForm = renderDivs $ Article
   <*> areq textField    "Title"        Nothing
   <*> areq textField    "PermaLink"    Nothing
   <*> areq nicHtmlField "Content"      Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> areq dayField     "PublishedOn" Nothing
+  <*> lift (liftIO getCurrentTime) --
+  <*> lift (liftIO getCurrentTime) --
+  <*> lift (liftIO getCurrentTime) --
   <*> areq boolField    "Approved" (Just False)
   <*> areq intField     "Count"        Nothing
   <*> areq boolField    "PromoteHeadline" (Just False)
@@ -160,9 +182,9 @@ editForm article = renderDivs $ Article
   <*> areq textField    "Title"    (articleTitle <$> article)
   <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
   <*> areq nicHtmlField "Content"  (articleContent <$> article)
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
-  <*> areq dayField     "PublishedOn" (articlePublishedOn <$> article)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
@@ -171,6 +193,6 @@ commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
   <$> areq textField     "Name"    Nothing
   <*> areq textareaField "Comment" Nothing
-  <*> aformM (liftIO getCurrentTime)
-  <*> aformM (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
+  <*> lift (liftIO getCurrentTime)
   <*> pure articleId

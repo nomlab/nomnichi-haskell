@@ -1,0 +1,9 @@
+#DirectoryIndex board.cgi
+
+AuthUserFile     /etc/htpasswd
+AuthGroupFile    /dev/null
+AuthName         ByPassword
+AuthType         Basic
+<limit POST GET>
+require user tanilab
+</limit>

@@ -1,0 +1,250 @@
+<h1> TeX による論文執筆のすすめ </h1>
+<div style="text-align: right;">
+  作成者：乃村 能成<br>
+  作成日：2008/1/30<br> 
+  更新日：2009/10/22 (牛尾 裕)<br>
+</div>
+<hr>
+
+
+<h2><span id="1" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#1" class="theme"> 1. はじめに </a>
+</span></h2>
+<div id="1_child" class="child"  >
+<p>
+卒業論文の原稿を TeX で書くことをすすめる．<br>
+大抵の学会では，論文投稿用の TeX スタイルファイルを提供している．<br>
+卒論の内容を発展させて学会発表をすることを考えると，<br>
+TeXによる原稿作成をしておくことが省力化に役立つからである．<br>
+</p>
+<p>
+ただし，TeX で卒論を書いたとしても，全く我流で書いてしまうと<br>
+不要な苦労が増えることになる．<br>
+</p><p>
+そこで，本文書では，TeX で論文等を記述する際に
+あらかじめ注意すべき事項について解説する．<br>
+<p>
+なお，本文書は，TeX の文法や<br>
+文章の書き方の解説ではない．<br>
+それらは，別途，教本等を参照のこと．<br>
+</p>
+<p>
+また，WindowsでTeX環境を構築する手順は以下の通りである．<br>
+(1) 以下のリンクからTeXインストーラの最新バージョンをダウンロードする．<br>
+<a href="http://www.ms.u-tokyo.ac.jp/~abenori/mycreate/">TeXインストーラのダウンロードページ</a><br>
+
+(2) インストーラを実行する．選択肢は変更しなくても良い.<br>
+　　<注意><br>
+　　　(a)インストーラを起動後，TeXのダウンロード先URLを幾つか聞かれます．<br>
+　　　　　このとき，デフォルトのURLからは，ダウンロードできません．<br>
+　　　　　一覧の下から2番目のURLを指定すると，幾分かダウンロードがしやすいです．<br>
+　　　　　これでもダメな場合は，他のURLをしつこく試してください．<br>
+(3) 以下のページから，適当なエディタをダウンロードする． <br>
+<a href="http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?TeX%E7%94%A8%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF">TeXエディタのダウンロードページ</a><br>
+(4)エディタの設定を変更する．<br>
+</p>
+</div>
+
+<h2><span id="2" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#2" class="theme"> 2. ファイル構成 </a>
+</span></h2>
+<div id="2_child" class="child"  >
+
+標準的なディレクトリ構成を守っておくと作業がしやすくなる．<br>
+<br>
+(1) b4-thesis.tex    -- 論文本体<br>
+(2) b4-thesis.ppt    -- 発表用のスライド<br>
+(3) fig/             -- グラフや<br>
+(4) 　all-figs.ppt  -- 論文中で使用する図の原版<br>
+(5) 　fig01.eps     -- all-figs.ppt から抽出した 図1<br>
+(6) 　fig02.eps     -- 同 図2 以下必要分の eps ファイル<br>
+<br>
+このとき，以下の事項を注意するとよい．<br>
+<br>
+(1) 不必要に TeX ファイルを分割しない．<br>
+<br>
+    章毎にTeXファイルを分割して，メインのファイルから<br>
+    インクルードしている記述方法が見受けられるが，<br>
+    これは主に執筆者が複数分担している場合や，100頁を越える<br>
+    博士論文や書籍などで用いる手法である．<br>
+    個人で記述する数十ページの論文には，すすめない．<br>
+<br>
+(2) 図表はサブディレクトリに入れておく<br>
+<br>
+    図表を過去の複数の自筆論文から再利用する場合がある．<br>
+    その場合は，fig-conf-okinawa2007/  fig-conf-sapporo2006/<br>
+    のように複数に分けて配置すると，再利用がしやすい．<br>
+<br>
+(2) 図版のファイル名は，機械的でもよい<br>
+<br>
+    本来 TeX の精神に沿えば，図版のファイル名は，<br>
+    fig01.eps のような出現順を意識した方法ではなく，<br>
+    cpu-usage-graph.eps のように，内容を表す名前にすべきである．<br>
+    しかしながら，この方法は，後から見た場合に，<br>
+    意外と混乱しやすい．<br>
+<br>
+    図版枚数や個人の感覚にも依るが，図が10枚を越えなければ，<br>
+    経験上，割切って fig01 とした方が混乱が少なく，組版後の論文<br>
+    と原稿との対応を付けやすい．<br>
+<br>
+(3) 日本語のファイル名は避ける<br>
+<br>
+    TeX の可搬性が損われる可能性がある．特に，tar や zip に<br>
+    アーカイブした場合に file 名の漢字コードが問題になる．<br>
+    学界にファイルのコピーを送付する場合の問題にもなる．<br>
+</div>
+
+<h2><span id="3" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#3" class="theme"> 3. 図(EPS)の取り込み </a>
+</span></h2>
+<div id="3_child" class="child"  >
+
+(1) PPT→EPS 変換は，WMF を経由するとよい<br>
+<br>
+    PPT から図を EPS に変換して取り込むのが一般的である．<br>
+    その際，WMF (Windows Meta Format) を経由して変換すると<br>
+    失敗が少なく，綺麗に変換できる．GIF や PNG などから<br>
+    変換して拡大した場合は，印刷時の品質が著しく落ちるので，<br>
+    気を付けること．<br>
+<br>
+    「WMF2EPS」 というツールを勧める．<br>
+<br>
+(2) 取り込みの書式をマクロで統一する<br>
+<br>
+    論文は 2カラムであるため，図表取り込みの幅を<br>
+    マクロで一括変更できるようにしておくと効率がよい．<br>
+    また，ディレクトリを一ヶ所で設定しておくと，<br>
+    図の再利用がしやすい．以下は，カラム幅一杯，中央に<br>
+    図を挿入するマクロの例である．<br>
+<br>
+<br>
+      \def\figdir{fig}<br>
+      \def\insertfigure#1#2#3#4{<br>
+      \begin{figure}[ht]<br>
+       \begin{center}<br>
+        \vspace{1em}<br>
+        \includegraphics[width=\columnwidth]{\figdir/#2}<br>
+        \caption{#3\label{#1}}<br>
+        \ecaption{#4}<br>
+        \vspace{1em}<br>
+       \end{center}<br>
+      \end{figure}}<br>
+<br>
+    \columnwidth 変更することで，一括して図の幅を調整できる．<br>
+    利用には，<br>
+<br>
+      \def\figdir{my-fig-dir}<br>
+<br>
+    として図のディレクトリ指定を文書の最初で指定しておき，<br>
+<br>
+      \insertfigure{fig:fig2}{fig2.eps}{表題…}{english}<br>
+<br>
+    として各図を挿入していく．fig:fig2 はラベル．<br>
+    以下，挿入ファイル名，和文キャプション，<br>
+    英文キャプションと続く．<br>
+<br>
+    経験では，カラム幅一杯に図を挿入するマクロと，<br>
+    用紙印刷範囲一杯に図を挿入するマクロがあれば，<br>
+    ほとんど用が足りる．\ecaption が不要であれば，<br>
+    コメントアウトするなり，空にマクロ<br>
+    定義しておけばよい．<br>
+<br>
+(3) 図版の大きさを考慮する<br>
+<br>
+    卒論は1カラムに対して，論文は，2カラムなので，<br>
+    あらかじめ 2カラムで図版の大きさを考慮しておく．<br>
+    つまり，半分の幅に入れても読みにくくならないか<br>
+    考慮する．<br>
+</div>
+<h2><span id="4" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#4" class="theme"> 4. ラベルと引用 </a>
+</span></h2>
+<div id="4_child" class="child"  >
+
+(1) 図と表の参照は専用定義する<br>
+<br>
+     \def\tabref#1{<br>
+       表\ref{#1}<br>
+     }<br>
+     \def\figref#1{<br>
+       図\ref{#1}<br>
+     }<br>
+<br>
+(2) ラベルは，プレフィクスを付ける<br>
+<br>
+    図であるか，表であるかを区別するプレフィクスを付けておく<br>
+    とよい．例えば，<br>
+<br>
+      fig:figurename<br>
+      tab:tablename<br>
+<br>
+    などである．また，fig:dps99:figure のように，<br>
+    原稿毎にプレフィクスを用意しておくと，<br>
+    過去の論文から部分的な引用がしやすい．<br>
+<br>
+(3) 引用の書式を統一する<br>
+<br>
+    論文誌の書式と同じになるようにしておくと後々楽である．<br>
+<br>
+(4) ラベルに日本語を書かない<br>
+<br>
+\label{はじめに} などとしない．TeXの互換性から問題を起こす可能性がある．<br>
+たとえば，IEEE 英文論文は，TeX 原稿の提出を求められる場合がある．<br>
+(あちらでコンパイルして互換性をチェックされる) その際に問題になる．<br>
+</div>
+<h2><span id="5" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#5" class="theme"> 5. 書式の統一 </a>
+</span></h2>
+<div id="5_child" class="child"  >
+
+(1) 適当な位置での改行をこころがける<br>
+<br>
+    TeX や HTML など，構造を持った文書では，<br>
+    インデントを付けたり適当な位置での改行が，<br>
+    後々の見やすさにつながるので日頃から気をつける．<br>
+    その際，改行位置は，文章の文節にしておくこと．<br>
+    検索や一括の置換の便がよい．<br>
+<br>
+(2) 句読点，全角半角の区別を統一する<br>
+<br>
+    論文誌では，句読点を 「，．」に指定しているので，日頃から<br>
+    合わせておくと混乱が少ない．さもなくが，<br>
+    日頃の資料からの引用で論文を構成した場合に，<br>
+    句読点置換を忘れないこと．<br>
+<br>
+(3) 全角半角の使い分け<br>
+<br>
+    アルファベットは，カーニングとハイフネーションのために，<br>
+    半角で書くこと．それ以外は，あまり拘り過ぎなくてもよい．<br>
+    ちなみに，（）など，日本語文章中は全角だが，数式中では<br>
+    半角にすべきものなどがある．数字も文章中の１桁の数字は，<br>
+    全角としている．<br>
+<br>
+(4) twocolumn での組版を考慮に入れる<br>
+<br>
+    2カラムで組版しても文書が崩れないように書くとよい．<br>
+    そのためには，無理矢理改頁を入れて図版の位置を<br>
+    調節するなどしない．<br>
+</div>
+<h2><span id="6" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a href="#6" class="theme"> 6. その他 </a>
+</span></h2>
+<div id="6_child" class="child"  >
+
+  (1) カナ表記と送り仮名を統一する<br>
+<br>
+      漢字で記述するもの，カタカナ表記の揺れなどは，<br>
+      論文誌を読んで，それらの用語に合わせておくとよい．<br>
+<br>
+  (2) 機種依存文字を使わない<br>
+<br>
+      ○に1や，1文字で(株)となるなどの，<br>
+      いわゆる機種依存文字，あるいは半角カナは使用しない．<br>
+<br>
+  (3) 本論文，本稿，我々，研究室などの表記を外部に出して通じるか<br>
+</div>
+
+<h3>リンク</h3>
+<div style="line-height: 150%;">
+<a href="thesis.html">Latexでの卒論/修論の書き方</a>
+</div>

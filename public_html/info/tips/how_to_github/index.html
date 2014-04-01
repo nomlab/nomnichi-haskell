@@ -1,0 +1,35 @@
+<h1 >Githubの使い方</h1>
+   <p>乃村研では，Githubでリポジトリを管理している．<br />ここでは，Githubを使うための準備と，使い方について述べる．</p>
+
+<h2 >アカウント登録</h2>
+   <ol>
+     <li>Github(<a class="external" href="https://github.com/">https://github.com/</a>)にアカウントを作成する．</li>
+     <li>作成したアカウントをnomlabのTeamsに追加してもらう．<br />(追加はnomlabのownerグループに所属する人(乃村先生とM2)のみ行える．)</li>
+     <li>自身のアカウントに，Githubを使う環境の公開鍵を登録する．</li>
+   </ol>
+
+<h2 >公開鍵の登録</h2>
+
+   <ol>
+     <li>自身の環境で，以下のコマンドを実行し，公開鍵を作成する<br />
+     <pre>
+     $ ssh-keygen -t rsa -f .ssh/id_rsa -N パスフレーズ
+     </pre>
+     </li>
+     <li>公開鍵は，~/.ssh/id_rsa.pub というファイルに保存される．<br />このファイルの中身をコピーする．(改行などに注意)</li>
+     <li>GitHubにログインし， AccountSettings >> SSH-Keys >> Add SSH key<br />に移動し，Keyを貼り付ける．Titleは環境が分かるように自分で適当に決める．</li>
+   </ol>
+
+   <p>これで準備は完了である．<br />次に，Githubの利用方法を述べる．<br />例として，ノムニチ(Yesod)を用いて説明する．</p>
+
+<h2 >Githubの使い方</h2>
+
+   <ol>
+   <li>任意のディレクトリで，以下のコマンドを実行する．<br />
+   <pre>
+   $ git clone git@github.com:nomlab/nomnichi.git
+   </pre>
+   </li>
+   <li>作業が終わったら，addしてcommitしてpushすれば良い．</li>
+   </ol>
+

@@ -1,0 +1,561 @@
+<html lang="ja">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="Author" content="ogasawara">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+
+  <title>Latex での卒論/修論の書き方</title>
+
+  <link rel="stylesheet" type="text/css" href="index.css" media="all">
+  <script type="text/javascript">
+<!--
+function lu() {
+  myModify = document.lastModified;
+  myD = new Date(myModify);
+  myYear = myD.getYear();
+  myYear4 = (myYear < 2000) ? myYear+1900 : myYear;
+  myMonth = myD.getMonth() + 1;
+  myDate = myD.getDate();
+  myStr = "最終更新日：" + myYear4 + "/" + myMonth + "/" + myDate;
+  document.write( myStr );
+}
+function submenu(idNam){
+  childNam = document.getElementById(idNam+"_child");
+  childNam.style.display = (childNam.style.display == "block") ? "none" : "block";
+}
+// -->
+  </script>
+</head>
+<h1> Latex での卒論/修論の書き方 </h1>
+<div style="text-align: right;">
+  作成日：2008/1/30<br>
+  <script type="text/javascript"><!--
+    lu();
+  // --></script><br>
+</div>
+<hr>
+
+<h2>■ この文書について</h2>
+
+<p>この文書は LaTeX(2e) を使って卒論/修論を作成したい方のための手引きです。</p>
+
+<h2>■ 更新履歴</h2>
+
+<ul>
+    <li>本ページの作成 [2008/1/30]</li>
+    <li><a href="yokou-skel.html">予稿のテンプレート追加</a> [2008/4/4]</li>
+</ul>
+
+<h2>各種テンプレート</h2>
+    <div>
+      <a href="graduate2004.cls">卒業論文のスタイルファイル</a><br>
+      <a href="yokou2003.cls">予稿のスタイルファイル</a>
+    </div>
+
+<hr>
+
+<h2>■ 目次</h2>
+
+<ul>
+  <li><a href="#1" class="theme"><span onclick='submenu(1)'>見栄えの良い論文を作るための TIPS (リンク集)</span></a></li>
+  <li><a href="#2" class="theme"><span onclick='submenu(2)'>利用するクラスファイル</span></a>
+    <ul>
+      <li><a hrer>graduateXXXX.{cls,sty}のオプション</li>
+    </ul>
+  </li>
+  <li><a href="#3" class="theme"><span onclick='submenu(3)'>TeX ソースファイルの例</span></a></li>
+  <li><a href="#4" class="theme"><span onclick='submenu(4)'>図の作成</span></a></li>
+  <li><a href="#5" class="theme"><span onclick='submenu(5)'>画面のダンプイメージを入れたいときには</span></a></li>
+  <li><a href="#6" class="theme"><span onclick='submenu(6)'>図のはりつけ</span></a></li>
+  <li><a href="#7" class="theme"><span onclick='submenu(7)'>論文の体裁 -- 「はじめに」と「おわりに」</span></a></li>
+  <li><a href="#8" class="theme"><span onclick='submenu(8)'>参考文献の書き方</span></a></li>
+  <li><a href="#9" class="theme"><span onclick='submenu(9)'>付録の書き方</span></a></li>
+  <li><a href="#10" class="theme"><span onclick='submenu(10)'>索引の作り方</span></a></li>
+</ul>
+
+<hr>
+
+<h2><span id="1" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "1" href="#1" class="theme">■ 見栄えの良い論文を作るための TIPS (リンク集)</a>
+</span></h2>
+<div id="1_child" class="child">
+    <ul>
+      <li>「<a href="http://oku.edu.mie-u.ac.jp/~okumura/texfaq/psfonts.html">TeX と PostScript フォント</a>」(松阪大学・奥村晴彦氏)</li>
+      <li>「<a href="http://www.fluidlab.naoe.t.u-tokyo.ac.jp/~minnie/TeX/index.html.ja">論文執筆に役立つLaTeXの基礎</a>」(東京大学・金野祥久氏)</li>
+    </ul>
+</div>
+
+<h2><span id="2" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "2" href="#2" class="theme">■ 利用するクラスファイル</a>
+</span></h2>
+<div id="2_child" class="child">
+
+<p>卒論/修論作成用のクラスファイルとして年度ごとに graduate(その年度).cls が用意されます。<br>
+今年度の場合、graduate2008.cls が用意されていますので、これを利用してください。<br>
+具体的には TeX のソースファイルの先頭に次のように記述します。</p>
+
+<table>
+<tr><td class="example">
+<pre>\documentclass{graduate2008}
+\usepackage{makeidx}</pre>
+</td></tr></table>
+
+<p>
+<span>makeidx</span> は索引を付ける際に必要となるパッケージです。<br>
+
+卒論/修論の索引は必須ですから、これも使用するように設定します。
+</p>
+
+<p><span style="color:red">注意</span>:必ずその年度のクラスファイルを
+使ってください。<br>
+卒論のスタイルファイルは、年度により索引、マージンなどが異なります。
+</p>
+
+<p><span style="color:red">管理者へ</span>: graduate*.{cls,sty} を直接変更しないように。<br>
+昔の人の卒論の見た目が変わったり、最悪コンパイルできなくなります。<br>
+変更がなくても、毎年 graduate[0-9]*.{cls,sty} を作りましょう。</p>
+
+    <h3><a name="cls-options"></a>●<code>graduateXXXX.{cls,sty}</code>のオプション</h3>
+
+    <p>
+<code>graduateXXXX.{cls,sty}</code> では、以下のオプションを利用できます。
+    </p>
+    <table class="options" >
+      <tbody>
+	<tr>
+	  <!-- one of (TD TH) -->
+	  <th style="background: #ccffff;">オプション名</th>
+
+	  <th style="background: #ccffff;">機能</th>
+	  <th style="background: #ccffff;">利用できるクラスファイル</th>
+	</tr>
+	<tr>
+	  <!-- one of (TD TH) -->
+	  <td align="center"><code>no-colon</code></td>
+	  <td>
+
+             図や表の番号と説明文との間に"<strong style="color: red;">:</strong>"を表示しません。
+		<table>
+	      <tbody>
+		<tr>
+		  <!-- one of (TD TH) -->
+		  <td>(デフォルト)</td>
+		  <td style="background-color: #eedd99;">図 1 <strong style="color: red;">:</strong> ずのせつめい</td>
+
+		</tr>
+		<tr>
+		  <!-- one of (TD TH) -->
+		  <td>(<code>no-colon</code>指定時)</td>
+		  <td style="background-color: #eedd99;">図 1 ずのせつめい</td>
+		</tr>
+	      </tbody>
+
+	    </table>
+          </td>
+	  <td><code>graduate1999.{cls,sty}</code> 以降。</td>
+	</tr>
+	<tr>
+	  <!-- one of (TD TH) -->
+	  <td align="center"><code>no-headfoot</code></td>
+
+	  <td>
+            <ul>
+	      <li>一行の行幅を狭くします。</li>
+	      <li>各ページのヘッダとフッタを出力しません。</li>
+	    </ul>
+            この機能は、TeX 文書をテキストファイルにするために用意したものです。
+<code>dvi2tty</code> 等と組み合わせて利用してください。
+          </td>
+
+	  <td><code>graduate2000.{cls,sty}</code> 以降。</td>
+	</tr>
+	<tr>
+	  <!-- one of (TD TH) -->
+	  <td align="center"><code>tanilab-enum</code></td>
+	  <td><code>enumerate</code>環境における項番の書式を変更します。<br>
+
+	(デフォルト)
+	<blockquote style="background-color: #eedd99;">
+	      <!-- one of (SCRIPT ADDRESS FIELDSET TABLE HR FORM BLOCKQUOTE NOSCRIPT DIV DL PRE OL UL H6 H5 H4 H3 H2 H1 P) -->
+	      <pre>
+1. enumi
+  (a) enumii
+    i. enumiii
+      A. enumiv</pre>
+	</blockquote>
+	(<code>tanilab-enum</code>指定時)
+	<blockquote style="background-color: #eedd99;">
+	      <!-- one of (SCRIPT ADDRESS FIELDSET TABLE HR FORM BLOCKQUOTE NOSCRIPT DIV DL PRE OL UL H6 H5 H4 H3 H2 H1 P) -->
+
+	      <pre>
+(1) enumi
+  (A) enumii
+    (a) enumiii
+      (i) enumiv
+     (ii) enumiv</pre>
+	    </blockquote>
+          </td>
+	  <td><code>graduate2000.{cls,sty}</code>以降。</td>
+	</tr>
+      </tbody>
+    </table>
+</div>
+<h2><span id="3" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "3" href="#3" class="theme">■ TeX のソースファイルの例</a>
+</span></h2>
+<div id="3_child" class="child">
+
+<p>卒論/修論の書き方の<a href="./skel.html">テンプレート</a>を用意しています。
+こちらを参考にしてください。</p>
+</div>
+
+<h2><span id="4" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "4" href="#4" class="theme">■ 図の作成</a>
+</span></h2>
+<div id="4_child" class="child">
+
+    <p>
+      現在、論文中に入れる図を作成する一般的な手法には、以下の2つがあります。
+    <ol>
+      <li>Unix 上で<a href="http://bourbon.usc.edu/tgif/">Tgif</a>を利用する。</li>
+
+      <li>Windows 上で PowerPoint を利用する。</li>
+    </ol>
+    どちらの方法でも日本語を使うことはできます。
+    各自、好みの方法で図を作成してください。
+    Tgif と PowerPoint それぞれの利点は以下の通り。
+    <dl>
+      <!-- one of (DD DT) -->
+      <dt><span style="color: red">Tgif の利点</span></dt>
+      <dd>
+	<ol>
+	  <li>UNIX マシンだけで、TeX文書と図共に作成することができるため効率が良い。</li>
+	  <li>比較的まともな PostScript を出力してくれるので、プレビューや印刷時のトラブルがほとんど無い。</li>
+	  <li>作成される EPS ファイルのファイルサイズが、PowerPoint で作成するものよりずっと小さい。(<strong style="color:red">1/10 以下</strong>)</li>
+	</ol>
+
+	</dd>
+      <dt><span style="color: red">PowerPoint の利点</span></dt>
+      <dd>
+	<ol>
+	  <li>TeX 用に作成した図をそのままプレゼンテーションに使用できる。</li>
+	  <li>使い方を覚えるまでに時間がかからない。</li>
+
+	</ol>
+      </dd>
+    </dl>
+    </p>
+    <h3>PowerPoint で作成する際の豆知識</h3>
+    <p>
+      PowerPoint で作成した EPS ファイルには、無駄な余白がついてしまい、TeX でのレイアウトに苦労します。
+      <a href="psfixbb.html">このアナウンス</a>にある <code style="color:red">/usr/local/bin/psfixbb</code> (Perlスクリプトなのでどの計算機上でも動きます)コマンドを利用すると、この『無駄な空白』を取り除くことができます。
+    </p>
+
+    <p>
+      また、PowerPoint を利用して EPS ファイルをつくる際には、<code>[ファイル]→[ページ設定...]</code>のダイアログで<strong>『スライドのサイズ指定』を A4</strong> にしておきましょう(通常は「画面に合わせる」になっています)。
+      縮尺の計算が楽になります。
+    </p>
+    <p>
+      TeX ファイルで EPS ファイルを取り込むには、<code>\includegraphics</code> コマンドを利用します。
+      この際に、``<strong>clip</strong>'' オプションを使用すると枠外にでる『謎の空白』が出なくなるため、とても幸せになれます。
+    </p>
+
+    <p>
+      【例】
+    </p>
+    <p>
+    <table>
+      <tbody>
+	<tr>
+	  <!-- one of (TD TH) -->
+	  <td class="example">
+
+    <pre>
+\begin{figure}[htbp]
+ \begin{center}
+      \includegraphics[<strong style="color: red;">clip</strong>]{foobar.eps}
+  \caption{Foo Bar}
+  \label{fig:foobar}
+ \end{center}
+\end{figure}</pre>
+          </td>
+	</tr>
+      </tbody>
+    </table>
+    </p>
+</div>
+<h2><span id="5" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "5" href="#5" class="theme">■ 画面のダンプイメージを入れたいときには</a>
+</span></h2>
+<div id="5_child" class="child">
+
+    <p>
+      プログラムの実行画面などを論文にいれたい場合に、画像→EPSへの変換で一般的に行われる
+    <ol>
+      <li>画面のダンプを取る。</li>
+      <li>ペイントツール等に張り付ける。</li>
+      <li>印刷助の出力先を EPS ファイルとする。</li>
+    </ol>
+というやり方は、できあがるファイルサイズが大きくなってしまい、論文のファイルサイズが大きくなる＆印刷に時間がかかってしまう、という問題があります。
+    </p>
+
+    <p>
+      以下の方法のいずれかを用いると、多くの場合ファイルサイズを小さくすることができ、結果、印刷時間を短縮することができます。(たまに逆に大きくなってしまう場合もあります)
+    <ol>
+      <li><code>/usr/local/bin/convert</code> コマンドを利用する。</li>
+      <li><code>/usr/local/X11/bin/xv-3.10a</code> コマンドを利用する。</li>
+      <li><a href="http://www.cityfujisawa.ne.jp/~huzinami/tex/g-conv.html">jpeg2ps</a> ツールを利用する。
+	<ol>
+
+	  <li>ダンプイメージを JPEG ファイルとして保存する。</li>
+	  <li><a href="http://www.cityfujisawa.ne.jp/~huzinami/tex/g-conv.html">jpeg2ps</a>を利用して EPS ファイルに変換する。(crest にインストール済み。<a href="http://www.pdflib.com/download/free-software/jpeg2ps/">ソースファイルはこちら</a>)
+	    <pre>
+jpeg2ps V1.8: convert JPEG files to PostScript Level 2.
+(C) Thomas Merz 1994-1999
+
+usage: jpeg2ps [options] jpegfile > epsfile
+-a        auto rotate: produce landscape output if width > height
+-b        binary mode: output 8 bit data (default: 7 bit with ASCII85)
+-h        hex mode: output 7 bit data in ASCIIHex encoding
+-o &lt;name&gt; output file name
+-p &lt;size&gt; page size name. Known names are:
+          a0, a1, a2, a3, a4, a5, a6, b5, letter, legal, ledger, p11x17
+-q        quiet mode: suppress all informational messages
+-r &lt;dpi&gt;  resolution value (dots per inch)
+          0 means use value given in file, if any (disables autorotate)
+	    </pre>
+
+	  </li>
+	</ol>
+      </li>
+    </ol>
+    </p>
+</div>
+<h2><span id="6" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "6" href="#6" class="theme">■ 図の張り付け</a>
+</span></h2>
+<div id="6_child" class="child">
+
+<p>
+図を張り付ける時は graphicx パッケージを利用します。
+</p>
+<table>
+<tr><td class="example">
+
+<pre>\documentclass{graduate2000}
+\usepackage{makeidx}
+<span style="color:blue">\usepackage[dvips]{graphicx}</span>
+</pre>
+</td></tr></table>
+<p>
+そして図(ここでは hoge.eps とする)を載せたい箇所で、
+次のように書きます。<br>
+
+</p>
+<table>
+<tr><td class="example">
+<pre>
+このような情報ベースシステムの概念図を図 \ref{fig:kouseizu} に示す。
+
+\begin{figure}[hbt]
+  \begin{center}<span style="color:blue">
+    \includegraphics[clip,scale=.5]{hoge.eps}</span>
+
+    \caption{情報ベースシステムの概念図}
+  \end{center}
+  \label{fig:kouseizu}
+\end{figure}
+</pre>
+</td></tr></table>
+<p>
+<span>scale</span> は図の大きさを調整するためのスイッチです。<br>
+この例では hoge.eps を0.5倍(半分)にして張り付けています。
+</p>
+
+<p><a name="no-colon"><span style="color:red">注意</span></a>:標準の設定では、
+図や表のキャプションに":"が入ります。<br>
+この":"を出したくない場合は、\documentclass{graduate2000} <br>
+
+のところで、no-colon オプションを指定してください。つまり、<br>
+\documentclass[no-colon]{graduate2000} としてください。
+</p>
+
+<a name="preface-conclusion"></a>
+</div>
+<h2><span id="7" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "7" href="#7" class="theme">■論文の体裁「はじめに」と「おわりに」</a>
+</span></h2>
+<div id="7_child" class="child">
+
+<p>
+論文本文を「はじめに」という章ではじめたら、
+「おわりに」という章で対応をとりましょう。
+そのためには、次の二つのキーワード\preface{...}
+\conclusion{...}を使います。
+\preface{...}は論文本文の直前、
+\conclusion{...}は論文本文の最後と謝辞の間で使用します。</p>
+<p>なおこの場合「はじめに」と「おわりに」には章番号は振られません。</p>
+
+<table>
+<tr><td class="example">
+<pre><span style="color:blue">\preface{はじめに}</span>
+
+  近年、爆発的な広がりを見せたインターネットでは...
+\chapter{マルチキャスト}
+  ... %論文本文
+<span style="color:blue">\conclusion{おわりに}</span>
+  本論文では...について述べた。今後の課題として次のものが残っている。
+\acknowledgement</pre>
+</td></tr></table>
+</div>
+<h2><span id="8" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "8" href="#8" class="theme">■ 参考文献の書き方</a>
+</span></h2>
+<div id="8_child" class="child">
+
+<p>
+参考文献を記述するには、まず本文の引用箇所で次のように書きます。
+</p>
+<table>
+<tr><td class="example">
+
+<pre>
+なのである。ところが EnCal<span style="color:blue">\cite{Cheng95}</span>では
+</pre>
+</td></tr></table>
+<p>
+<a name="caution_bibliograpy"><span style="color:red">注意</span></a>
+:参考文献は上のように、必ず本文中で引用してください。<br>
+そうしないと、どこで参考にしたのか読み手に伝わりません。
+</p>
+<p>
+そして、参考文献を出力したい箇所で次のように書きます。
+</p>
+<table>
+
+<tr><td class="example">
+<pre>
+<span style="color:blue">
+\begin{thebibliography}{99} % ← 99 は固定でよい。
+
+\bibitem{Cheng95}
+</span>
+J.Cheng,
+``EnCal -- A General-Purpose Entailment Calculus System'',
+Proc. 1st Pacific-Asian Conference on Expert Systems,
+pp.133--138,1995.
+<span style="color:blue">
+\bibitem{Nurmi91}
+</span>
+Hannu Nurmi, Arto Salomaa, and Lila Santean,
+''Secret ballot elections in computer networks.'',
+Computers \&amp; Security, 36(10) pp.553-560, 1991. 
+
+<span style="color:blue">\end{thebibliography}</span></pre>
+</td></tr></table>
+</div>
+
+<h2><span id="9" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "9" href="#9" class="theme">■ 付録の書き方</a>
+</span></h2>
+<div id="9_child" class="child">
+
+<p>付録は<span>\appendix</span>の後に記述します。</p>
+
+<table>
+<tr><td class="example">
+<pre>
+<span style="color:blue">\appendix</span>
+\chapter{…の全ソース}
+
+\section{foo.c}
+
+\small
+\begin{verbatim}
+#include&lt;stdio.h&gt;
+main(){
+  printf("hello world.");
+}
+\end{verbatim}
+</pre>
+</td></tr></table>
+</div>
+<h2><span id="10" class="parent" onclick='submenu(this.id)' onmouseover="this.style.backgroundColor='yellow';" onmouseout='this.style.backgroundColor="white"'>
+<a name = "10" href="#10" class="theme">■ 索引の作り方</a>
+</span></h2>
+<div id="10_child" class="child">
+
+<p>計算機研では、卒論・修論に索引を付けることを義務づけています。<br>
+索引を付けるには次のようにします。</p>
+
+<ol>
+<li><span>makeidx</span>パッケージを利用するように設定する(済)。<br>
+<br>
+<table>
+<tr><td class="example">
+<pre>\documentclass{graduate2000}
+
+<span style="color:blue">\usepackage{makeidx}</span></pre>
+</td></tr></table>
+<br>
+<li>索引を出力したい位置(通常は<span>\end{document}</span>の直前)に
+次のように記述する。<br>
+<br>
+<table>
+<tr><td class="example">
+<pre><span style="color:blue">\insertindex
+\printindex</span></pre>
+</td></tr></table>
+<br>
+<li>索引の対象とする用語にインデックスを付ける。<br>
+
+<br>
+<ul>
+<li>普通に索引を付ける<br>
+<br>
+
+語句<span>\index{語句のよみ@語句}</span> という具合に追加します。<br>
+<br>
+<table>
+<tr><td class="example">
+<pre>
+この章では、並行型プログラムのテストに関して調査した
+結果について報告する<span style="color:blue">\index{てすと@テスト}</span>。
+
+</pre>
+</td></tr></table>
+<br>
+<li>ある索引にサブ項目を入れる場合<br>
+<p>
+「単体テスト」 「受入テスト」 を 「テスト」 のサブ項目と
+して入れたい場合。
+</p>
+<table>
+<tr><td class="example">
+<pre>
+上流工程に対応した、単体テスト<span style="color:blue">\index{てすと@テスト!たんたい---@単体---}</span><br>受入テスト <span style="color:blue">\index{てすと@テスト!うけいれ---@受入---}</span>を行う。
+</pre>
+
+</td></tr></table>
+<br>
+</ul>
+<p><span style="color:red">注意</span></p>
+<ul>
+<li><span>\index{...}</span> は、1行に全部書く。途中で改行しない。
+<li>語句<span>\index{よみ@語句}</span> と書くときに、語句と <span>\index{..}</span> の間に<br>スペースや改行を入れないで密着させる。
+
+</ul>
+<br>
+<li>platex, jmakeindex, platex を順に実行する。<br>
+<br>
+<table>
+<tr><td class="example">
+<pre>
+% platex     filename.tex  (filename.idx が出来る)
+% jmakeindex filename.idx  (filename.idx から filename.ind を生成)
+% platex     filename.tex  (filename.ins を使う)
+</pre>
+</td></tr></table>
+</ol>
+</div>

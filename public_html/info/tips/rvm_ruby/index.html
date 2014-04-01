@@ -1,0 +1,31 @@
+<h1 >RVM・Rubyインストール(Debian)<a href="#RVMRubyDebian" class="wiki-anchor">&para;</a></h1>
+
+<a name="RVMDebian"></a>
+<h2 >RVMインストール(Debian)<a href="#RVMDebian" class="wiki-anchor">&para;</a></h2>
+
+<p>DebianにRVMのインストール方法は複数ある．<br />ここでは，そのうちの1つについて述べる．</p>
+<ol>
+<li>以下のコマンドで，rvmをインストールする．<br /><pre>
+$ \curl -#L https://get.rvm.io | bash -s stable --autolibs=2
+</pre></li>
+
+<li>以下のコマンドでbashを再読み込みする.<br /><pre>
+$ source .bashrc
+</pre><br />もしくはDebianを再起動する.</li>
+
+<li>以下のコマンドで，RVMが正常にインストールされた事を確認する．<br /><pre>
+$ rvm -v
+</pre><br />確認できない場合は，PATHを確認する．</li>
+</ol>
+
+<a name="Ruby"></a>
+<h2 >Rubyインストール<a href="#Ruby" class="wiki-anchor">&para;</a></h2>
+
+<p>RVM上にRubyをインストールする方法について述べる．</p>
+
+<ol>
+<li>以下のコマンドで，Rubyをインストールする．以下はバージョン1.9.3をインストールする例である．<br /><pre>
+$ rvm install 1.9.3
+</pre></li>
+</ol>
+

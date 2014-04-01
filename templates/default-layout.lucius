@@ -2,12 +2,50 @@ html {height: 100%; }
 
 body {
     margin: 10px;
-    height: auto;
+    height: 100%;
     width: auto;
     font-family: Helvatica, sans-serif;
     font-size: 14px; }
 
-div.article_list, div.article_form {
+/* p: text box */
+p {
+  margin: 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* div: content box */
+div {
+    margin: 5px;
+    }
+
+/* centering */
+div.center {
+    width: 1px;
+    margin: 0 auto 0 auto;
+}
+
+div.text_center {
+    text-align: center;
+}
+
+/* float left */
+
+div.left {
+    float: left;
+}
+
+/* float right */
+div.right {
+    float: right;
+}
+
+/* float clear both(left and right) */
+div.clear {
+    clear: both;
+}
+
+div.article_list, div.article_form, div.home {
     padding: 1em;
     border: #F5DEB3 solid 2px;
     border-radius: 5px;
@@ -37,15 +75,22 @@ li.article_list_title {
 li.article_list {
     text-align: right; }
 
-h1.article_list {
+div.published_on {
+    text-align: right;
+    margin-bottom: 15px;}
+
+/* h1 */
+h1.home h1.article_list {
     font-size: 25px;
     background: -moz-linear-gradient(left, #FF8C00, #F5DEB3);
     background: -webkit-gradient(linear, left top, right top, from(#FF8C00), to(#F5DEB3));
     color: #FFF;
-    padding: 3px 0 0 8px;
+    padding: 3px 0 0 10px;
     margin: -16px -16px 0 -16px;
 }
 
+/* h1 of articles
+   May be equal to h2.home */
 h1.title {
     color: maroon;
     border-color: wheat;
@@ -55,10 +100,45 @@ h1.title {
     margin-top: 20px;
     border-style: solid;}
 
-div.published_on {
-    text-align: right;
-    margin-bottom: 15px;}
+/* h2 */
+h2.home {
+    color: maroon;
+    border-color: wheat;
+    border-width: 0px 0px 1px 10px;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    border-style: solid;}
 
+/* h3 */
+h3.home {
+    color: #333;
+    padding: 1em 0 0 0;
+}
+
+/* html5 page containers
+  ----------------------
+  | header             |
+  |--------------------|
+  | aside | main       |
+  |       |            |
+  |       |            |
+  |--------------------|
+  | footer             |
+  ---------------------- */
+header, aside, footer {
+    display: block;
+}
+
+div.container {
+    width: 100%;
+    margin: 0px 5px 0px 5px;
+    min-height: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* header */
 header {
     border-top: 20px;
     margin: 8px 0 0 8px;
@@ -66,58 +146,65 @@ header {
 }
 
 header dev {
+    position: relative;
+    left: 25%;
     float: left;
+    margin-left: 0px;
     width: 100px;
 }
 
-header.div.blogtitle {
+header div.blogtitle {
+    position: relative;
+    left: 25%;
     float: left;
+    height: 80px;
 }
 
-header h1 {
-    font-size: 25px;
+header h1{
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    border: none;
+    background-color: #FFF;
+    margin: -5px 0 0 0;
+    padding: 0 0 0 0;
 }
 
-header h2 {
+header h2{
+    margin: 8px 0 0 0;
     font-size: 20px;
+    color: #333;
+    border: none;
 }
 
-div.container {
-    height: 100%;
-    width: 100%;
-    margin: 0px 5px 0px 5px;
-    min-height: 100%;
-    height: auto;
-    position: relative;}
-
+/* aside */
 aside {
     clear: both;
     float: left;
     border: #B2B48C solid 0px;
     border-radius: 5px;
-    margin: 18px 20px 20px 10px;
-    padding-left: 5px;
-    width: 140px;
-    height: 500px;
+    margin: 18px 20px 20px 20px;
+    padding: 0 0 0 5px;
+    width: 170px;
+    min-height: 100%;
+    height: 100%;
     background: #FFF;
     line-height: 1.5em;
     color: #333;
     font-size:14px;
+    background-image: url(./../img/sidebar_orange.png);
+    background-repeat: repeat-y;
 }
 
 aside a {color: #000;}
 
-aside a:hover { color: #000; 
+aside a:hover { color: #000;
                 background-color: #FFFACD;
                 text-decoration: none;}
 aside a:article { color: #000; }
 aside a:visited { color: #000; }
 
-aside h3 {
-    font-size: 20px;
-}
-
-aside h2 {
+aside h1 {
     background-color: #FF8C00;
     color: #FFFFFF;
     font-size: 25px;
@@ -125,11 +212,13 @@ aside h2 {
     margin: 0 0 10px -8px;
 }
 
-aside ul,
-aside ul li ul {
+aside ul {
     list-style-type:none;
-    padding: 0;
-    margin:0;
+    margin: 0;
+}
+
+aside ul li ul {
+    padding: 0 0 0 15px;
 }
 
 aside ul li,
@@ -143,28 +232,34 @@ aside ul li ul li a {
     text-decoration: none;
 }
 
-ul.depth_0 {
+.sidebar {
+    width:140px;
+    text-align: left;
+    float: left;
+    padding: 0;
+    margin: 0 0 0 -6px;
+    font-size: 85%;
 }
 
-ul.depth_1 {
-    margin-left: 10px;
-}
-
+/* main */
 #main {
-    float:left;
+    float: left;
     width: 80%;
     margin-top: 18px;
     padding-bottom: 70px;}
 
+/* footer */
 footer {
     width: 80%;
-    margin-left: 170px;
-    position: absolute;
+    margin-left: 225px;
+    position: relative;
     padding-top: 5px;
     border-top: 1px solid #F5DEB3;
+    float: left;
     height: 50px;
     bottom: 0;}
 
+/* I don't remember. articles? */
 .required { margin: 1em 0;}
 .optional { margin: 1em 0;}
 label {
@@ -175,18 +270,70 @@ input, textarea {background: #FFF;}
 
 textarea {width: 27em; height: 9em;}
 
-ul li {
-    margin: 3px 0;
+/* li, ul, ol: itemize*/
+li {
+    margin: 1em 0 0 0;
 }
 
 ul {
-    line-style: square;
-    list-style-type: none; 
-    margin-left: -25px;
+    list-style-type: disc;
+    margin: 1em 1em 1em 2em;
 }
 
-a {color: #000;}
+ul.depth1 {
+    list-style-type: circle;
+}
 
+/* ol is used at only research index page */
+ol {
+    margin: 1em 1em 1em 4em;
+}
+
+/* a: link */
+a {color: #000;}
 a:hover { color: #000; }
 a:article { color: #000; }
 a:visited { color: #000; }
+
+/* dd: definition */
+dd {
+    padding: 5px;
+}
+
+
+
+div#article_footer {
+    width: auto;
+}
+
+#article_footer ul{
+    margin :auto;
+    height: 30px;
+    list-style: none;
+    float:right;
+}
+#article_footer ul li {
+    float: left;
+    height: 30px;
+}
+
+#article_footer ul li a {
+    display:block;
+    margin: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+#article_footer input {
+    display: inline;
+    vertical-align:middle;
+}
+
+hr {
+   clear: both;
+   border-color: #F5DEB3;
+}
+
+
+
