@@ -26,7 +26,7 @@
   $else
     $forall Entity commentId comment <- comments
       <div id=comment>
-        #{commentCommenter comment} :<br> 
+        #{commentCommenter comment} :<br>
         #{commentBody comment}
         <div class=published_on> #{formatToCommentTime comment}
       <hr>

@@ -3,32 +3,38 @@
   $if I.null articles
     <p> There are no articles in the blog.
   $else
-    <ul>
+    <ul class="article_list">
       $maybe p <- paramPage
         $if convTextToInt p > 1
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
         $else
           <a href=@{HomeR}/nomnichi?page=2>進む</a>
-          <hr>
+        <hr>
         $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
           <li class="article_list_title">
-            <a href=@{ArticleR articleId}> #{articleTitle article}
-          <li class="article_list">
-            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
-          <hr>
+            <div class="left">
+              <a href=@{ArticleR articleId}> #{articleTitle article}
+            <div class="right">
+              #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            <div class="clear">
+        <hr>
         $if convTextToInt p > 1
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>
           <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
         $else
           <a href=@{HomeR}/nomnichi?page=2>進む</a>
       $nothing
+        <a href=@{HomeR}/nomnichi?page=2>進む</a>
+        <hr>
         $forall Entity articleId article <- I.take 20 articles
           <li class="article_list_title">
-            <a href=@{ArticleR articleId}> #{articleTitle article}
-          <li class="article_list">
-            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
-          <hr>
+            <div class="left">
+              <a href=@{ArticleR articleId}> #{articleTitle article}
+            <div class="right">
+              #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            <div class="clear">
+        <hr>
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
 <a href=@{HomeR}/nomnichi/create> Create Article
