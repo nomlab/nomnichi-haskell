@@ -26,41 +26,63 @@ $newline never
         <div class="container">
             <header>
               <dev>
-                <a href=@{HomeR}><img src="/static/img/okayama-university-logo.gif" width="80px" height="80px">
+                <a href=@{HomeR}><img src="/lab/nom/static/img/okayama-university-logo.gif" width="80px" height="80px">
               <div class="blogtitle">
                 <h2> 岡山大学大学院 自然科学研究科 産業創成工学専攻
                 <h1> 計算機科学講座(乃村研究室)
-            <aside>
-              <h1> Menu
-              <ul>
-                <li>
-                  <a href=@{HomeR}>トップページ
-                <li>
-                  <a href="@{HomeR}ourstatic/members.html">構成員
-                <li>
-                  <a href="@{HomeR}ourstatic/research/index.html">研究紹介
+            <div class="container">
+              <aside>
+                <div class="sidebar">
+                  <h1> Menu
                   <ul>
                     <li>
-                      <a href="@{HomeR}ourstatic/research/gn/index.html"> GN
+                      <a href=@{HomeR}>トップページ
                     <li>
-                      <a href="@{HomeR}ourstatic/research/new/index.html"> New
-                <li>研究業績
+                      <a href="@{HomeR}/ourstatic/members.html">構成員
+                    <li>
+                      <a href="@{HomeR}/ourstatic/research/index.html">研究紹介
+                      <ul>
+                        <li>
+                          <a href="@{HomeR}/ourstatic/research/gn/index.html"> GN
+                        <li>
+                          <a href="@{HomeR}/ourstatic/research/new/index.html"> New
+                    <li>研究業績
+                      <ul>
+                        <li>
+                          <a href="@{HomeR}/ourstatic/thesis/index.html">学位論文一覧
+                        <li>
+                          <a href="@{HomeR}/ourstatic/bibs/index.html">発表論文一覧
+                    <li>
+                      <a href="@{HomeR}/ourstatic/access/index.html">アクセス
+                    <li>
+                      <a href=@{NomnichiR}>ノムニチ
+                      <ul>
+                        <li>
+                          <a href="@{HomeR}/ourstatic/nomnichi/about.html">ノムニチとは
+                  <hr>
                   <ul>
-                    <li>
-                      <a href="@{HomeR}ourstatic/thesis/index.html">学位論文一覧
-                    <li>
-                      <a href="@{HomeR}ourstatic/bibs/index.html">発表論文一覧
-                <li>
-                  <a href="@{HomeR}ourstatic/access/index.html">アクセス
-                <li>
-                  <a href=@{NomnichiR}>ノムニチ
+                    <li>研究室内限定情報
+                      <ul>
+                        <li>
+                          <a href="https://github.com/nomlab/nompedia/wiki">乃村研情報ページ
+                        <li>
+                          <a href="https://www.swlab.cs.okayama-u.ac.jp/info/index.html">SWLAB情報ページ
+                  <hr>
                   <ul>
-                    <li>
-                      <a href="@{HomeR}ourstatic/nomnichi/about.html">ノムニチとは
+                    <li>外部リンク
+                      <ul>
+                        <li>
+                          <a href="http://www.okayama-u.ac.jp/">岡山大学
+                        <li>
+                          <a href="http://www.eng.okayama-u.ac.jp/">工学部
+                        <li>
+                          <a href="http://www.eng.okayama-u.ac.jp/eng_it/html/">情報系学科
+                        <li>
+                          <a href="http://www.swlab.cs.okayama-u.ac.jp/index-j.html">SWLAB
 
-            <div id="main" role="main">
-              ^{pageBody pc}
-            <footer>
+              <div id="main" role="main">
+                ^{pageBody pc}
+              <footer>
                 #{extraCopyright $ appExtra $ settings master}
 
         $maybe analytics <- extraAnalytics $ appExtra $ settings master

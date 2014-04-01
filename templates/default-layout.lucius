@@ -2,7 +2,7 @@ html {height: 100%; }
 
 body {
     margin: 10px;
-    height: auto;
+    height: 100%;
     width: auto;
     font-family: Helvatica, sans-serif;
     font-size: 14px; }
@@ -120,12 +120,12 @@ header, aside, footer {
 }
 
 div.container {
-    height: 100%;
     width: 100%;
     margin: 0px 5px 0px 5px;
     min-height: 100%;
-    height: auto;
-    position: relative;}
+    height: 100%;
+    position: relative;
+}
 
 /* header */
 header {
@@ -172,14 +172,17 @@ aside {
     float: left;
     border: #B2B48C solid 0px;
     border-radius: 5px;
-    margin: 18px 20px 20px 10px;
-    padding-left: 5px;
-    width: 140px;
-    height: 500px;
+    margin: 18px 20px 20px 20px;
+    padding: 0 0 0 5px;
+    width: 170px;
+    min-height: 100%;
+    height: 100%;
     background: #FFF;
     line-height: 1.5em;
     color: #333;
     font-size:14px;
+    background-image: url(./../img/sidebar_orange.png);
+    background-repeat: repeat-y;
 }
 
 aside a {color: #000;}
@@ -218,9 +221,18 @@ aside ul li ul li a {
     text-decoration: none;
 }
 
+.sidebar {
+    width:140px;
+    text-align: left;
+    float: left;
+    padding: 0;
+    margin: 0 0 0 -6px;
+    font-size: 85%;
+}
+
 /* main */
 #main {
-    float:left;
+    float: left;
     width: 80%;
     margin-top: 18px;
     padding-bottom: 70px;}
@@ -228,10 +240,11 @@ aside ul li ul li a {
 /* footer */
 footer {
     width: 80%;
-    margin-left: 170px;
-    position: absolute;
+    margin-left: 225px;
+    position: relative;
     padding-top: 5px;
     border-top: 1px solid #F5DEB3;
+    float: left;
     height: 50px;
     bottom: 0;}
 
