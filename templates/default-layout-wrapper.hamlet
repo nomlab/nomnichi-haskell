@@ -7,7 +7,7 @@ $newline never
 <html class="no-js" lang="en"> <!--<![endif]-->
     <head>
         <meta charset="UTF-8">
-
+        <link rel="icon" href=@{FaviconR} sizes="32x32" type="image/png">
         <title>#{pageTitle pc}
         <meta name="description" content="">
         <meta name="author" content="">
