@@ -22,7 +22,6 @@ library
                      Handler.Home
                      Handler.Nomnichi
                      Handler.Usermanagement
-                     Handler.Loginform
                      Handler.OurStatic
 
     if flag(dev) || flag(library-only)
