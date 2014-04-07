@@ -100,10 +100,12 @@ postArticleR articleId = do
         update articleId
           [ ArticleMemberName =. articleMemberName article
           , ArticleTitle   =. articleTitle   article
+          , ArticlePermaLink =. articlePermaLink article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
           , ArticlePublishedOn =. articlePublishedOn article
           , ArticleApproved =. articleApproved article
+          , ArticlePromoteHeadline =. articlePromoteHeadline  article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
