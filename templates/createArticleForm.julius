@@ -1,0 +1,16 @@
+var renderPreview = function(event){
+  var previewArea = $("div.article_preview")
+
+  event.preventDefault();
+  var title = $("input[id=h2][name=f2]").val();
+  var content = $("div.nicEdit-main").html();
+
+  previewArea.empty();
+  previewArea.append("<hr>");
+  previewArea.append("<h1 class=title>"+title+"</h1>");
+  previewArea.append("<article>"+content+"</article>");
+};
+
+$(document).ready(function(){
+  $('a.preview').click(renderPreview);
+});
