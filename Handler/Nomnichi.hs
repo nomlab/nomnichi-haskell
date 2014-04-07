@@ -98,7 +98,8 @@ postArticleR articleId = do
       runDB $ do
         _article <- get404 articleId
         update articleId
-          [ ArticleTitle   =. articleTitle   article
+          [ ArticleMemberName =. articleMemberName article
+          , ArticleTitle   =. articleTitle   article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
           , ArticlePublishedOn =. articlePublishedOn article
