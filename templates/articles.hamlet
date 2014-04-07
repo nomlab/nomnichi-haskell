@@ -37,6 +37,8 @@
         <hr>
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
-<a href=@{HomeR}/nomnichi/create> Create Article
-<br>
-<a href=@{HomeR}/auth/logout> Logout
+$maybe _ <- creds
+  <a href=@{HomeR}/nomnichi/create> Create Article
+  <br>
+  <a href=@{HomeR}/auth/logout> Logout
+$nothing

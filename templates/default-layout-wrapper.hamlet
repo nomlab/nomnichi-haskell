@@ -83,7 +83,8 @@ $newline never
               <div id="main" role="main">
                 ^{pageBody pc}
               <footer>
-                #{extraCopyright $ appExtra $ settings master}
+                <a href="@{HomeR}/auth/login">
+                  #{extraCopyright $ appExtra $ settings master}
 
         $maybe analytics <- extraAnalytics $ appExtra $ settings master
             <script>
