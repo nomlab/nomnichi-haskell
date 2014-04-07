@@ -98,11 +98,14 @@ postArticleR articleId = do
       runDB $ do
         _article <- get404 articleId
         update articleId
-          [ ArticleTitle   =. articleTitle   article
+          [ ArticleMemberName =. articleMemberName article
+          , ArticleTitle   =. articleTitle   article
+          , ArticlePermaLink =. articlePermaLink article
           , ArticleContent =. articleContent article
           , ArticleUpdatedOn =. articleUpdatedOn article
           , ArticlePublishedOn =. articlePublishedOn article
           , ArticleApproved =. articleApproved article
+          , ArticlePromoteHeadline =. articlePromoteHeadline  article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
