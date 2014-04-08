@@ -171,7 +171,7 @@ entryForm = renderDivs $ Article
   <$> areq textField    "MemberName"   Nothing
   <*> areq textField    "Title"        Nothing
   <*> areq textField    "PermaLink"    Nothing
-  <*> areq nicHtmlField "Content"      Nothing
+  <*> areq htmlField "Content"      Nothing
   <*> lift (liftIO getCurrentTime) --
   <*> lift (liftIO getCurrentTime) --
   <*> lift (liftIO getCurrentTime) --
@@ -184,7 +184,7 @@ editForm article = renderDivs $ Article
   <$> areq textField    "MemberName" (articleMemberName <$> article)
   <*> areq textField    "Title"    (articleTitle <$> article)
   <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
-  <*> areq nicHtmlField "Content"  (articleContent <$> article)
+  <*> areq htmlField "Content"  (articleContent <$> article)
   <*> lift (liftIO getCurrentTime)
   <*> lift (liftIO getCurrentTime)
   <*> lift (liftIO getCurrentTime)
