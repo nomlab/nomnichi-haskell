@@ -2,8 +2,8 @@ var renderPreview = function(event){
   var previewArea = $("div.article_preview")
 
   event.preventDefault();
-  var title = $("input[id=h2][name=f2]").val();
-  var content = $("div.nicEdit-main").html();
+  var title = document.getElementById("hident3").value;
+  var content = document.getElementById("hident5").value;
 
   previewArea.empty();
   previewArea.append("<hr>");
