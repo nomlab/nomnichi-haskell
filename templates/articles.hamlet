@@ -14,7 +14,10 @@
         $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
           <li class="article_list_title">
             <div class="left">
-              <a href=@{ArticleR articleId}> #{articleTitle article}
+              $if articleApproved article
+                <a href=@{ArticleR articleId}> #{articleTitle article}
+              $else
+                <a href=@{ArticleR articleId}> #{articleTitle article}<img src="/lab/nom/static/img/lock.png" width="20px" height="20px">
             <div class="right">
               #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
             <div class="clear">
@@ -30,7 +33,10 @@
         $forall Entity articleId article <- I.take 20 articles
           <li class="article_list_title">
             <div class="left">
-              <a href=@{ArticleR articleId}> #{articleTitle article}
+              $if articleApproved article
+                <a href=@{ArticleR articleId}> #{articleTitle article}
+              $else
+                <a href=@{ArticleR articleId}> #{articleTitle article}<img src="/lab/nom/static/img/lock.png" width="20px" height="20px">
             <div class="right">
               #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
             <div class="clear">
