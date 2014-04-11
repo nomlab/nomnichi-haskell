@@ -19,22 +19,17 @@ textsToFilePath :: [Text] -> FilePath
 textsToFilePath texts = "public_html/" ++ ( init $ tail $ show $ DT.intercalate "/" texts )
 
 getOurStaticR :: [Text] -> Handler Html
-getOurStaticR path = 
-    if fileExtension == filePath
-    then 
-        defaultLayout $ [whamlet|#{preEscapedToHtml guessBody}|]
-    else                                               
-        case fileExtension of
+getOurStaticR path
+    | fileExtension == filePath = defaultLayout $ [whamlet|#{preEscapedToHtml guessBody}|]
+    | fileExtension == "html" = defaultLayout $ [whamlet|#{preEscapedToHtml body}|]
+    | fileExtension == "png" = sendFile typePng filePath
+    | fileExtension == "jpg" = sendFile typeJpeg filePath
+    | otherwise = sendFile typeOctet filePath
 -- 今後，以下の方法に書き換える
 -- http://hackage.haskell.org/package/mime-types-0.1.0.0/docs/Network-Mime.html#t:FileName
-               "html" -> defaultLayout $ do
-                  [whamlet|#{preEscapedToHtml body}|]
-               "png" -> sendFile typePng filePath
-               "jpg" -> sendFile typeJpeg filePath
-               _ -> sendFile typeOctet filePath
     where 
-      filePath = textsToFilePath path
-      body = readStaticFile $ filePath
-      guessBody = readStaticFile $ filePath ++ "/index.html"
-      fileExtension = reverse $ fst $ break (=='.') $ reverse $ filePath
+        filePath = textsToFilePath path
+        body = readStaticFile $ filePath
+        guessBody = readStaticFile $ filePath ++ "/index.html"
+        fileExtension = reverse $ fst $ break (=='.') $ reverse $ filePath
 
