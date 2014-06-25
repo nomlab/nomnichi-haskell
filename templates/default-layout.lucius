@@ -130,8 +130,8 @@ header, aside, footer {
 }
 
 div.container {
-    width: 100%;
-    margin: 0px 5px 0px 5px;
+    width: 1200px;
+    margin: 0 auto;
     min-height: 100%;
     height: 100%;
     position: relative;
