@@ -4,7 +4,7 @@
 /lab/nom/favicon.ico FaviconR GET
 /lab/nom/robots.txt RobotsR GET
 
-/lab/nom/ HomeR GET POST
+/lab/nom/ HomeR GET
 
 /lab/nom/nomnichi                         NomnichiR        GET 
 /lab/nom/nomnichi/create                  CreateArticleR   GET POST
