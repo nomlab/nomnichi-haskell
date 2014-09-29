@@ -1,7 +1,8 @@
 {-# LANGUAGE TupleSections, OverloadedStrings #-}
 module Handler.Home where
 
-import Import
+import Import as I
+import Data.Time
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -14,8 +15,8 @@ getHomeR :: Handler Html
 getHomeR = do
     let submission = Nothing :: Maybe (FileInfo, Text)
         handlerName = "getHomeR" :: Text
+    articles <- runDB $ selectList [ArticlePromoteHeadline ==. True] [Desc ArticleId]
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "乃村研究室ホームページ"
         $(widgetFile "homepage")
-
