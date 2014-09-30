@@ -78,7 +78,7 @@ getArticleR articleId = do
     Just _ ->
       defaultLayout $ do
         setTitle $ toHtml $ articleTitle article
-        $(widgetFile "article")
+        $(widgetFile "authedArticle")
     Nothing ->
       case articleApproved article of
         True ->
