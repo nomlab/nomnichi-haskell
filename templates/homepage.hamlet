@@ -29,12 +29,15 @@
   <h1 class="home"> ノムニチ新着記事
   <ul class="article_list">
     $forall Entity articleId article <- take 3 articles
-      <li class="article_list_title">
-        <div class="left">
-          <a href=@{ArticleR articleId}> #{articleTitle article}
-        <div class="right">
-          #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
-        <div class="clear">
-      <div>
+      <div class="box">
+        <li class="article_list_title">
+          <div class="left">
+            <a href=@{ArticleR articleId}>
+              <font size="4" color="maroon">
+                <b> #{articleTitle article}
+          <div class="right">
+            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+          <div class="clear">
+        <div>
         #{takeHeadLine $ articleContent article}
   <hr>
