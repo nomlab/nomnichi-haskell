@@ -35,4 +35,6 @@
         <div class="right">
           #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
         <div class="clear">
+      <div>
+        #{takeHeadLine $ articleContent article}
   <hr>
