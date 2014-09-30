@@ -1,0 +1,3 @@
+a.delete {
+  cursor: pointer;
+}

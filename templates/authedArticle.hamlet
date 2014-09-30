@@ -10,9 +10,9 @@
     <li>
       <a href=@{EditArticleR articleId}> 編集
     <li>
-      <form method="post" action=@{DeleteArticleR articleId}>
-        <input type=submit value=削除>
-
+      <form name=delete method="post" action=@{DeleteArticleR articleId}>
+        <input type=hidden value=削除>
+        <a class=delete> 削除
 <hr>
 <form method=post action=@{CommentR articleId} enctype=#{enctype}>
   ^{commentWidget}

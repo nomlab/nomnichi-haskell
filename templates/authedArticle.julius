@@ -1,0 +1,10 @@
+var postDelete = function(event){
+  if(window.confirm('Do you really delete article?')){
+    document.delete.submit();
+  }else{
+  }
+};
+
+$(document).ready(function(){
+  $('a.delete').click(postDelete);
+});
