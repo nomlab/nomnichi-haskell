@@ -7,7 +7,17 @@
   <ul>
     <li>
       <a href=@{NomnichiR}> TOPへ
+    <li>
+      <a href=@{EditArticleR articleId}> 編集
+    <li>
+      <form method="post" action=@{DeleteArticleR articleId}>
+        <input type=submit value=削除>
 
+<hr>
+<form method=post action=@{CommentR articleId} enctype=#{enctype}>
+  ^{commentWidget}
+  <div>
+    <input type=submit value="コメント投稿">
 <hr>
 <div id=comments>
   $if I.null comments
