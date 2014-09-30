@@ -18,7 +18,7 @@ getHomeR :: Handler Html
 getHomeR = do
     let submission = Nothing :: Maybe (FileInfo, Text)
         handlerName = "getHomeR" :: Text
-    articles <- runDB $ selectList [ArticlePromoteHeadline ==. True] [Desc ArticleId]
+    articles <- runDB $ selectList [ArticlePromoteHeadline ==. True, ArticleApproved ==. True] [Desc ArticleId]
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "乃村研究室ホームページ"
