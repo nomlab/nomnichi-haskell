@@ -20,6 +20,9 @@ import Yesod.Form.Nic (YesodNic, nicHtmlField)
 -- import Data.Attoparsec.Text
 import Data.Text as T
 import Yesod.Auth
+import Data.List as I (lines, unlines, isPrefixOf)
+import Text.Blaze.Html (preEscapedToHtml)
+import Text.Blaze.Html.Renderer.String (renderHtml)
 
 instance YesodNic App
 
@@ -42,10 +45,10 @@ convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
 
 calcNumOfArticles :: Text -> Int
-calcNumOfArticles text = (convTextToInt text) * 20
+calcNumOfArticles text = (convTextToInt text) * 10
 
 calcNumOfDroppingArticles :: Text -> Int
-calcNumOfDroppingArticles text = (convTextToInt text - 1) * 20
+calcNumOfDroppingArticles text = (convTextToInt text - 1) * 10
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
@@ -199,3 +202,41 @@ commentForm articleId = renderDivs $ Comment
   <*> lift (liftIO getCurrentTime)
   <*> lift (liftIO getCurrentTime)
   <*> pure articleId
+
+-- ヘッドライン
+takeHeadLine :: Html -> Html
+takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
+
+prettyHeadLine :: String -> String
+prettyHeadLine article = gsub "_br_" "<br>" $ stripTags $ gsub "<br>" "_br_" $ I.unlines $ foldArticle $ I.lines article
+
+stripTags' bool (x:xs)
+  | xs   == []    = if x == '>'
+                    then []
+                    else [x]
+  | bool == True  = if x == '>'
+                    then stripTags' False xs
+                    else stripTags' True xs
+  | bool == False = if x == '<'
+                    then stripTags' True xs
+                    else x : (stripTags' False xs)
+stripTags str = stripTags' False str
+
+gsub _ _ [] = []
+gsub x y str@(s:ss)
+  | I.isPrefixOf x str = y ++ gsub x y (I.drop (I.length x) str)
+  | otherwise = s:gsub x y ss
+
+foldArticle :: [String] -> [String]
+foldArticle lines = if lines == headLine
+                    then I.take 3 lines
+                    else headLine
+  where headLine = foldAtFolding lines
+
+foldAtFolding :: [String] -> [String]
+foldAtFolding (x:xs)
+  | x /= "<!-- folding -->" = if xs == []
+                              then [x]
+                              else x:foldAtFolding xs
+  | x == "<!-- folding -->" = []
+  | otherwise = []
