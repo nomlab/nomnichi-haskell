@@ -1,0 +1,7 @@
+var postDelete = function(event){
+    document.delete.submit();
+};
+
+$(document).ready(function(){
+  $('a.delete').click(postDelete);
+});
