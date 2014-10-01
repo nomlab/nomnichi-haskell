@@ -96,7 +96,6 @@ postArticleR articleId = do
   case res of
     FormSuccess article -> do
       runDB $ do
-        _article <- get404 articleId
         update articleId
           [ ArticleMemberName =. articleMemberName article
           , ArticleTitle   =. articleTitle   article
@@ -127,7 +126,6 @@ getEditArticleR articleId = do
 postDeleteArticleR :: ArticleId -> Handler Html
 postDeleteArticleR articleId = do
   runDB $ do
-    _post <- get404 articleId
     delete articleId
     deleteWhere [ CommentArticleId ==. articleId ]
   setMessage "successfully deleted."
@@ -141,7 +139,6 @@ postDeleteArticleR articleId = do
 -- コメント送信
 postCommentR :: ArticleId -> Handler Html
 postCommentR articleId = do
-  _post <- runDB $ get404 articleId
   ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
   case res of
     FormSuccess comment -> do
