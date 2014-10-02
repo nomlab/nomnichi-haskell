@@ -45,10 +45,10 @@ convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
 
 calcNumOfArticles :: Text -> Int
-calcNumOfArticles text = (convTextToInt text) * 10
+calcNumOfArticles text = (convTextToInt text) * parPage
 
 calcNumOfDroppingArticles :: Text -> Int
-calcNumOfDroppingArticles text = (convTextToInt text - 1) * 10
+calcNumOfDroppingArticles text = (convTextToInt text - 1) * parPage
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
@@ -56,6 +56,8 @@ getCreateArticleR = do
   defaultLayout $ do
     $(widgetFile "createArticleForm")
 
+parPage :: Int
+parPage = 10
 
 -- 記事作成
 postCreateArticleR :: Handler Html
@@ -229,7 +231,7 @@ gsub x y str@(s:ss)
 
 foldArticle :: [String] -> [String]
 foldArticle lines = if lines == headLine
-                    then I.take 3 lines
+                    then I.take defaultNumOfLines lines
                     else headLine
   where headLine = foldAtFolding lines
 
@@ -240,3 +242,6 @@ foldAtFolding (x:xs)
                               else x:foldAtFolding xs
   | x == "<!-- folding -->" = []
   | otherwise = []
+
+defaultNumOfLines :: Int
+defaultNumOfLines = 3

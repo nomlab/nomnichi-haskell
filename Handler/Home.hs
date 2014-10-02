@@ -51,7 +51,7 @@ gsub x y str@(s:ss)
 
 foldArticle :: [String] -> [String]
 foldArticle lines = if lines == headLine
-                    then take 3 lines
+                    then take defaultNumOfLines lines
                     else headLine
   where headLine = foldAtFolding lines
 
@@ -62,3 +62,9 @@ foldAtFolding (x:xs)
                               else x:foldAtFolding xs
   | x == "<!-- folding -->" = []
   | otherwise = []
+
+defaultNumOfLines :: Int
+defaultNumOfLines = 3
+
+numOfNewArticles :: Int
+numOfNewArticles = 3

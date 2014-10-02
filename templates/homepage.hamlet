@@ -28,7 +28,7 @@
 <div class="home">
   <h1 class="home"> ノムニチ新着記事
   <ul class="article_list">
-    $forall Entity articleId article <- take 3 articles
+    $forall Entity articleId article <- take numOfNewArticles articles
       <div class="box">
         <li class="article_list_title">
           <div class="left">
