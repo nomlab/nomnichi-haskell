@@ -13,6 +13,4 @@
 /lab/nom/nomnichi/#ArticleId/delete       DeleteArticleR   POST
 /lab/nom/nomnichi/#ArticleId/comment      CommentR         POST
 
-/lab/nom/userlist UserR GET POST
-
 /lab/nom/ourstatic/*Texts OurStaticR GET

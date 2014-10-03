@@ -21,7 +21,6 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.Nomnichi
-                     Handler.Usermanagement
                      Handler.OurStatic
 
     if flag(dev) || flag(library-only)
