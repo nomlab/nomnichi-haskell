@@ -1,5 +1,5 @@
 <h1 class=title> #{articleTitle article}
-<div class=published_on> #{formatToNomnichiTime article} #{articleMemberName article}
+<div class=published_on> #{formatToNomnichiTime article}  #{displayAuthorName user}
 
 <article> #{articleContent article}
 <hr>

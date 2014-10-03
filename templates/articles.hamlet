@@ -3,7 +3,7 @@
   <ul class="article_list">
     ^{linkToOtherPageNumber pageNumber}
     <hr>
-    $forall Entity articleId article <- articlesOnPage
+    $forall (Entity articleId article, user) <- articlesOnPage
       <div class="box">
         <li class="article_list_title">
           <div class="left">
@@ -12,7 +12,7 @@
             ^{lockedImg article}
           <div class="right">
             #{showGregorian $ utctDay $ articlePublishedOn article}
-            #{articleMemberName article}
+            #{displayAuthorName user}
           <div class="clear">
         <div>
           #{takeHeadLine $ articleContent article}

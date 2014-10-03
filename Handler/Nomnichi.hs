@@ -31,8 +31,10 @@ getNomnichiR = do
   articles <- case creds of
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
+  users <- sequence $ fmap (\x -> articleAuthorName x) articles
   paramPage <- lookupGetParam "page"
-  let articlesOnPage = takeArticlesOnPage pageNumber articles
+  let zippedArticles = I.zip articles users
+      articlesOnPage = takeArticlesOnPage pageNumber zippedArticles
       pageNumber = case paramPage of
                      Just page -> if ((convTextToInt page) < minPageNumber) ||
                                      ((convTextToInt page) > maxPageNumber)
@@ -55,7 +57,7 @@ getNomnichiR = do
         | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
                             then I.take 10 [(pageNumber - 4)..]
                             else [(pageNumber - 4)..maxPageNumber]
-        | otherwise       = if maxPageNumber > 10 
+        | otherwise       = if maxPageNumber > 10
                             then I.take 10 [1..]
                             else [1..maxPageNumber]
   case articles of
@@ -72,9 +74,9 @@ getNomnichiR = do
     _ -> defaultLayout $ do
            $(widgetFile "articles")
    where
-     takeArticlesOnPage pageNumber articles =
+     takeArticlesOnPage pageNumber zippedArticles =
        I.drop (calcNumOfDroppingArticles pageNumber)
-       $ I.take (calcNumOfArticles pageNumber) articles
+       $ I.take (calcNumOfArticles pageNumber) zippedArticles
      calcNumOfArticles pageNumber = perPage * pageNumber
      calcNumOfDroppingArticles pageNumber = perPage * (pageNumber - 1)
      lockedImg article =
@@ -89,6 +91,14 @@ getNomnichiR = do
                      <a href=@{HomeR}/auth/logout> Logout
                      |]
          _        -> [hamlet||]
+
+articleAuthorName :: Entity Article -> Handler (Maybe User)
+articleAuthorName (Entity _ article) = do
+  runDB $ get (articleUser article)
+
+displayAuthorName :: Maybe User -> Text
+displayAuthorName (Just user) = userIdent user
+displayAuthorName Nothing     = "Unknown user"
 
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
@@ -117,6 +127,7 @@ getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
   creds    <- maybeAuthId
   article  <- runDB $ get404 articleId
+  user     <- runDB $ get (articleUser article)
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   case creds of
@@ -142,14 +153,14 @@ postArticleR articleId = do
     FormSuccess article -> do
       runDB $ do
         update articleId
-          [ ArticleMemberName =. articleMemberName article
-          , ArticleTitle   =. articleTitle   article
-          , ArticlePermaLink =. articlePermaLink article
-          , ArticleContent =. articleContent article
-          , ArticleUpdatedOn =. articleUpdatedOn article
-          , ArticlePublishedOn =. articlePublishedOn article
-          , ArticleApproved =. articleApproved article
-          , ArticlePromoteHeadline =. articlePromoteHeadline  article
+          [ ArticleUser            =. articleUser article
+          , ArticleTitle           =. articleTitle article
+          , ArticlePermaLink       =. articlePermaLink article
+          , ArticleContent         =. articleContent article
+          , ArticleUpdatedOn       =. articleUpdatedOn article
+          , ArticlePublishedOn     =. articlePublishedOn article
+          , ArticleApproved        =. articleApproved article
+          , ArticlePromoteHeadline =. articlePromoteHeadline article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
@@ -210,7 +221,6 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
 -- フォーム
 entryForm :: Form Article
 entryForm = renderDivs $ Article
-  <$> areq textField    "MemberName"   Nothing
   <*> areq textField    "Title"        Nothing
   <*> areq textField    "PermaLink"    Nothing
   <*> areq htmlField "Content"      Nothing
@@ -219,11 +229,11 @@ entryForm = renderDivs $ Article
   <*> lift (liftIO getCurrentTime) --
   <*> areq boolField    "Approved" (Just False)
   <*> areq intField     "Count"        Nothing
+  <$> lift requireAuthId
   <*> areq boolField    "PromoteHeadline" (Just False)
 
 editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
-  <$> areq textField    "MemberName" (articleMemberName <$> article)
   <*> areq textField    "Title"    (articleTitle <$> article)
   <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
   <*> areq htmlField "Content"  (articleContent <$> article)
@@ -232,6 +242,7 @@ editForm article = renderDivs $ Article
   <*> lift (liftIO getCurrentTime)
   <*> areq boolField    "Approved" (articleApproved <$> article)
   <*> areq intField     "Count"    (articleCount <$> article)
+  <$> pure (fromJust (articleUser <$> article))
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
 
 commentForm :: ArticleId -> Form Comment
