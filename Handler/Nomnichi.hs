@@ -11,6 +11,7 @@ module Handler.Nomnichi
 where
 
 import Import as I
+import Data.List as I (isPrefixOf)
 import Data.Text as T
 import Data.Time
 import qualified Data.Time.Format (parseTime)
@@ -23,8 +24,6 @@ import Text.Blaze.Html.Renderer.String (renderHtml)
 import Yesod.Form.Nic()
 
 -- 記事作成，閲覧，更新
-
-
 -- ノムニチトップ
 getNomnichiR :: Handler Html
 getNomnichiR = do
@@ -70,7 +69,7 @@ postCreateArticleR = do
 -- 記事表示
 getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
-  creds <- maybeAuthId
+  creds    <- maybeAuthId
   article  <- runDB $ get404 articleId
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
