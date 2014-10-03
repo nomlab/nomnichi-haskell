@@ -32,8 +32,19 @@ getNomnichiR = do
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   paramPage <- lookupGetParam "page"
-  defaultLayout $ do
-    $(widgetFile "articles")
+  case articles of
+    [] -> defaultLayout [whamlet|
+                        <div class="home">
+                          <h1 class="home"> Articles
+                          <p> There are no articles in the blog.
+                        $maybe _ <- creds
+                          <a href=@{HomeR}/nomnichi/create> Create Article
+                          <br>
+                          <a href=@{HomeR}/auth/logout> Logout
+                        $nothing
+                        |]
+    _ -> defaultLayout $ do
+           $(widgetFile "articles")
 
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int

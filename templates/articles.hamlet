@@ -1,53 +1,50 @@
 <div class="home">
   <h1 class="home"> Articles
-  $if I.null articles
-    <p> There are no articles in the blog.
-  $else
-    <ul class="article_list">
-      $maybe p <- paramPage
-        $if convTextToInt p > 1
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>｜
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
-        $else
-          <a href=@{HomeR}/nomnichi?page=2>進む</a>
-        <hr>
-        $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
-          <div class="box">
-            <li class="article_list_title">
-              <div class="left">
-                $if articleApproved article
-                  <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
-                $else
-                  <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
-              <div class="right">
-                #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
-              <div class="clear">
-            <div>
-              #{takeHeadLine $ articleContent article}
-        <hr>
-        $if convTextToInt p > 1
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>｜
-          <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
-        $else
-          <a href=@{HomeR}/nomnichi?page=2>進む</a>
-      $nothing
+  <ul class="article_list">
+    $maybe p <- paramPage
+      $if convTextToInt p > 1
+        <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>｜
+        <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+      $else
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
-        <hr>
-        $forall Entity articleId article <- I.take perPage articles
-          <div class="box">
-            <li class="article_list_title">
-              <div class="left">
-                $if articleApproved article
-                  <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
-                $else
-                  <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
-              <div class="right">
-                #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
-              <div class="clear">
-            <div>
-              #{takeHeadLine $ articleContent article}
-        <hr>
+      <hr>
+      $forall Entity articleId article <- I.drop ( calcNumOfDroppingArticles p ) $ I.take ( calcNumOfArticles p ) articles
+        <div class="box">
+          <li class="article_list_title">
+            <div class="left">
+              $if articleApproved article
+                <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
+              $else
+                <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
+            <div class="right">
+              #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            <div class="clear">
+          <div>
+            #{takeHeadLine $ articleContent article}
+      <hr>
+      $if convTextToInt p > 1
+        <a href=@{HomeR}/nomnichi?page=#{convTextToInt p - 1}>戻る</a>｜
+        <a href=@{HomeR}/nomnichi?page=#{convTextToInt p + 1}>進む</a>
+      $else
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
+    $nothing
+      <a href=@{HomeR}/nomnichi?page=2>進む</a>
+      <hr>
+      $forall Entity articleId article <- I.take perPage articles
+        <div class="box">
+          <li class="article_list_title">
+            <div class="left">
+              $if articleApproved article
+                <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
+              $else
+                <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
+            <div class="right">
+              #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            <div class="clear">
+          <div>
+            #{takeHeadLine $ articleContent article}
+      <hr>
+      <a href=@{HomeR}/nomnichi?page=2>進む</a>
 
 $maybe _ <- creds
   <a href=@{HomeR}/nomnichi/create> Create Article
