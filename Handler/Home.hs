@@ -30,6 +30,9 @@ takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 prettyHeadLine :: String -> String
 prettyHeadLine article = gsub "_br_" "<br>" $ stripTags $ gsub "<br>" "_br_" $ foldArticle article
 
+stripTags :: [Char] -> [Char]
+stripTags str = stripTags' False str
+stripTags' :: Bool -> [Char] -> [Char]
 stripTags' bool (x:xs)
   | xs   == []    = if x == '>'
                     then []
@@ -40,8 +43,9 @@ stripTags' bool (x:xs)
   | bool == False = if x == '<'
                     then stripTags' True xs
                     else x : (stripTags' False xs)
-stripTags str = stripTags' False str
+  | otherwise     = [] -- maybe don't occur
 
+gsub :: Eq a => [a] -> [a] -> [a] -> [a]
 gsub _ _ [] = []
 gsub x y str@(s:ss)
   | I.isPrefixOf x str = y ++ gsub x y (drop (length x) str)

@@ -12,10 +12,10 @@ where
 
 import Import as I
 import Data.List as I (isPrefixOf)
-import Data.Text as T
+import Data.Text as T (unpack)
 import Data.Time
-import qualified Data.Time.Format (parseTime)
-import Data.Maybe
+import qualified Data.Time.Format()
+import Data.Maybe()
 import System.Locale (defaultTimeLocale)
 import System.IO.Unsafe (unsafePerformIO)
 import Yesod.Auth
@@ -49,9 +49,6 @@ getCreateArticleR = do
   (articleWidget, enctype) <- generateFormPost entryForm
   defaultLayout $ do
     $(widgetFile "createArticleForm")
-
-parPage :: Int
-parPage = 10
 
 -- 記事作成
 postCreateArticleR :: Handler Html
@@ -203,6 +200,9 @@ takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 prettyHeadLine :: String -> String
 prettyHeadLine article = gsub "_br_" "<br>" $ stripTags $ gsub "<br>" "_br_" $ foldArticle article
 
+stripTags :: String -> String
+stripTags str = stripTags' False str
+stripTags' :: Bool -> String -> String
 stripTags' bool (x:xs)
   | xs   == []    = if x == '>'
                     then []
@@ -213,8 +213,9 @@ stripTags' bool (x:xs)
   | bool == False = if x == '<'
                     then stripTags' True xs
                     else x : (stripTags' False xs)
-stripTags str = stripTags' False str
+  | otherwise     = [] -- maybe don't occur
 
+gsub :: Eq a => [a] -> [a] -> [a] -> [a]
 gsub _ _ [] = []
 gsub x y str@(s:ss)
   | I.isPrefixOf x str = y ++ gsub x y (I.drop (I.length x) str)
@@ -222,6 +223,10 @@ gsub x y str@(s:ss)
 
 defaultNumOfLines :: Int
 defaultNumOfLines = 3
+
+parPage :: Int
+parPage = 10
+
 foldArticle :: String -> String
 foldArticle content = case foldAtFolding content of
                            Just value -> value
