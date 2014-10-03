@@ -28,7 +28,7 @@ takeHeadLine :: Html -> Html
 takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 
 prettyHeadLine :: String -> String
-prettyHeadLine article = gsub "_br_" "<br>" $ stripTags $ gsub "<br>" "_br_" $ I.unlines $ foldArticle $ I.lines article
+prettyHeadLine article = gsub "_br_" "<br>" $ stripTags $ gsub "<br>" "_br_" $ foldArticle article
 
 stripTags' bool (x:xs)
   | xs   == []    = if x == '>'
@@ -47,22 +47,47 @@ gsub x y str@(s:ss)
   | I.isPrefixOf x str = y ++ gsub x y (drop (length x) str)
   | otherwise = s:gsub x y ss
 
-foldArticle :: [String] -> [String]
-foldArticle lines = if lines == headLine
-                    then take defaultNumOfLines lines
-                    else headLine
-  where headLine = foldAtFolding lines
+foldArticle :: String -> String
+foldArticle content = case foldAtFolding content of
+                           Just value -> value
+                           Nothing -> I.unlines $ I.take defaultNumOfLines $ I.lines content
 
-foldAtFolding :: [String] -> [String]
-foldAtFolding (x:xs)
-  | x /= "<!-- folding -->" = if xs == []
-                              then [x]
-                              else x:foldAtFolding xs
-  | x == "<!-- folding -->" = []
-  | otherwise = []
+foldAtFolding :: String -> Maybe String
+foldAtFolding content = if (I.length splitContent) > 1
+                        then Just $ I.head splitContent
+                        else Nothing
+  where splitContent = split "<!-- folding -->" content
 
 defaultNumOfLines :: Int
 defaultNumOfLines = 3
 
 numOfNewArticles :: Int
 numOfNewArticles = 3
+
+-- We want to import Data.List.Utils (split), but...
+split :: Eq a => [a] -> [a] -> [[a]]
+split _ [] = []
+split delim str =
+    let (firstline, remainder) = breakList (startswith delim) str
+        in
+        firstline : case remainder of
+                                   [] -> []
+                                   x -> if x == delim
+                                        then [] : []
+                                        else split delim
+                                                 (drop (length delim) x)
+
+startswith :: Eq a => [a] -> [a] -> Bool
+startswith = isPrefixOf
+
+breakList :: ([a] -> Bool) -> [a] -> ([a], [a])
+breakList func = spanList (not . func)
+
+spanList :: ([a] -> Bool) -> [a] -> ([a], [a])
+spanList _ [] = ([],[])
+spanList func list@(x:xs) =
+    if func list
+       then (x:ys,zs)
+       else ([],list)
+    where (ys,zs) = spanList func xs
+
