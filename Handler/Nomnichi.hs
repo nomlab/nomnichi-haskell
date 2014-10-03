@@ -138,12 +138,7 @@ postDeleteArticleR articleId = do
 -- コメント送信
 postCommentR :: ArticleId -> Handler Html
 postCommentR articleId = do
-<<<<<<< HEAD
-  ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
-=======
-  _post <- runDB $ get404 articleId
   ((res, _), _) <- runFormPost $ commentForm articleId
->>>>>>> Remove warnings
   case res of
     FormSuccess comment -> do
       _ <- runDB $ insert comment
