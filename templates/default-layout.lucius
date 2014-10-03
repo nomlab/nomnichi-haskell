@@ -356,5 +356,10 @@ hr {
    border-color: #F5DEB3;
 }
 
-
-
+a:link.article_title,
+a:hover.article_title,
+a:visited.article_title{
+   font-size: 150%;
+   color: maroon;
+   font-weight: bold;
+}

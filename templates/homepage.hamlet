@@ -32,9 +32,7 @@
       <div class="box">
         <li class="article_list_title">
           <div class="left">
-            <a href=@{ArticleR articleId}>
-              <font size="4" color="maroon">
-                <b> #{articleTitle article}
+            <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
           <div class="right">
             #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
           <div class="clear">
