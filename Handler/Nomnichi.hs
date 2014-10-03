@@ -32,6 +32,9 @@ getNomnichiR = do
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   paramPage <- lookupGetParam "page"
+  let pageNumber = case paramPage of
+                     Just page -> convTextToInt page
+                     Nothing -> 1
   case articles of
     [] -> defaultLayout [whamlet|
                         <div class="home">
@@ -46,14 +49,14 @@ getNomnichiR = do
     _ -> defaultLayout $ do
            $(widgetFile "articles")
 
+takeArticlesOnPage :: Int -> [Entity Article] -> [Entity Article]
+takeArticlesOnPage pageNumber articles = I.drop calcNumOfDroppingArticles
+                                         $ I.take calcNumOfArticles articles
+  where calcNumOfArticles = perPage * pageNumber
+        calcNumOfDroppingArticles = perPage * (pageNumber - 1)
+
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
-
-calcNumOfArticles :: Text -> Int
-calcNumOfArticles text = (convTextToInt text) * perPage
-
-calcNumOfDroppingArticles :: Text -> Int
-calcNumOfDroppingArticles text = (convTextToInt text - 1) * perPage
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
