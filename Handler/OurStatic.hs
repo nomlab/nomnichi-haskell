@@ -4,7 +4,6 @@ module Handler.OurStatic
 where
 
 import Import
-import Data.Time
 import Data.List
 import qualified Data.Text as DT
 import System.IO.Unsafe (unsafePerformIO) 

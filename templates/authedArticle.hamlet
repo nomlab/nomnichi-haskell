@@ -24,7 +24,7 @@
     <p> There are no comments in this article.
     <hr>
   $else
-    $forall Entity commentId comment <- comments
+    $forall Entity _ comment <- comments
       <div id=comment>
         #{commentCommenter comment} :<br>
         #{commentBody comment}

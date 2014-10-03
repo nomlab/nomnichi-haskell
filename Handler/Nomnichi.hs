@@ -11,21 +11,16 @@ module Handler.Nomnichi
 where
 
 import Import as I
-import Data.Monoid
+import Data.Text as T
 import Data.Time
+import qualified Data.Time.Format (parseTime)
+import Data.Maybe
 import System.Locale (defaultTimeLocale)
 import System.IO.Unsafe (unsafePerformIO)
-
-import Yesod.Form.Nic (YesodNic, nicHtmlField)
--- import Data.Attoparsec.Text
-import Data.Text as T
 import Yesod.Auth
-import Data.List as I (lines, unlines, isPrefixOf)
 import Text.Blaze.Html (preEscapedToHtml)
 import Text.Blaze.Html.Renderer.String (renderHtml)
-
-instance YesodNic App
-
+import Yesod.Form.Nic()
 
 -- 記事作成，閲覧，更新
 
@@ -144,10 +139,15 @@ postDeleteArticleR articleId = do
 -- コメント送信
 postCommentR :: ArticleId -> Handler Html
 postCommentR articleId = do
+<<<<<<< HEAD
   ((res, commentWidget), enctype) <- runFormPost $ commentForm articleId
+=======
+  _post <- runDB $ get404 articleId
+  ((res, _), _) <- runFormPost $ commentForm articleId
+>>>>>>> Remove warnings
   case res of
     FormSuccess comment -> do
-      commentId <- runDB $ insert comment
+      _ <- runDB $ insert comment
       setMessage "your comment was successfully posted."
       redirect $ ArticleR articleId
     _ -> do
