@@ -3,7 +3,7 @@ module Handler.Home where
 
 import Import as I
 import Data.Time
-import Data.List as I (lines, unlines, isPrefixOf)
+import Data.List as I (isPrefixOf)
 import Text.Blaze.Html (preEscapedToHtml)
 import Text.Blaze.Html.Renderer.String (renderHtml)
 
@@ -16,8 +16,6 @@ import Text.Blaze.Html.Renderer.String (renderHtml)
 -- inclined, or create a single monolithic file.
 getHomeR :: Handler Html
 getHomeR = do
-    let submission = Nothing :: Maybe (FileInfo, Text)
-        handlerName = "getHomeR" :: Text
     articles <- runDB $ selectList [ArticlePromoteHeadline ==. True, ArticleApproved ==. True] [Desc ArticleId]
     defaultLayout $ do
         aDomId <- newIdent

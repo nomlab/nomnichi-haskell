@@ -1,4 +1,4 @@
-/lab/nom/static StaticR Static getStatic 
+/lab/nom/static StaticR Static getStatic
 /lab/nom/auth AuthR Auth getAuth
 
 /lab/nom/favicon.ico FaviconR GET
@@ -6,13 +6,11 @@
 
 /lab/nom/ HomeR GET
 
-/lab/nom/nomnichi                         NomnichiR        GET 
+/lab/nom/nomnichi                         NomnichiR        GET
 /lab/nom/nomnichi/create                  CreateArticleR   GET POST
 /lab/nom/nomnichi/#ArticleId/show         ArticleR         GET POST
 /lab/nom/nomnichi/#ArticleId/edit         EditArticleR     GET
 /lab/nom/nomnichi/#ArticleId/delete       DeleteArticleR   POST
 /lab/nom/nomnichi/#ArticleId/comment      CommentR         POST
-
-/lab/nom/userlist UserR GET POST
 
 /lab/nom/ourstatic/*Texts OurStaticR GET

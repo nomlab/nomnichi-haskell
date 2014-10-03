@@ -4,11 +4,6 @@ User
     salt Text
     UniqueUser ident
     deriving Typeable
-Email
-    email Text
-    user UserId Maybe
-    verkey Text Maybe
-    UniqueEmail email
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
 
@@ -32,8 +27,3 @@ Comment
     updatedAt UTCTime
     articleId ArticleId
     deriving
-
-Loginuser
-    idstr Text
-    password Text Maybe
-    UniqueUsr idstr
