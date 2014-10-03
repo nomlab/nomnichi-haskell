@@ -54,13 +54,23 @@ div.clear {
     clear: both;
 }
 
-div.article_list, div.article_form, div.home {
+div.article_list, div.article_form, div.home{
     padding: 1em;
     border: #F5DEB3 solid 2px;
     border-radius: 5px;
     margin: 0em 1em 1em 0em;
     width: auto;
     background: #FFF;
+    line-height: 1.5em;
+    color: #333; }
+
+div.box {
+    padding: 1em;
+    border: #F5DEB3 solid 2px;
+    border-radius: 5px;
+    margin: 0em 1em 1em 0em;
+    width: auto;
+    background: #FFFFFF;
     line-height: 1.5em;
     color: #333; }
 
@@ -276,10 +286,10 @@ li {
 
 li.article_list_title {
     color: #333;
-    border-color: wheat;
+    border-color: #F4A460;
     border-width: 0px 0px 1px 10px;
     padding: 0 0 0 10px;
-    margin: 20px 0px 5px 0px;
+    margin: 0px 0px 5px 0px;
     border-style: solid; }
 
 ul {
@@ -346,5 +356,10 @@ hr {
    border-color: #F5DEB3;
 }
 
-
-
+a:link.article_title,
+a:hover.article_title,
+a:visited.article_title{
+   font-size: 150%;
+   color: maroon;
+   font-weight: bold;
+}
