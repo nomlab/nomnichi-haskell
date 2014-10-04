@@ -34,8 +34,30 @@ getNomnichiR = do
   paramPage <- lookupGetParam "page"
   let articlesOnPage = takeArticlesOnPage pageNumber articles
       pageNumber = case paramPage of
-                     Just page -> convTextToInt page
+                     Just page -> if ((convTextToInt page) < minPageNumber) ||
+                                     ((convTextToInt page) > maxPageNumber)
+                                  then minPageNumber
+                                  else convTextToInt page
                      Nothing -> 1
+      minPageNumber = 1
+      maxPageNumber = (+1) $ div (I.length articles) perPage
+      linkToOtherPageNumber pageNumber =
+        [hamlet|
+        <a href=@{HomeR}/nomnichi?page=1><<</a>
+        $forall displayPageNumber <- displayPageNumbers pageNumber maxPageNumber
+          $if pageNumber == displayPageNumber
+            &nbsp;#{show displayPageNumber}
+          $else
+            &nbsp;<a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
+        <a href=@{HomeR}/nomnichi?page=#{maxPageNumber}>&nbsp;>></a>
+        |]
+      displayPageNumbers pageNumber maxPageNumber
+        | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
+                            then I.take 10 [(pageNumber - 4)..]
+                            else [(pageNumber - 4)..maxPageNumber]
+        | otherwise       = if maxPageNumber > 10 
+                            then I.take 10 [1..]
+                            else [1..maxPageNumber]
   case articles of
     [] -> defaultLayout [whamlet|
                         <div class="home">
@@ -55,17 +77,6 @@ getNomnichiR = do
        $ I.take (calcNumOfArticles pageNumber) articles
      calcNumOfArticles pageNumber = perPage * pageNumber
      calcNumOfDroppingArticles pageNumber = perPage * (pageNumber - 1)
-     linkToOtherPageNumber pageNumber =
-       if pageNumber > 1
-       then
-         [hamlet|
-         <a href=@{HomeR}/nomnichi?page=#{pageNumber - 1}>戻る</a>｜
-         <a href=@{HomeR}/nomnichi?page=#{pageNumber + 1}>進む</a>
-         |]
-       else
-         [hamlet|
-         <a href=@{HomeR}/nomnichi?page=2>進む</a>
-         |]
      lockedImg article =
        case articleApproved article of
          True -> [hamlet||]
