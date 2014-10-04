@@ -2,8 +2,8 @@ module Import
     ( module Import
     ) where
 
-import           Prelude              as Import hiding (head, init, last,
-                                                 readFile, tail, writeFile)
+import           Prelude              as Import hiding (init, last, tail,
+                                                        readFile, writeFile)
 import           Yesod                as Import hiding (Route (..))
 
 import           Control.Applicative  as Import (pure, (<$>), (<*>))
