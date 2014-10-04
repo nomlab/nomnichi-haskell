@@ -1,34 +1,21 @@
 <div class="home">
-  <h1 class="home"> Articles
+  <h1 class="home"> ノムニチ記事一覧
   <ul class="article_list">
-    $if pageNumber > 1
-      <a href=@{HomeR}/nomnichi?page=#{pageNumber - 1}>戻る</a>｜
-      <a href=@{HomeR}/nomnichi?page=#{pageNumber + 1}>進む</a>
-    $else
-      <a href=@{HomeR}/nomnichi?page=2>進む</a>
+    ^{linkToOtherPageNumber pageNumber}
     <hr>
-    $forall Entity articleId article <- takeArticlesOnPage pageNumber articles
+    $forall Entity articleId article <- articlesOnPage
       <div class="box">
         <li class="article_list_title">
           <div class="left">
-            $if articleApproved article
-              <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
-            $else
-              <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
+            <a class="article_title" href=@{ArticleR articleId}>
+              #{articleTitle article}
+            ^{lockedImg article}
           <div class="right">
-            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            #{showGregorian $ utctDay $ articlePublishedOn article}
+            #{articleMemberName article}
           <div class="clear">
         <div>
           #{takeHeadLine $ articleContent article}
     <hr>
-    $if pageNumber > 1
-      <a href=@{HomeR}/nomnichi?page=#{pageNumber - 1}>戻る</a>｜
-      <a href=@{HomeR}/nomnichi?page=#{pageNumber + 1}>進む</a>
-    $else
-      <a href=@{HomeR}/nomnichi?page=2>進む</a>
-
-$maybe _ <- creds
-  <a href=@{HomeR}/nomnichi/create> Create Article
-  <br>
-  <a href=@{HomeR}/auth/logout> Logout
-$nothing
+    ^{linkToOtherPageNumber pageNumber}
+^{displayLinksforLoginedMember creds}

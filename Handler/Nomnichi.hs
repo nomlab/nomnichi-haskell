@@ -32,7 +32,8 @@ getNomnichiR = do
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   paramPage <- lookupGetParam "page"
-  let pageNumber = case paramPage of
+  let articlesOnPage = takeArticlesOnPage pageNumber articles
+      pageNumber = case paramPage of
                      Just page -> convTextToInt page
                      Nothing -> 1
   case articles of
@@ -48,12 +49,35 @@ getNomnichiR = do
                         |]
     _ -> defaultLayout $ do
            $(widgetFile "articles")
-
-takeArticlesOnPage :: Int -> [Entity Article] -> [Entity Article]
-takeArticlesOnPage pageNumber articles = I.drop calcNumOfDroppingArticles
-                                         $ I.take calcNumOfArticles articles
-  where calcNumOfArticles = perPage * pageNumber
-        calcNumOfDroppingArticles = perPage * (pageNumber - 1)
+   where
+     takeArticlesOnPage pageNumber articles =
+       I.drop (calcNumOfDroppingArticles pageNumber)
+       $ I.take (calcNumOfArticles pageNumber) articles
+     calcNumOfArticles pageNumber = perPage * pageNumber
+     calcNumOfDroppingArticles pageNumber = perPage * (pageNumber - 1)
+     linkToOtherPageNumber pageNumber =
+       if pageNumber > 1
+       then
+         [hamlet|
+         <a href=@{HomeR}/nomnichi?page=#{pageNumber - 1}>戻る</a>｜
+         <a href=@{HomeR}/nomnichi?page=#{pageNumber + 1}>進む</a>
+         |]
+       else
+         [hamlet|
+         <a href=@{HomeR}/nomnichi?page=2>進む</a>
+         |]
+     lockedImg article =
+       case articleApproved article of
+         True -> [hamlet||]
+         _    -> [hamlet|<img src="/lab/nom/static/img/lock.png" width="20px" height="20px">|]
+     displayLinksforLoginedMember creds =
+       case creds of
+         (Just _) -> [hamlet|
+                     <a href=@{HomeR}/nomnichi/create> Create Article
+                     <br>
+                     <a href=@{HomeR}/auth/logout> Logout
+                     |]
+         _        -> [hamlet||]
 
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
