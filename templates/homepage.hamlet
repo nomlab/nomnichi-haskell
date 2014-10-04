@@ -38,4 +38,5 @@
           <div class="clear">
         <div>
         #{takeHeadLine $ articleContent article}
+        <br>...<a href=@{ArticleR articleId}>(続きを読む)</a>
   <hr>
