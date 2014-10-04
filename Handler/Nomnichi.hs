@@ -39,10 +39,10 @@ convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
 
 calcNumOfArticles :: Text -> Int
-calcNumOfArticles text = (convTextToInt text) * parPage
+calcNumOfArticles text = (convTextToInt text) * perPage
 
 calcNumOfDroppingArticles :: Text -> Int
-calcNumOfDroppingArticles text = (convTextToInt text - 1) * parPage
+calcNumOfDroppingArticles text = (convTextToInt text - 1) * perPage
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
@@ -224,8 +224,8 @@ gsub x y str@(s:ss)
 defaultNumOfLines :: Int
 defaultNumOfLines = 3
 
-parPage :: Int
-parPage = 10
+perPage :: Int
+perPage = 10
 
 foldArticle :: String -> String
 foldArticle content = case foldAtFolding content of
@@ -264,4 +264,3 @@ spanList func list@(x:xs) =
        then (x:ys,zs)
        else ([],list)
     where (ys,zs) = spanList func xs
-

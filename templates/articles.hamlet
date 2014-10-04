@@ -33,7 +33,7 @@
       $nothing
         <a href=@{HomeR}/nomnichi?page=2>進む</a>
         <hr>
-        $forall Entity articleId article <- I.take parPage articles
+        $forall Entity articleId article <- I.take perPage articles
           <div class="box">
             <li class="article_list_title">
               <div class="left">
