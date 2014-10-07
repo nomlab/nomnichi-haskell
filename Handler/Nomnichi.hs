@@ -32,17 +32,66 @@ getNomnichiR = do
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
   paramPage <- lookupGetParam "page"
-  defaultLayout $ do
-    $(widgetFile "articles")
+  let articlesOnPage = takeArticlesOnPage pageNumber articles
+      pageNumber = case paramPage of
+                     Just page -> if ((convTextToInt page) < minPageNumber) ||
+                                     ((convTextToInt page) > maxPageNumber)
+                                  then minPageNumber
+                                  else convTextToInt page
+                     Nothing -> 1
+      minPageNumber = 1
+      maxPageNumber = (+1) $ div (I.length articles) perPage
+      linkToOtherPageNumber pageNumber =
+        [hamlet|
+        <a href=@{HomeR}/nomnichi?page=1><<</a>
+        $forall displayPageNumber <- displayPageNumbers pageNumber maxPageNumber
+          $if pageNumber == displayPageNumber
+            &nbsp;#{show displayPageNumber}
+          $else
+            &nbsp;<a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
+        <a href=@{HomeR}/nomnichi?page=#{maxPageNumber}>&nbsp;>></a>
+        |]
+      displayPageNumbers pageNumber maxPageNumber
+        | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
+                            then I.take 10 [(pageNumber - 4)..]
+                            else [(pageNumber - 4)..maxPageNumber]
+        | otherwise       = if maxPageNumber > 10 
+                            then I.take 10 [1..]
+                            else [1..maxPageNumber]
+  case articles of
+    [] -> defaultLayout [whamlet|
+                        <div class="home">
+                          <h1 class="home"> Articles
+                          <p> There are no articles in the blog.
+                        $maybe _ <- creds
+                          <a href=@{HomeR}/nomnichi/create> Create Article
+                          <br>
+                          <a href=@{HomeR}/auth/logout> Logout
+                        $nothing
+                        |]
+    _ -> defaultLayout $ do
+           $(widgetFile "articles")
+   where
+     takeArticlesOnPage pageNumber articles =
+       I.drop (calcNumOfDroppingArticles pageNumber)
+       $ I.take (calcNumOfArticles pageNumber) articles
+     calcNumOfArticles pageNumber = perPage * pageNumber
+     calcNumOfDroppingArticles pageNumber = perPage * (pageNumber - 1)
+     lockedImg article =
+       case articleApproved article of
+         True -> [hamlet||]
+         _    -> [hamlet|<img src="/lab/nom/static/img/lock.png" width="20px" height="20px">|]
+     displayLinksforLoginedMember creds =
+       case creds of
+         (Just _) -> [hamlet|
+                     <a href=@{HomeR}/nomnichi/create> Create Article
+                     <br>
+                     <a href=@{HomeR}/auth/logout> Logout
+                     |]
+         _        -> [hamlet||]
 
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
-
-calcNumOfArticles :: Text -> Int
-calcNumOfArticles text = (convTextToInt text) * perPage
-
-calcNumOfDroppingArticles :: Text -> Int
-calcNumOfDroppingArticles text = (convTextToInt text - 1) * perPage
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
