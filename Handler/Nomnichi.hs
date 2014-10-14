@@ -12,7 +12,7 @@ where
 
 import Import as I
 import Data.List as I (isPrefixOf)
-import Data.Text as T (pack, unpack)
+import Data.Text as T (append, pack, unpack)
 import Data.Time
 import qualified Data.Time.Format()
 import Data.Maybe()
@@ -105,14 +105,20 @@ convTextToInt text = read $ T.unpack text :: Int
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
-  (articleWidget, enctype) <- generateFormPost entryForm
+  userId <- requireAuthId
+  user <- runDB $ get404 userId
+  let format = "%Y%m%d-%H%M%S"
+      utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
+      permaLinkTime = T.pack $ formatTime defaultTimeLocale format $ utcToNomnichiTime $ unsafePerformIO getCurrentTime
+      permaLink = (userIdent user) `T.append` ("-" :: Text) `T.append` permaLinkTime
+  (articleWidget, enctype) <- generateFormPost $ entryForm permaLink
   defaultLayout $ do
     $(widgetFile "createArticleForm")
 
 -- 記事作成
 postCreateArticleR :: Handler Html
 postCreateArticleR = do
-  ((res, articleWidget), enctype) <- runFormPost entryForm
+  ((res, articleWidget), enctype) <- runFormPost $ entryForm ("" :: Text)
   case res of
     FormSuccess article -> do
       articleId <- runDB $ insert article
@@ -220,11 +226,11 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
 
 
 -- フォーム
-entryForm :: Form Article
-entryForm = renderDivs $ Article
+entryForm :: Text -> Form Article
+entryForm permaLink = renderDivs $ Article
   <$> lift requireAuthId
   <*> areq textField    "Title"           Nothing
-  <*> areq textField    "PermaLink"       Nothing
+  <*> areq textField    "PermaLink"       (Just permaLink)
   <*> areq htmlField    "Content"         Nothing
   <*> lift (liftIO getCurrentTime) -- CreatedOn
   <*> lift (liftIO getCurrentTime) -- UpdatedOn
