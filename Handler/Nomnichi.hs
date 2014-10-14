@@ -12,7 +12,7 @@ where
 
 import Import as I
 import Data.List as I (isPrefixOf)
-import Data.Text as T (unpack)
+import Data.Text as T (pack, unpack)
 import Data.Time
 import qualified Data.Time.Format()
 import Data.Maybe()
@@ -148,7 +148,8 @@ getArticleR articleId = do
 -- 記事更新
 postArticleR :: ArticleId -> Handler Html
 postArticleR articleId = do
-  ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
+  beforeArticle <- runDB $ get404 articleId
+  ((res, articleWidget), enctype) <- runFormPost (editForm (Just beforeArticle))
   case res of
     FormSuccess article -> do
       runDB $ do
@@ -221,29 +222,41 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
 -- フォーム
 entryForm :: Form Article
 entryForm = renderDivs $ Article
-  <*> areq textField    "Title"        Nothing
-  <*> areq textField    "PermaLink"    Nothing
-  <*> areq htmlField "Content"      Nothing
-  <*> lift (liftIO getCurrentTime) --
-  <*> lift (liftIO getCurrentTime) --
-  <*> lift (liftIO getCurrentTime) --
-  <*> areq boolField    "Approved" (Just False)
-  <*> areq intField     "Count"        Nothing
   <$> lift requireAuthId
+  <*> areq textField    "Title"           Nothing
+  <*> areq textField    "PermaLink"       Nothing
+  <*> areq htmlField    "Content"         Nothing
+  <*> lift (liftIO getCurrentTime) -- CreatedOn
+  <*> lift (liftIO getCurrentTime) -- UpdatedOn
+  <*> areq utcTimeField "PublishedOn"     (Just (unsafePerformIO getCurrentTime))
+  <*> areq boolField    "Approved"        (Just False)
+  <*> pure 0 -- Count
   <*> areq boolField    "PromoteHeadline" (Just False)
 
 editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
-  <*> areq textField    "Title"    (articleTitle <$> article)
-  <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
-  <*> areq htmlField "Content"  (articleContent <$> article)
-  <*> lift (liftIO getCurrentTime)
-  <*> lift (liftIO getCurrentTime)
-  <*> lift (liftIO getCurrentTime)
-  <*> areq boolField    "Approved" (articleApproved <$> article)
-  <*> areq intField     "Count"    (articleCount <$> article)
-  <$> pure (fromJust (articleUser <$> article))
+  <$> pure (nonMaybeUserId                (articleUser <$> article))
+  <*> areq textField    "Title"           (articleTitle <$> article)
+  <*> pure (nonMaybeText                  (articlePermaLink <$> article))
+  <*> areq htmlField    "Content"         (articleContent <$> article)
+  <*> pure (nonMaybeUTCTime               (articleCreatedOn <$> article))
+  <*> lift                                (liftIO getCurrentTime) -- UpdatedOn
+  <*> areq utcTimeField "PublishedOn"     (articlePublishedOn <$> article)
+  <*> areq boolField    "Approved"        (articleApproved <$> article)
+  <*> pure (nonMaybeInt                   (articleCount <$> article))
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
+
+nonMaybeUserId (Just uid) = uid
+nonMaybeUserId Nothing    = (read "Key {unKey = PersistInt64 0}") :: UserId
+
+nonMaybeInt (Just num) = num
+nonMaybeInt Nothing    = 0
+
+nonMaybeText (Just text) = text
+nonMaybeText Nothing     = "" :: Text
+
+nonMaybeUTCTime (Just utctime) = utctime
+nonMaybeUTCTime Nothing        = (read "1970-01-01 00:00:00.0 UTC") :: UTCTime
 
 commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
@@ -253,7 +266,6 @@ commentForm articleId = renderDivs $ Comment
   <*> lift (liftIO getCurrentTime)
   <*> pure articleId
 
--- ヘッドライン
 takeHeadLine :: Html -> Html
 takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 
@@ -324,3 +336,22 @@ spanList func list@(x:xs) =
        then (x:ys,zs)
        else ([],list)
     where (ys,zs) = spanList func xs
+
+utcTimeField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m UTCTime
+utcTimeField = Field
+     { fieldParse = parseHelper parseTime'
+     , fieldView = \theId name attrs val isReq -> toWidget [hamlet|
+$newline never
+<input id="#{theId}" name="#{name}" type="datetime" *{attrs} :isReq:required="" value="#{showVal val}">
+|]
+     , fieldEnctype = UrlEncoded
+     }
+    where
+       showVal = either id (pack . formatTime defaultTimeLocale "%F %T")
+
+parseTime' :: Text -> Either FormMessage UTCTime
+parseTime' theText =
+    maybe
+       (Left MsgInvalidTimeFormat)
+       (\x -> Right x)
+       (Data.Time.parseTime defaultTimeLocale "%F %T" $ unpack theText)
