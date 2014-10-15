@@ -137,6 +137,20 @@ getArticleR articleId = do
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
   users    <- sequence $ fmap (\x -> commentAuthorName x) comments
   let zippedComments = I.zip comments users
+      displayComments commentsWithUsers =
+          [hamlet|
+           <div id=comments>
+             $if I.null comments
+                <p> There are no comments in this article.
+                <hr>
+             $else
+               $forall (Entity _ comment, user) <- commentsWithUsers
+                 <div id=comment>
+                   #{displayAuthorName user} :<br>
+                   #{commentBody comment}
+                   <div class=published_on> #{formatToCommentTime comment}
+                 <hr>
+           |]
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   case creds of
     Just _ ->

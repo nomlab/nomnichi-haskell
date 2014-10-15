@@ -9,14 +9,4 @@
       <a href=@{NomnichiR}> TOPへ
 
 <hr>
-<div id=comments>
-  $if I.null comments
-    <p> There are no comments in this article.
-    <hr>
-  $else
-    $forall (Entity _ comment, user) <- zippedComments
-      <div id=comment>
-        #{displayAuthorName user} :<br>
-        #{commentBody comment}
-        <div class=published_on> #{formatToCommentTime comment}
-      <hr>
+^{displayComments zippedComments}
