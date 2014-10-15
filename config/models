@@ -21,7 +21,7 @@ Article
     deriving
 
 Comment
-    commenter Text
+    user UserId
     body Textarea
     createdAt UTCTime
     updatedAt UTCTime
