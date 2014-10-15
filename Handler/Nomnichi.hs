@@ -34,24 +34,24 @@ getNomnichiR = do
   users <- sequence $ fmap (\x -> articleAuthorName x) articles
   paramPage <- lookupGetParam "page"
   let zippedArticles = I.zip articles users
-      articlesOnPage = takeArticlesOnPage pageNumber zippedArticles
-      pageNumber = case paramPage of
+      articlesOnPage = takeArticlesOnPage calcPageNumber zippedArticles
+      calcPageNumber = case paramPage of
                      Just page -> if ((convTextToInt page) < minPageNumber) ||
-                                     ((convTextToInt page) > maxPageNumber)
+                                     ((convTextToInt page) > calcMaxPageNumber)
                                   then minPageNumber
                                   else convTextToInt page
                      Nothing -> 1
       minPageNumber = 1
-      maxPageNumber = (+1) $ div (I.length articles) perPage
+      calcMaxPageNumber = (+1) $ div (I.length articles) perPage
       linkToOtherPageNumber pageNumber =
         [hamlet|
         <a href=@{HomeR}/nomnichi?page=1><<</a>
-        $forall displayPageNumber <- displayPageNumbers pageNumber maxPageNumber
+        $forall displayPageNumber <- displayPageNumbers pageNumber calcMaxPageNumber
           $if pageNumber == displayPageNumber
             &nbsp;#{show displayPageNumber}
           $else
             &nbsp;<a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
-        <a href=@{HomeR}/nomnichi?page=#{maxPageNumber}>&nbsp;>></a>
+        <a href=@{HomeR}/nomnichi?page=#{calcMaxPageNumber}>&nbsp;>></a>
         |]
       displayPageNumbers pageNumber maxPageNumber
         | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
@@ -252,15 +252,19 @@ editForm article = renderDivs $ Article
   <*> pure (nonMaybeInt                   (articleCount <$> article))
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
 
+nonMaybeUserId :: Maybe UserId -> UserId
 nonMaybeUserId (Just uid) = uid
 nonMaybeUserId Nothing    = (read "Key {unKey = PersistInt64 0}") :: UserId
 
+nonMaybeInt :: Num num => Maybe num -> num
 nonMaybeInt (Just num) = num
 nonMaybeInt Nothing    = 0
 
+nonMaybeText :: Maybe Text -> Text
 nonMaybeText (Just text) = text
 nonMaybeText Nothing     = "" :: Text
 
+nonMaybeUTCTime :: Maybe UTCTime -> UTCTime
 nonMaybeUTCTime (Just utctime) = utctime
 nonMaybeUTCTime Nothing        = (read "1970-01-01 00:00:00.0 UTC") :: UTCTime
 
