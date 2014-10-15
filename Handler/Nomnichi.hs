@@ -135,6 +135,8 @@ getArticleR articleId = do
   article  <- runDB $ get404 articleId
   user     <- runDB $ get (articleUser article)
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
+  users    <- sequence $ fmap (\x -> commentAuthorName x) comments
+  let zippedComments = I.zip comments users
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   case creds of
     Just _ ->
@@ -150,6 +152,10 @@ getArticleR articleId = do
         False ->
           defaultLayout $ do
           redirect $ NomnichiR
+
+commentAuthorName :: Entity Comment -> Handler (Maybe User)
+commentAuthorName (Entity _ comment) = do
+  runDB $ get (commentUser comment)
 
 -- 記事更新
 postArticleR :: ArticleId -> Handler Html
@@ -270,7 +276,7 @@ nonMaybeUTCTime Nothing        = (read "1970-01-01 00:00:00.0 UTC") :: UTCTime
 
 commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
-  <$> areq textField     "Name"    Nothing
+  <$> lift requireAuthId
   <*> areq textareaField "Comment" Nothing
   <*> lift (liftIO getCurrentTime)
   <*> lift (liftIO getCurrentTime)
