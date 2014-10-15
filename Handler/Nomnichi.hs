@@ -121,7 +121,19 @@ postCreateArticleR = do
   ((res, articleWidget), enctype) <- runFormPost $ entryForm ("" :: Text)
   case res of
     FormSuccess article -> do
-      articleId <- runDB $ insert article
+      let article' = Article{
+                             articleUser            = articleUser article
+                           , articleTitle           = articleTitle article
+                           , articlePermaLink       = articlePermaLink article
+                           , articleContent         = articleContent article
+                           , articleCreatedOn       = articleCreatedOn article
+                           , articleUpdatedOn       = articleUpdatedOn article
+                           , articlePublishedOn     = (jstToUTC $ articlePublishedOn article)
+                           , articleApproved        = articleApproved article
+                           , articleCount           = articleCount article
+                           , articlePromoteHeadline = articlePromoteHeadline article
+                           }
+      articleId <- runDB $ insert article'
       setMessage $ toHtml (articleTitle article) <> " created."
       redirect $ ArticleR articleId
     _ -> defaultLayout $ do
@@ -185,7 +197,7 @@ postArticleR articleId = do
           , ArticlePermaLink       =. articlePermaLink article
           , ArticleContent         =. articleContent article
           , ArticleUpdatedOn       =. articleUpdatedOn article
-          , ArticlePublishedOn     =. articlePublishedOn article
+          , ArticlePublishedOn     =. jstToUTC (articlePublishedOn article)
           , ArticleApproved        =. articleApproved article
           , ArticlePromoteHeadline =. articlePromoteHeadline article
           ]
@@ -244,6 +256,11 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
   where format = "%Y/%m/%d (%a)  %H:%M"
         utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
 
+utcToJST :: UTCTime -> UTCTime
+utcToJST utcTime = addUTCTime (60*60*9) utcTime
+
+jstToUTC :: UTCTime -> UTCTime
+jstToUTC utcTime = addUTCTime (60*60*(-9)) utcTime
 
 -- フォーム
 entryForm :: Text -> Form Article
@@ -254,7 +271,7 @@ entryForm permaLink = renderDivs $ Article
   <*> areq htmlField    "Content"         Nothing
   <*> lift (liftIO getCurrentTime) -- CreatedOn
   <*> lift (liftIO getCurrentTime) -- UpdatedOn
-  <*> areq utcTimeField "PublishedOn"     (Just (unsafePerformIO getCurrentTime))
+  <*> areq utcTimeField "PublishedOn"     (Just $ utcToJST (unsafePerformIO getCurrentTime))
   <*> areq boolField    "Approved"        (Just False)
   <*> pure 0 -- Count
   <*> areq boolField    "PromoteHeadline" (Just False)
@@ -267,7 +284,7 @@ editForm article = renderDivs $ Article
   <*> areq htmlField    "Content"         (articleContent <$> article)
   <*> pure (nonMaybeUTCTime               (articleCreatedOn <$> article))
   <*> lift                                (liftIO getCurrentTime) -- UpdatedOn
-  <*> areq utcTimeField "PublishedOn"     (articlePublishedOn <$> article)
+  <*> areq utcTimeField "PublishedOn"     (utcToJST <$> (articlePublishedOn <$> article))
   <*> areq boolField    "Approved"        (articleApproved <$> article)
   <*> pure (nonMaybeInt                   (articleCount <$> article))
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
