@@ -12,7 +12,7 @@ where
 
 import Import as I
 import Data.List as I (isPrefixOf)
-import Data.Text as T (unpack)
+import Data.Text as T (append, pack, unpack)
 import Data.Time
 import qualified Data.Time.Format()
 import Data.Maybe()
@@ -31,31 +31,33 @@ getNomnichiR = do
   articles <- case creds of
     Just _ -> runDB $ selectList [] [Desc ArticleId]
     Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
+  users <- sequence $ fmap (\x -> articleAuthorName x) articles
   paramPage <- lookupGetParam "page"
-  let articlesOnPage = takeArticlesOnPage pageNumber articles
-      pageNumber = case paramPage of
+  let zippedArticles = I.zip articles users
+      articlesOnPage = takeArticlesOnPage calcPageNumber zippedArticles
+      calcPageNumber = case paramPage of
                      Just page -> if ((convTextToInt page) < minPageNumber) ||
-                                     ((convTextToInt page) > maxPageNumber)
+                                     ((convTextToInt page) > calcMaxPageNumber)
                                   then minPageNumber
                                   else convTextToInt page
                      Nothing -> 1
       minPageNumber = 1
-      maxPageNumber = (+1) $ div (I.length articles) perPage
+      calcMaxPageNumber = (+1) $ div (I.length articles) perPage
       linkToOtherPageNumber pageNumber =
         [hamlet|
         <a href=@{HomeR}/nomnichi?page=1><<</a>
-        $forall displayPageNumber <- displayPageNumbers pageNumber maxPageNumber
+        $forall displayPageNumber <- displayPageNumbers pageNumber calcMaxPageNumber
           $if pageNumber == displayPageNumber
             &nbsp;#{show displayPageNumber}
           $else
             &nbsp;<a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
-        <a href=@{HomeR}/nomnichi?page=#{maxPageNumber}>&nbsp;>></a>
+        <a href=@{HomeR}/nomnichi?page=#{calcMaxPageNumber}>&nbsp;>></a>
         |]
       displayPageNumbers pageNumber maxPageNumber
         | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
                             then I.take 10 [(pageNumber - 4)..]
                             else [(pageNumber - 4)..maxPageNumber]
-        | otherwise       = if maxPageNumber > 10 
+        | otherwise       = if maxPageNumber > 10
                             then I.take 10 [1..]
                             else [1..maxPageNumber]
   case articles of
@@ -72,9 +74,9 @@ getNomnichiR = do
     _ -> defaultLayout $ do
            $(widgetFile "articles")
    where
-     takeArticlesOnPage pageNumber articles =
+     takeArticlesOnPage pageNumber zippedArticles =
        I.drop (calcNumOfDroppingArticles pageNumber)
-       $ I.take (calcNumOfArticles pageNumber) articles
+       $ I.take (calcNumOfArticles pageNumber) zippedArticles
      calcNumOfArticles pageNumber = perPage * pageNumber
      calcNumOfDroppingArticles pageNumber = perPage * (pageNumber - 1)
      lockedImg article =
@@ -90,19 +92,33 @@ getNomnichiR = do
                      |]
          _        -> [hamlet||]
 
+articleAuthorName :: Entity Article -> Handler (Maybe User)
+articleAuthorName (Entity _ article) = do
+  runDB $ get (articleUser article)
+
+displayAuthorName :: Maybe User -> Text
+displayAuthorName (Just user) = userIdent user
+displayAuthorName Nothing     = "Unknown user"
+
 convTextToInt :: Text -> Int
 convTextToInt text = read $ T.unpack text :: Int
 
 getCreateArticleR :: Handler Html
 getCreateArticleR = do
-  (articleWidget, enctype) <- generateFormPost entryForm
+  userId <- requireAuthId
+  user <- runDB $ get404 userId
+  let format = "%Y%m%d-%H%M%S"
+      utcToNomnichiTime = utcToLocalTime $ unsafePerformIO getCurrentTimeZone
+      permaLinkTime = T.pack $ formatTime defaultTimeLocale format $ utcToNomnichiTime $ unsafePerformIO getCurrentTime
+      permaLink = (userIdent user) `T.append` ("-" :: Text) `T.append` permaLinkTime
+  (articleWidget, enctype) <- generateFormPost $ entryForm permaLink
   defaultLayout $ do
     $(widgetFile "createArticleForm")
 
 -- 記事作成
 postCreateArticleR :: Handler Html
 postCreateArticleR = do
-  ((res, articleWidget), enctype) <- runFormPost entryForm
+  ((res, articleWidget), enctype) <- runFormPost $ entryForm ("" :: Text)
   case res of
     FormSuccess article -> do
       articleId <- runDB $ insert article
@@ -117,7 +133,10 @@ getArticleR :: ArticleId -> Handler Html
 getArticleR articleId = do
   creds    <- maybeAuthId
   article  <- runDB $ get404 articleId
+  user     <- runDB $ get (articleUser article)
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
+  users    <- sequence $ fmap (\x -> commentAuthorName x) comments
+  let zippedComments = I.zip comments users
   (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   case creds of
     Just _ ->
@@ -134,22 +153,27 @@ getArticleR articleId = do
           defaultLayout $ do
           redirect $ NomnichiR
 
+commentAuthorName :: Entity Comment -> Handler (Maybe User)
+commentAuthorName (Entity _ comment) = do
+  runDB $ get (commentUser comment)
+
 -- 記事更新
 postArticleR :: ArticleId -> Handler Html
 postArticleR articleId = do
-  ((res, articleWidget), enctype) <- runFormPost (editForm Nothing)
+  beforeArticle <- runDB $ get404 articleId
+  ((res, articleWidget), enctype) <- runFormPost (editForm (Just beforeArticle))
   case res of
     FormSuccess article -> do
       runDB $ do
         update articleId
-          [ ArticleMemberName =. articleMemberName article
-          , ArticleTitle   =. articleTitle   article
-          , ArticlePermaLink =. articlePermaLink article
-          , ArticleContent =. articleContent article
-          , ArticleUpdatedOn =. articleUpdatedOn article
-          , ArticlePublishedOn =. articlePublishedOn article
-          , ArticleApproved =. articleApproved article
-          , ArticlePromoteHeadline =. articlePromoteHeadline  article
+          [ ArticleUser            =. articleUser article
+          , ArticleTitle           =. articleTitle article
+          , ArticlePermaLink       =. articlePermaLink article
+          , ArticleContent         =. articleContent article
+          , ArticleUpdatedOn       =. articleUpdatedOn article
+          , ArticlePublishedOn     =. articlePublishedOn article
+          , ArticleApproved        =. articleApproved article
+          , ArticlePromoteHeadline =. articlePromoteHeadline article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
       redirect $ ArticleR articleId
@@ -208,41 +232,56 @@ formatToCommentTime comment = formatTime defaultTimeLocale format $ utcToNomnich
 
 
 -- フォーム
-entryForm :: Form Article
-entryForm = renderDivs $ Article
-  <$> areq textField    "MemberName"   Nothing
-  <*> areq textField    "Title"        Nothing
-  <*> areq textField    "PermaLink"    Nothing
-  <*> areq htmlField "Content"      Nothing
-  <*> lift (liftIO getCurrentTime) --
-  <*> lift (liftIO getCurrentTime) --
-  <*> lift (liftIO getCurrentTime) --
-  <*> areq boolField    "Approved" (Just False)
-  <*> areq intField     "Count"        Nothing
+entryForm :: Text -> Form Article
+entryForm permaLink = renderDivs $ Article
+  <$> lift requireAuthId
+  <*> areq textField    "Title"           Nothing
+  <*> areq textField    "PermaLink"       (Just permaLink)
+  <*> areq htmlField    "Content"         Nothing
+  <*> lift (liftIO getCurrentTime) -- CreatedOn
+  <*> lift (liftIO getCurrentTime) -- UpdatedOn
+  <*> areq utcTimeField "PublishedOn"     (Just (unsafePerformIO getCurrentTime))
+  <*> areq boolField    "Approved"        (Just False)
+  <*> pure 0 -- Count
   <*> areq boolField    "PromoteHeadline" (Just False)
 
 editForm :: Maybe Article -> Form Article
 editForm article = renderDivs $ Article
-  <$> areq textField    "MemberName" (articleMemberName <$> article)
-  <*> areq textField    "Title"    (articleTitle <$> article)
-  <*> areq textField    "PermaLink"  (articlePermaLink <$> article)
-  <*> areq htmlField "Content"  (articleContent <$> article)
-  <*> lift (liftIO getCurrentTime)
-  <*> lift (liftIO getCurrentTime)
-  <*> lift (liftIO getCurrentTime)
-  <*> areq boolField    "Approved" (articleApproved <$> article)
-  <*> areq intField     "Count"    (articleCount <$> article)
+  <$> pure (nonMaybeUserId                (articleUser <$> article))
+  <*> areq textField    "Title"           (articleTitle <$> article)
+  <*> pure (nonMaybeText                  (articlePermaLink <$> article))
+  <*> areq htmlField    "Content"         (articleContent <$> article)
+  <*> pure (nonMaybeUTCTime               (articleCreatedOn <$> article))
+  <*> lift                                (liftIO getCurrentTime) -- UpdatedOn
+  <*> areq utcTimeField "PublishedOn"     (articlePublishedOn <$> article)
+  <*> areq boolField    "Approved"        (articleApproved <$> article)
+  <*> pure (nonMaybeInt                   (articleCount <$> article))
   <*> areq boolField    "PromoteHeadline" (articlePromoteHeadline <$> article)
+
+nonMaybeUserId :: Maybe UserId -> UserId
+nonMaybeUserId (Just uid) = uid
+nonMaybeUserId Nothing    = (read "Key {unKey = PersistInt64 0}") :: UserId
+
+nonMaybeInt :: Num num => Maybe num -> num
+nonMaybeInt (Just num) = num
+nonMaybeInt Nothing    = 0
+
+nonMaybeText :: Maybe Text -> Text
+nonMaybeText (Just text) = text
+nonMaybeText Nothing     = "" :: Text
+
+nonMaybeUTCTime :: Maybe UTCTime -> UTCTime
+nonMaybeUTCTime (Just utctime) = utctime
+nonMaybeUTCTime Nothing        = (read "1970-01-01 00:00:00.0 UTC") :: UTCTime
 
 commentForm :: ArticleId -> Form Comment
 commentForm articleId = renderDivs $ Comment
-  <$> areq textField     "Name"    Nothing
+  <$> lift requireAuthId
   <*> areq textareaField "Comment" Nothing
   <*> lift (liftIO getCurrentTime)
   <*> lift (liftIO getCurrentTime)
   <*> pure articleId
 
--- ヘッドライン
 takeHeadLine :: Html -> Html
 takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 
@@ -313,3 +352,22 @@ spanList func list@(x:xs) =
        then (x:ys,zs)
        else ([],list)
     where (ys,zs) = spanList func xs
+
+utcTimeField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m UTCTime
+utcTimeField = Field
+     { fieldParse = parseHelper parseTime'
+     , fieldView = \theId name attrs val isReq -> toWidget [hamlet|
+$newline never
+<input id="#{theId}" name="#{name}" type="datetime" *{attrs} :isReq:required="" value="#{showVal val}">
+|]
+     , fieldEnctype = UrlEncoded
+     }
+    where
+       showVal = either id (pack . formatTime defaultTimeLocale "%F %T")
+
+parseTime' :: Text -> Either FormMessage UTCTime
+parseTime' theText =
+    maybe
+       (Left MsgInvalidTimeFormat)
+       (\x -> Right x)
+       (Data.Time.parseTime defaultTimeLocale "%F %T" $ unpack theText)
