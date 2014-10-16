@@ -1,9 +1,9 @@
 <div class="home">
   <h1 class="home"> ノムニチ記事一覧
   <ul class="article_list">
-    ^{linkToOtherPageNumber pageNumber}
+    ^{linkToOtherPageNumber calcPageNumber}
     <hr>
-    $forall Entity articleId article <- articlesOnPage
+    $forall (Entity articleId article, user) <- articlesOnPage
       <div class="box">
         <li class="article_list_title">
           <div class="left">
@@ -12,11 +12,11 @@
             ^{lockedImg article}
           <div class="right">
             #{showGregorian $ utctDay $ articlePublishedOn article}
-            #{articleMemberName article}
+            #{displayAuthorName user}
           <div class="clear">
         <div>
           #{takeHeadLine $ articleContent article}
           <br>...<a href=@{ArticleR articleId}>(続きを読む)</a>
     <hr>
-    ^{linkToOtherPageNumber pageNumber}
+    ^{linkToOtherPageNumber calcPageNumber}
 ^{displayLinksforLoginedMember creds}

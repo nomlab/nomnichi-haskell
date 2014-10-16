@@ -17,6 +17,8 @@ import Text.Blaze.Html.Renderer.String (renderHtml)
 getHomeR :: Handler Html
 getHomeR = do
     articles <- runDB $ selectList [ArticlePromoteHeadline ==. True, ArticleApproved ==. True] [Desc ArticleId]
+    users <- sequence $ fmap (\x -> articleAuthorName x) articles
+    let zippedArticles = I.zip articles users
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "乃村研究室ホームページ"
@@ -24,6 +26,14 @@ getHomeR = do
 
 
 -- local functions --
+articleAuthorName :: Entity Article -> Handler (Maybe User)
+articleAuthorName (Entity _ article) = do
+  runDB $ get (articleUser article)
+
+displayAuthorName :: Maybe User -> Text
+displayAuthorName (Just user) = userIdent user
+displayAuthorName Nothing     = "Unknown user"
+
 takeHeadLine :: Html -> Html
 takeHeadLine content = preEscapedToHtml $ prettyHeadLine $ renderHtml content
 

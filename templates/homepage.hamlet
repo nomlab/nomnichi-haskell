@@ -28,13 +28,13 @@
 <div class="home">
   <h1 class="home"> ノムニチ新着記事
   <ul class="article_list">
-    $forall Entity articleId article <- take numOfNewArticles articles
+    $forall (Entity articleId article, user) <- take numOfNewArticles zippedArticles
       <div class="box">
         <li class="article_list_title">
           <div class="left">
             <a class="article_title" href=@{ArticleR articleId}>#{articleTitle article}
           <div class="right">
-            #{showGregorian $ utctDay $ articlePublishedOn article} #{articleMemberName article}
+            #{showGregorian $ utctDay $ articlePublishedOn article} #{displayAuthorName user}
           <div class="clear">
         <div>
         #{takeHeadLine $ articleContent article}
