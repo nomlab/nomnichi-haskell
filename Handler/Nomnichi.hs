@@ -163,9 +163,9 @@ getArticleR articleId = do
                    <div class=published_on> #{formatToCommentTime comment}
                  <hr>
            |]
-  (commentWidget, enctype) <- generateFormPost $ commentForm articleId
   case creds of
-    Just _ ->
+    Just _ -> do
+      (commentWidget, enctype) <- generateFormPost $ commentForm articleId
       defaultLayout $ do
         setTitle $ toHtml $ articleTitle article
         $(widgetFile "authedArticle")
