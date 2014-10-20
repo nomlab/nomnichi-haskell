@@ -29,8 +29,8 @@ getNomnichiR :: Handler Html
 getNomnichiR = do
   creds <- maybeAuthId
   articles <- case creds of
-    Just _ -> runDB $ selectList [] [Desc ArticleId]
-    Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticleId]
+    Just _ -> runDB $ selectList [] [Desc ArticlePublishedOn]
+    Nothing -> runDB $ selectList [ArticleApproved ==. True] [Desc ArticlePublishedOn]
   users <- sequence $ fmap (\x -> articleAuthorName x) articles
   paramPage <- lookupGetParam "page"
   let zippedArticles = I.zip articles users
