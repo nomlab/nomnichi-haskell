@@ -2,8 +2,8 @@ var renderPreview = function(event){
   var previewArea = $("div.article_preview")
 
   event.preventDefault();
-  var title = document.getElementById("hident3").value;
-  var content = document.getElementById("hident5").value;
+  var title = document.getElementById("hident2").value;
+  var content = document.getElementById("hident3").value;
 
   previewArea.empty();
   previewArea.append("<hr>");
