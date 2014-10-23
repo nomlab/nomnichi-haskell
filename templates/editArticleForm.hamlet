@@ -1,5 +1,5 @@
 <div class="article_form">
-  <form method=post action=@{ArticleR articleId} enctype=#{enctype}>
+  <form method=post action=@{ArticleR (articlePermaLink _article)} enctype=#{enctype}>
     ^{articleWidget}
     <div>
       <input type=submit value="Update">
