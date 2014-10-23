@@ -135,15 +135,16 @@ postCreateArticleR = do
                            }
       articleId <- runDB $ insert article'
       setMessage $ toHtml (articleTitle article) <> " created."
-      redirect $ ArticleR articleId
+      redirect $ ArticleR $ articlePermaLink article
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "articleAddError")
 
 -- 記事表示
-getArticleR :: ArticleId -> Handler Html
-getArticleR articleId = do
+getArticleR :: Text -> Handler Html
+getArticleR permalink = do
   creds    <- maybeAuthId
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   article  <- runDB $ get404 articleId
   user     <- runDB $ get (articleUser article)
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
@@ -184,8 +185,9 @@ commentAuthorName (Entity _ comment) = do
   runDB $ get (commentUser comment)
 
 -- 記事更新
-postArticleR :: ArticleId -> Handler Html
-postArticleR articleId = do
+postArticleR :: Text -> Handler Html
+postArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   beforeArticle <- runDB $ get404 articleId
   ((res, articleWidget), enctype) <- runFormPost (editForm (Just beforeArticle))
   case res of
@@ -202,14 +204,15 @@ postArticleR articleId = do
           , ArticlePromoteHeadline =. articlePromoteHeadline article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
-      redirect $ ArticleR articleId
+      redirect $ ArticleR $ articlePermaLink article
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
 
 -- 編集画面
-getEditArticleR :: ArticleId -> Handler Html
-getEditArticleR articleId = do
+getEditArticleR :: Text -> Handler Html
+getEditArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   article <- runDB $ get404 articleId
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
   defaultLayout $ do
@@ -218,8 +221,9 @@ getEditArticleR articleId = do
 
 -- 記事削除
 
-postDeleteArticleR :: ArticleId -> Handler Html
-postDeleteArticleR articleId = do
+postDeleteArticleR :: Text -> Handler Html
+postDeleteArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   runDB $ do
     delete articleId
     deleteWhere [ CommentArticleId ==. articleId ]
@@ -232,17 +236,18 @@ postDeleteArticleR articleId = do
 
 
 -- コメント送信
-postCommentR :: ArticleId -> Handler Html
-postCommentR articleId = do
+postCommentR :: Text -> Handler Html
+postCommentR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   ((res, _), _) <- runFormPost $ commentForm articleId
   case res of
     FormSuccess comment -> do
       _ <- runDB $ insert comment
       setMessage "your comment was successfully posted."
-      redirect $ ArticleR articleId
+      redirect $ ArticleR permalink
     _ -> do
       setMessage "please fill up your comment form."
-      redirect $ ArticleR articleId
+      redirect $ ArticleR permalink
 
 -- 記事表示時の公開時刻の整形
 formatToNomnichiTime :: Article ->  String

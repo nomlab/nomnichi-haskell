@@ -11,6 +11,7 @@ Article
     user UserId
     title Text
     permaLink Text
+    UniquePermaLink permaLink
     content Html
     createdOn UTCTime
     updatedOn UTCTime

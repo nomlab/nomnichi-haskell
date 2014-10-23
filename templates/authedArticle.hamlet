@@ -8,13 +8,13 @@
     <li>
       <a href=@{NomnichiR}> TOPへ
     <li>
-      <a href=@{EditArticleR articleId}> 編集
+      <a href=@{EditArticleR (articlePermaLink article)}> 編集
     <li>
-      <form name=delete method="post" action=@{DeleteArticleR articleId}>
+      <form name=delete method="post" action=@{DeleteArticleR (articlePermaLink article)}>
         <input type=hidden value=削除>
         <a class=delete> 削除
 <hr>
-<form method=post action=@{CommentR articleId} enctype=#{enctype}>
+<form method=post action=@{CommentR (articlePermaLink article)} enctype=#{enctype}>
   ^{commentWidget}
   <div>
     <input type=submit value="コメント投稿">
