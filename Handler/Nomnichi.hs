@@ -142,9 +142,9 @@ postCreateArticleR = do
 
 -- 記事表示
 getArticleR :: Text -> Handler Html
-getArticleR articlePL = do
+getArticleR permalink = do
   creds    <- maybeAuthId
-  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink articlePL
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   article  <- runDB $ get404 articleId
   user     <- runDB $ get (articleUser article)
   comments <- runDB $ selectList [CommentArticleId ==. articleId] [Asc CommentId]
@@ -186,8 +186,8 @@ commentAuthorName (Entity _ comment) = do
 
 -- 記事更新
 postArticleR :: Text -> Handler Html
-postArticleR articlePL = do
-  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink articlePL
+postArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   beforeArticle <- runDB $ get404 articleId
   ((res, articleWidget), enctype) <- runFormPost (editForm (Just beforeArticle))
   case res of
@@ -211,8 +211,8 @@ postArticleR articlePL = do
 
 -- 編集画面
 getEditArticleR :: Text -> Handler Html
-getEditArticleR articlePL = do
-  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink articlePL
+getEditArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   article <- runDB $ get404 articleId
   (articleWidget, enctype) <- generateFormPost $ editForm (Just article)
   defaultLayout $ do
@@ -222,8 +222,8 @@ getEditArticleR articlePL = do
 -- 記事削除
 
 postDeleteArticleR :: Text -> Handler Html
-postDeleteArticleR articlePL = do
-  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink articlePL
+postDeleteArticleR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   runDB $ do
     delete articleId
     deleteWhere [ CommentArticleId ==. articleId ]
@@ -237,17 +237,17 @@ postDeleteArticleR articlePL = do
 
 -- コメント送信
 postCommentR :: Text -> Handler Html
-postCommentR articlePL = do
-  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink articlePL
+postCommentR permalink = do
+  Entity articleId _article <- runDB $ getBy404 $ UniquePermaLink permalink
   ((res, _), _) <- runFormPost $ commentForm articleId
   case res of
     FormSuccess comment -> do
       _ <- runDB $ insert comment
       setMessage "your comment was successfully posted."
-      redirect $ ArticleR articlePL
+      redirect $ ArticleR permalink
     _ -> do
       setMessage "please fill up your comment form."
-      redirect $ ArticleR articlePL
+      redirect $ ArticleR permalink
 
 -- 記事表示時の公開時刻の整形
 formatToNomnichiTime :: Article ->  String
