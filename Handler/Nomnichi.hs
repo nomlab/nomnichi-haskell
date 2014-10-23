@@ -135,7 +135,7 @@ postCreateArticleR = do
                            }
       articleId <- runDB $ insert article'
       setMessage $ toHtml (articleTitle article) <> " created."
-      redirect $ (ArticleR (articlePermaLink article))
+      redirect $ ArticleR $ articlePermaLink article
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "articleAddError")
@@ -204,7 +204,7 @@ postArticleR permalink = do
           , ArticlePromoteHeadline =. articlePromoteHeadline article
           ]
       setMessage $ toHtml $ (articleTitle article) <> " is updated."
-      redirect $ (ArticleR (articlePermaLink article))
+      redirect $ ArticleR $ articlePermaLink article
     _ -> defaultLayout $ do
       setTitle "Please correct your entry form."
       $(widgetFile "editArticleForm")
