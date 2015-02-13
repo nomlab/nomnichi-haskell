@@ -26,7 +26,7 @@
         オペレーティングシステム
 
 <div class="home">
-  <h1 class="home"> ノムニチ新着記事
+  <h1 class="home"> ノムニチ注目記事
   <ul class="article_list">
     $forall (Entity articleId article, user) <- take numOfNewArticles zippedArticles
       <div class="box">
@@ -39,4 +39,5 @@
         <div>
         #{takeHeadLine $ articleContent article}
         <br>...<a href=@{ArticleR articleId}>(続きを読む)</a>
+  (<a href=@{NomnichiR}>もっと読む</a>)
   <hr>
