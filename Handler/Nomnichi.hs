@@ -163,6 +163,9 @@ getArticleR articleId = do
                    <div class=published_on> #{formatToCommentTime comment}
                  <hr>
            |]
+  runDB $ do
+    update articleId
+      [ ArticleCount           =. ((articleCount article) + 1) ]
   case creds of
     Just _ -> do
       (commentWidget, enctype) <- generateFormPost $ commentForm articleId
