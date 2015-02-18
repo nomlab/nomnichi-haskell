@@ -205,7 +205,7 @@ aside {
     background-repeat: repeat-y;
 }
 
-aside a {color: #000;}
+aside a {color:#000;}
 
 aside a:hover { color: #000;
                 background-color: #FFFACD;
@@ -311,10 +311,22 @@ ol {
 }
 
 /* a: link */
-a {color: #000;}
-a:hover { color: #000; }
-a:article { color: #000; }
-a:visited { color: #000; }
+a {color:goldenrod;}
+a:hover { color:maroon ; }
+a:article { color: violet; }
+a:visited { color:maroon; }
+
+/* a: link    page-number */
+a:link.page-number {color:goldenrod;}
+a:hover.page-number { color: firebrick; }
+a:article.page-number { color: violet; }
+a:visited.page-number { color:goldenrod; }
+
+/* a: link    copyright */
+a:link.copyright {color:#000;}
+a:hover.copyright { color:#000; }
+a:article.copyright { color:#000; }
+a:visited.copyright { color:#000; }
 
 /* dd: definition */
 dd {
