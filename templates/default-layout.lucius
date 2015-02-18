@@ -317,10 +317,10 @@ a:article { color: violet; }
 a:visited { color:maroon; }
 
 /* a: link    page-number */
-a:link.page-number {color:goldenrod;}
-a:hover.page-number { color: firebrick; }
-a:article.page-number { color: violet; }
-a:visited.page-number { color:goldenrod; }
+table.page-number a:link {color:goldenrod;}
+table.page-number a:hover { color: firebrick; }
+table.page-number a:article { color: violet; }
+table.page-number a:visited { color:goldenrod; }
 
 /* a: link    copyright */
 a:link.copyright {color:#000;}
@@ -374,4 +374,16 @@ a:visited.article_title{
    font-size: 150%;
    color: maroon;
    font-weight: bold;
+}
+
+
+table.page-number {
+   margin: 0px auto;
+   border: none;
+   width: 325px;
+}
+
+table.page-number td {
+   text-align: center;
+   width: 25px;
 }
