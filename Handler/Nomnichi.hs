@@ -45,20 +45,29 @@ getNomnichiR = do
       calcMaxPageNumber = (+1) $ div (I.length articles) perPage
       linkToOtherPageNumber pageNumber =
         [hamlet|
-        <a href=@{HomeR}/nomnichi?page=1><<</a>
-        $forall displayPageNumber <- displayPageNumbers pageNumber calcMaxPageNumber
-          $if pageNumber == displayPageNumber
-            &nbsp;#{show displayPageNumber}
-          $else
-            &nbsp;<a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
-        <a href=@{HomeR}/nomnichi?page=#{calcMaxPageNumber}>&nbsp;>></a>
+        <table class="page-number">
+          <td>
+            <a href=@{HomeR}/nomnichi?page=1><<</a>
+          <td>
+            <a href=@{HomeR}/nomnichi?page=#{show (pageNumber - 1)}><</a>
+          $forall displayPageNumber <- displayPageNumbers pageNumber calcMaxPageNumber
+            $if pageNumber == displayPageNumber
+              <td>
+                <font size="4" color="maroon">#{show displayPageNumber}</font>
+            $else
+              <td>
+                <a href=@{HomeR}/nomnichi?page=#{show displayPageNumber}>#{show displayPageNumber}</a>
+          <td>
+            <a href=@{HomeR}/nomnichi?page=#{show (pageNumber + 1)}>></a>
+          <td>
+            <a href=@{HomeR}/nomnichi?page=#{show calcMaxPageNumber}>>></a>
         |]
       displayPageNumbers pageNumber maxPageNumber
-        | pageNumber > 5  = if maxPageNumber > (pageNumber + 9)
-                            then I.take 10 [(pageNumber - 4)..]
+        | pageNumber > 4  = if maxPageNumber > (pageNumber + 3)
+                            then I.take 9 [(pageNumber - 4)..]
                             else [(pageNumber - 4)..maxPageNumber]
-        | otherwise       = if maxPageNumber > 10
-                            then I.take 10 [1..]
+        | otherwise       = if maxPageNumber > 9
+                            then I.take 9 [1..]
                             else [1..maxPageNumber]
   case articles of
     [] -> defaultLayout [whamlet|

@@ -205,7 +205,7 @@ aside {
     background-repeat: repeat-y;
 }
 
-aside a {color: #000;}
+aside a {color:#000;}
 
 aside a:hover { color: #000;
                 background-color: #FFFACD;
@@ -311,10 +311,22 @@ ol {
 }
 
 /* a: link */
-a {color: #000;}
-a:hover { color: #000; }
-a:article { color: #000; }
-a:visited { color: #000; }
+a {color:goldenrod;}
+a:hover { color:maroon ; }
+a:article { color: violet; }
+a:visited { color:maroon; }
+
+/* a: link    page-number */
+table.page-number a:link {color:goldenrod;}
+table.page-number a:hover { color: firebrick; }
+table.page-number a:article { color: violet; }
+table.page-number a:visited { color:goldenrod; }
+
+/* a: link    copyright */
+a:link.copyright {color:#000;}
+a:hover.copyright { color:#000; }
+a:article.copyright { color:#000; }
+a:visited.copyright { color:#000; }
 
 /* dd: definition */
 dd {
@@ -362,4 +374,16 @@ a:visited.article_title{
    font-size: 150%;
    color: maroon;
    font-weight: bold;
+}
+
+
+table.page-number {
+   margin: 0px auto;
+   border: none;
+   width: 325px;
+}
+
+table.page-number td {
+   text-align: center;
+   width: 25px;
 }
