@@ -15,8 +15,14 @@
             #{displayAuthorName user}
           <div class="clear">
         <div>
-          #{takeHeadLine $ articleContent article}
-          <br>...<a href=@{ArticleR articleId}>(続きを読む)</a>
+          <div class="left">
+            #{takeHeadLine $ articleContent article}
+          <div class="clear">
+          <div class="left">
+            ...<a href=@{ArticleR articleId}>(続きを読む)</a>
+          <div class="right">
+            View #{articleCount article}
+          <div class="clear">
     <hr>
     ^{linkToOtherPageNumber calcPageNumber}
 ^{displayLinksforLoginedMember creds}
