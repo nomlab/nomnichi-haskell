@@ -6,6 +6,8 @@
 
 /lab/nom/ HomeR GET
 
+/lab/nom/chgpass                          ChangePassR      GET POST
+
 /lab/nom/nomnichi                         NomnichiR        GET
 /lab/nom/nomnichi/create                  CreateArticleR   GET POST
 /lab/nom/nomnichi/#ArticleId/show         ArticleR         GET POST

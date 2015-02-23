@@ -88,6 +88,8 @@ getNomnichiR = do
          (Just _) -> [hamlet|
                      <a href=@{HomeR}/nomnichi/create> Create Article
                      <br>
+                     <a href=@{ChangePassR}> Change Password
+                     <br>
                      <a href=@{HomeR}/auth/logout> Logout
                      |]
          _        -> [hamlet||]

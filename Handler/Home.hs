@@ -6,6 +6,12 @@ import Data.Time
 import Data.List as I (isPrefixOf)
 import Text.Blaze.Html (preEscapedToHtml)
 import Text.Blaze.Html.Renderer.String (renderHtml)
+import Yesod.Auth (requireAuthId)
+import Yesod.Auth.HashDB (setSaltAndPasswordHash)
+import Data.Digest.Pure.SHA (sha1, showDigest)
+import Data.Text as T (append, pack, unpack)
+import Data.ByteString.Lazy.Char8 as BS (pack)
+import Data.Maybe
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -24,6 +30,26 @@ getHomeR = do
         setTitle "乃村研究室ホームページ"
         $(widgetFile "homepage")
 
+getChangePassR :: Handler Html
+getChangePassR = do
+    userId <- requireAuthId
+    user <- runDB $ get404 userId
+    defaultLayout $ do
+        aDomId <- newIdent
+        setTitle "パスワード変更"
+        $(widgetFile "changePass")
+
+postChangePassR :: Handler Html
+postChangePassR = do
+    userId <- requireAuthId
+    user <- runDB $ get404 userId
+    let salt = userSalt user
+    inputPassword <- runInputPost $ ireq textField "password"
+    runDB $ do
+      update userId
+          [ UserPassword =. (Just $ saltedHash salt inputPassword) ]
+    setMessage $ toHtml $ (userIdent user) <> " is updated."
+    redirect $ HomeR
 
 -- local functions --
 articleAuthorName :: Entity Article -> Handler (Maybe User)
@@ -105,3 +131,5 @@ spanList func list@(x:xs) =
        else ([],list)
     where (ys,zs) = spanList func xs
 
+saltedHash :: Text -> Text -> Text
+saltedHash salt = T.pack . showDigest . sha1 . BS.pack . T.unpack . T.append salt
