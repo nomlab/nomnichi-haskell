@@ -21,6 +21,7 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.Nomnichi
+                     Handler.NomnichiAPI
                      Handler.OurStatic
 
     if flag(dev) || flag(library-only)
