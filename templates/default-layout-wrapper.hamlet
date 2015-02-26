@@ -23,7 +23,6 @@ $newline never
         <script>
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
     <body>
-        <div class="container">
             <header>
               <dev>
                 <a href=@{HomeR}><img src="/lab/nom/static/img/okayama-university-logo.gif" width="80px" height="80px">
