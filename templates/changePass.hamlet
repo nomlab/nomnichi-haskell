@@ -1,0 +1,13 @@
+<h1> Change Password
+
+<hr>
+  <form method=post>
+      <table>
+        <tr>
+          <td> ID  : 
+          <td> #{userIdent user}
+        <tr>
+          <td> NEW PASS: 
+          <td> <input type=password name=password>
+        <tr>
+          <td> <input type=submit value="Submit">
