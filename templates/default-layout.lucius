@@ -141,10 +141,13 @@ header, aside, footer {
 
 div.container {
     width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
     min-height: 100%;
-    height: 100%;
+    height: auto;
     position: relative;
+    background-image: url(./../img/sidebar_orange.png);
+    background-repeat: repeat-y;
+    background-position: 20px;
 }
 
 /* header */
@@ -192,17 +195,15 @@ aside {
     float: left;
     border: #B2B48C solid 0px;
     border-radius: 5px;
-    margin: 18px 20px 20px 20px;
+    margin: 0px 20px 20px 20px;
     padding: 0 0 0 5px;
-    width: 170px;
+    width: 130px;
     min-height: 100%;
     height: 100%;
     background: #FFF;
     line-height: 1.5em;
     color: #333;
     font-size:14px;
-    background-image: url(./../img/sidebar_orange.png);
-    background-repeat: repeat-y;
 }
 
 aside a {color:#000;}
@@ -254,7 +255,8 @@ aside ul li ul li a {
 #main {
     float: left;
     width: 80%;
-    margin-top: 18px;
+    margin-top: 0px;
+    margin-left: 30px;
     padding-bottom: 70px;}
 
 /* footer */
