@@ -45,6 +45,8 @@ $newline never
                           <a href="@{HomeR}/ourstatic/research/gn/index.html"> GN
                         <li>
                           <a href="@{HomeR}/ourstatic/research/new/index.html"> New
+                        <li>
+                          <a href="@{HomeR}/ourstatic/research/other/index.html"> その他
                     <li>研究業績
                       <ul>
                         <li>
