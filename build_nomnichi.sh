@@ -9,5 +9,5 @@ fi
 
 set +x
 
-cabal-dev clean && cabal-dev configure && cabal-dev build && \
+cabal clean && cabal configure && cabal build && \
   nohup ./dist/build/nomnichi/nomnichi Production&
