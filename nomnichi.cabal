@@ -78,7 +78,7 @@ library
                  , http-types
                  , blaze-html
                  , blaze-markup
-                 , SHA                           == 1.6.4
+                 , SHA
 
 executable         nomnichi
     if flag(library-only)
