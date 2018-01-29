@@ -1,0 +1,37 @@
+#+TITLE: Nomnichi -- nomlab blog system
+#+AUTHOR: Nomura Laboratory
+#+EMAIL:
+#+DATE:
+#+OPTIONS: H:3 num:2 toc:nil
+#+OPTIONS: ^:nil @:t \n:nil ::t |:t f:t TeX:t
+#+OPTIONS: skip:nil
+#+OPTIONS: author:t
+#+OPTIONS: email:nil
+#+OPTIONS: creator:nil
+#+OPTIONS: timestamp:nil
+#+OPTIONS: timestamps:nil
+#+OPTIONS: d:nil
+#+OPTIONS: tags:t
+#+LATEX_CLASS: jsarticle
+#+LATEX_CLASS_OPTIONS: [a4j,dvipdfmx]
+# #+LATEX_HEADER: \usepackage{plain-article}
+# #+LATEX_HEADER: \renewcommand\maketitle{}
+# #+LATEX_HEADER: \pagestyle{empty}
+# #+LaTeX: \thispagestyle{empty}
+
+* Quick start for developers
+
+  1) Install Haskell-Platform
+
+  2) Update cabal version
+     : $ cabal update
+     : $ cabal install cabal-install
+
+  3) Clone nomnichi repository
+     : $ git clone git@github.com:nomlab/nomnichi.git
+
+  4) Setup sandbox
+     : $ cd nomnichi
+
+  5) Run build script (setup sandbox, install depends, build nomnichi...)
+     : $ ./scripts/build.sh
