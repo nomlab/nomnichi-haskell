@@ -54,7 +54,7 @@ makeApplication conf = do
         }
 
     -- Create the WAI application and apply middlewares
-    app <- toWaiAppPlain foundation
+    app <- toWaiApp foundation
     let logFunc = messageLoggerSource foundation (appLogger foundation)
     return (logWare app, logFunc)
 
